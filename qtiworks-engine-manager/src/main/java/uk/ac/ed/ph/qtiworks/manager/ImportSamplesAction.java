@@ -33,7 +33,7 @@
  */
 package uk.ac.ed.ph.qtiworks.manager;
 
-import uk.ac.ed.ph.qtiworks.manager.services.ManagerServices;
+import uk.ac.ed.ph.qtiworks.manager.services.SampleResourceImporter;
 
 import java.util.List;
 
@@ -42,32 +42,27 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 /**
- * Special action to help with migration the QTIWorks domain from M4 to BETA1.
+ * (Re)imports the set of sample assessments. Existing samples (and data
+ * gathered about them) will be deleted first.
  *
  * @author David McKain
  */
-public final class M4ToBeta1UpdateAction extends ManagerAction {
+public final class ImportSamplesAction extends ManagerAction {
 
-    private static final Logger logger = LoggerFactory.getLogger(M4ToBeta1UpdateAction.class);
+    private static final Logger logger = LoggerFactory.getLogger(ImportSamplesAction.class);
 
     @Override
-    public String getActionSummary() {
-        return "Fixes existing data after schema update for M4->BETA1 upgrade";
+    public String[] getActionSummary() {
+        return new String[] { "Imports all QTIWorks sample assessments, deleting any existing samples first" };
     }
 
     @Override
     public void run(final ApplicationContext applicationContext, final List<String> parameters) {
-        final ManagerServices managerServices = applicationContext.getBean(ManagerServices.class);
-        int deletedCount = managerServices.deleteUnusedAssessmentPackages();
-        logger.info("Deleted {} AssessmentPackage(s) from the system", deletedCount);
+        logger.info("(Re)importing QTI samples");
+        final SampleResourceImporter sampleResourceImporter = applicationContext.getBean(SampleResourceImporter.class);
+        sampleResourceImporter.reimportQtiSamples();
 
-        managerServices.validateAllAssessmentPackages();
-        logger.info("Validated all remaining AssessmentPackages");
-
-        managerServices.deleteAllCandidateSessionFilesystemData();
-        logger.info("Deleted candidate data from filesystem (DB data was deleted earlier during schema migration script)");
-
-        deletedCount = managerServices.deleteLtiCandidateUsers();
-        logger.info("Deleted {} LTI Candidate users", deletedCount);
+        logger.info("Completed successfully");
     }
+
 }

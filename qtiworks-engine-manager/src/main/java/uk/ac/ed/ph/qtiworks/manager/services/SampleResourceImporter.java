@@ -130,6 +130,8 @@ public class SampleResourceImporter {
     /**
      * Wipes then re-imports the QTI samples. Any data collected from existing samples will
      * be deleted in the process.
+     * <p>
+     * This creates a user to own these samples if this hasn't been done so already.
      */
     public void reimportQtiSamples() {
         /* Get sample owner, creating if required */
@@ -144,6 +146,7 @@ public class SampleResourceImporter {
 
     /**
      * Imports any (valid) QTI samples that are not already registered in the DB.
+     * <p>
      * This creates a user to own these samples if this hasn't been done so already.
      */
     public void updateQtiSamples() {
@@ -195,8 +198,10 @@ public class SampleResourceImporter {
     }
 
     private SystemUser ensureSampleOwner() {
-        return managerServices.ensureInternalSystemUser(UserRole.INSTRUCTOR, DomainConstants.QTI_SAMPLE_OWNER_LOGIN_NAME,
-                DomainConstants.QTI_SAMPLE_OWNER_FIRST_NAME, DomainConstants.QTI_SAMPLE_OWNER_LAST_NAME);
+        return managerServices.ensureInternalSystemUser(UserRole.INSTRUCTOR,
+        		ManagerServices.QTI_SAMPLE_OWNER_LOGIN_NAME,
+                ManagerServices.QTI_SAMPLE_OWNER_FIRST_NAME,
+                ManagerServices.QTI_SAMPLE_OWNER_LAST_NAME);
     }
 
     private List<SampleCategory> getExistingSampleCategories() {
@@ -217,7 +222,6 @@ public class SampleResourceImporter {
             if (!deliverySettingsByTitleMap.containsKey(options.getTitle())) {
                 /* New options */
                 options.setOwnerUser(sampleOwner);
-                options.setPublic(true);
                 deliverySettingsDao.persist(options);
                 logger.debug("Created ItemDeliverySettings {}", options);
                 deliverySettingsByTitleMap.put(options.getTitle(), options);
@@ -456,7 +460,6 @@ public class SampleResourceImporter {
         final Assessment assessment = new Assessment();
         assessment.setAssessmentType(assessmentPackage.getAssessmentType());
         assessment.setOwnerUser(owner);
-        assessment.setPublic(true);
         assessment.setSelectedAssessmentPackage(assessmentPackage);
         assessment.setPackageImportVersion(Long.valueOf(1L));
         assessment.setSampleCategory(sampleCategory);

@@ -57,10 +57,14 @@ Renders a standalone assessmentItem
       </xsl:if>
       <head>
         <title><xsl:value-of select="@title"/></title>
+<<<<<<< HEAD
         <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"/>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"/>
         <script src="{$webappContextPath}/rendering/javascript/QtiWorksRendering.js?{$qtiWorksVersion}"/>
+=======
+        <xsl:call-template name="includeAssessmentJsAndCss"/>
+>>>>>>> upstream/master
 
         <!--
         Import ASCIIMathML stuff if there are any MathEntryInteractions in the question.
@@ -75,12 +79,6 @@ Renders a standalone assessmentItem
             UpConversionAjaxController.setDelay(300);
           </script>
         </xsl:if>
-
-        <!-- Styling for JQuery -->
-        <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css"/>
-
-        <!-- QTIWorks assessment styling -->
-        <link rel="stylesheet" href="{$webappContextPath}/rendering/css/assessment.css?{$qtiWorksVersion}" type="text/css" media="screen"/>
 
         <!-- Include stylesheet declared within item -->
         <xsl:apply-templates select="qti:stylesheet"/>

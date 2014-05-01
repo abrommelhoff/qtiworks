@@ -33,7 +33,8 @@
  */
 package uk.ac.ed.ph.qtiworks.manager;
 
-import uk.ac.ed.ph.qtiworks.manager.services.SampleResourceImporter;
+import uk.ac.ed.ph.qtiworks.domain.entities.SystemUser;
+import uk.ac.ed.ph.qtiworks.manager.services.ManagerServices;
 
 import java.util.List;
 
@@ -42,27 +43,38 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 /**
- * Reimports the set of sample assessments. Existing samples (and data
- * gathered about them) will be deleted first.
+ * Edits the password for a {@link SystemUser}
  *
  * @author David McKain
  */
-public final class ReimportSamplesAction extends ManagerAction {
+public final class EditUserPasswordAction extends ManagerAction {
 
-    private static final Logger logger = LoggerFactory.getLogger(ReimportSamplesAction.class);
+    private static final Logger logger = LoggerFactory.getLogger(EditUserPasswordAction.class);
 
     @Override
-    public String getActionSummary() {
-        return "Deletes then re-imports all QTIWorks sample assessments";
+    public String[] getActionSummary() {
+        return new String[] { "Changes the password for the system user having the given loginName." };
+    }
+
+    @Override
+    public String getActionParameterSummary() {
+        return "<loginName> <password>";
+    }
+
+    @Override
+    public String validateParameters(final List<String> parameters) {
+        if (parameters.size()!=2) {
+            return "Required parameters: <loginName> <password";
+        }
+        return null;
     }
 
     @Override
     public void run(final ApplicationContext applicationContext, final List<String> parameters) {
-        logger.info("Reimporting QTI samples");
-        final SampleResourceImporter sampleResourceImporter = applicationContext.getBean(SampleResourceImporter.class);
-        sampleResourceImporter.reimportQtiSamples();
-
-        logger.info("Completed successfully");
+        final ManagerServices managerServices = applicationContext.getBean(ManagerServices.class);
+        final String loginName = parameters.get(0);
+        final String password = parameters.get(1);
+        managerServices.setSystemUserPassword(loginName, password);
+        logger.info("Changed password for system user {}", loginName);
     }
-
 }

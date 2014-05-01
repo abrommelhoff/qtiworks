@@ -419,6 +419,7 @@ public final class NodeGroupList implements Serializable, Iterable<NodeGroup<?, 
         for (int i = 0; i < childNodes.getLength(); i++) {
             final Node childNode = childNodes.item(i);
             boolean childLoaded = false;
+            System.out.println(childNode.getLocalName());
             for (final NodeGroup<?, ?> group : groups) {
                 if (group.loadChildIfSupported(childNode, context)) {
                     childLoaded = true;

@@ -57,6 +57,10 @@ import javax.persistence.TemporalType;
 
 /**
  * Encapsulates the data (e.g. credentials) for an LTI domain.
+ * <p>
+ * Developer note: The ID of a {@link LtiDomain} is generally referred to as an
+ * <code>ldid</code> in the code. This is also used as the name of the primary key column
+ * in the database mappings.
  *
  * @author David McKain
  */
@@ -89,12 +93,12 @@ public class LtiDomain implements BaseEntity, TimestampedOnCreation {
 
     /** LTI consumer key (must be unique) */
     @Basic(optional=false)
-    @Column(name="consumer_key", length=DomainConstants.LTI_TOKEN_LENGTH, updatable=false, unique=true)
+    @Column(name="consumer_key", length=DomainConstants.LTI_TOKEN_MAX_LENGTH, updatable=false, unique=true)
     private String consumerKey;
 
     /** LTI consumer secret (if used) */
     @Basic(optional=false)
-    @Column(name="consumer_secret", length=DomainConstants.LTI_SECRET_LENGTH, updatable=true, unique=false)
+    @Column(name="consumer_secret", length=DomainConstants.LTI_SHARED_SECRET_MAX_LENGTH, updatable=true, unique=false)
     private String consumerSecret;
 
     @Basic(optional=false)

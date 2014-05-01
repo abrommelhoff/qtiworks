@@ -55,6 +55,10 @@ import javax.persistence.UniqueConstraint;
 /**
  * Represents an LTI/OAuth nonce. We're storing these in the persistence layer,
  * even though they're so simple they could be done in other ways.
+ * <p>
+ * Developer note: The ID of a {@link LtiNonce} is generally referred to as an
+ * <code>lnid</code> in the code. This is also used as the name of the primary key column
+ * in the database mappings.
  *
  * @author David McKain
  */
@@ -89,7 +93,7 @@ public class LtiNonce implements BaseEntity {
     private Date messageTimestamp;
 
     @Basic(optional=false)
-    @Column(name="consumer_key", updatable=false, length=DomainConstants.LTI_TOKEN_LENGTH)
+    @Column(name="consumer_key", updatable=false, length=DomainConstants.LTI_TOKEN_MAX_LENGTH)
     private String consumerKey;
 
     @Basic(optional=false)

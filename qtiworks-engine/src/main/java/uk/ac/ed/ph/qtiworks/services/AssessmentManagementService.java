@@ -73,6 +73,7 @@ import uk.ac.ed.ph.jqtiplus.validation.AssessmentObjectValidationResult;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -89,6 +90,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Top layer services for *managing* {@link Assessment}s and related entities.
+ * <p>
+ * All operations here check authorisation.
  *
  * @author David McKain
  */
@@ -98,12 +101,11 @@ public class AssessmentManagementService {
 
     private static final Logger logger = LoggerFactory.getLogger(AssessmentManagementService.class);
 
+    @Resource
+    private IdentityService identityService;
 
     @Resource
     private AuditLogger auditLogger;
-
-    @Resource
-    private IdentityService identityService;
 
     @Resource
     private FilespaceManager filespaceManager;
@@ -137,6 +139,9 @@ public class AssessmentManagementService {
 
     @Resource
     private CandidateSessionOutcomeDao candidateSessionOutcomeDao;
+
+    @Resource
+    private RequestTimestampContext requestTimestampContext;
 
     //-------------------------------------------------
     // Assessment access
@@ -196,7 +201,7 @@ public class AssessmentManagementService {
     public Assessment importAssessment(final MultipartFile multipartFile, final boolean validate)
             throws PrivilegeException, AssessmentPackageDataImportException {
         Assert.notNull(multipartFile, "multipartFile");
-        final User caller = ensureCallerMayCreateAssessment();
+        final User caller = assertCallerMayCreateAssessment();
 
         /* First, upload the data into a sandbox */
         final AssessmentPackage assessmentPackage = importPackageFiles(multipartFile, validate);
@@ -241,7 +246,7 @@ public class AssessmentManagementService {
      * We are currently allowing INSTRUCTOR and ANONYMOUS (demo)
      * users to create assignments.
      */
-    private User ensureCallerMayCreateAssessment() throws PrivilegeException {
+    private User assertCallerMayCreateAssessment() throws PrivilegeException {
         final User caller = identityService.assertCurrentThreadUser();
         final UserRole userRole = caller.getUserRole();
         if (!(userRole==UserRole.ANONYMOUS || userRole==UserRole.INSTRUCTOR)) {
@@ -741,8 +746,8 @@ public class AssessmentManagementService {
         delivery.setTitle(title.trim());
         delivery.setOpen(false);
         delivery.setLtiEnabled(false);
-        delivery.setLtiConsumerKeyToken(ServiceUtilities.createRandomAlphanumericToken(DomainConstants.LTI_SECRET_LENGTH));
-        delivery.setLtiConsumerSecret(ServiceUtilities.createRandomAlphanumericToken(DomainConstants.LTI_SECRET_LENGTH));
+        delivery.setLtiConsumerKeyToken(ServiceUtilities.createRandomAlphanumericToken(DomainConstants.LTI_SHARED_SECRET_MAX_LENGTH));
+        delivery.setLtiConsumerSecret(ServiceUtilities.createRandomAlphanumericToken(DomainConstants.LTI_SHARED_SECRET_MAX_LENGTH));
         deliveryDao.persist(delivery);
         return delivery;
     }
@@ -890,9 +895,10 @@ public class AssessmentManagementService {
     // Internal helpers
 
     private int terminateCandidateSessions(final Assessment assessment, final boolean deleteOutcomes) {
+        final Date currentTimestamp = requestTimestampContext.getCurrentRequestTimestamp();
         final List<CandidateSession> nonTerminatedCandidateSessions = candidateSessionDao.getNonTerminatedForAssessment(assessment);
         for (final CandidateSession candidateSession : nonTerminatedCandidateSessions) {
-            candidateSession.setTerminated(true);
+            candidateSession.setTerminationTime(currentTimestamp);
             candidateSessionDao.update(candidateSession);
             if (deleteOutcomes) {
                 candidateSessionOutcomeDao.deleteForCandidateSession(candidateSession);

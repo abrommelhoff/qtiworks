@@ -34,37 +34,58 @@
 package uk.ac.ed.ph.qtiworks.web.controller.legacy;
 
 import uk.ac.ed.ph.qtiworks.QtiWorksRuntimeException;
+import uk.ac.ed.ph.qtiworks.domain.DomainEntityNotFoundException;
+import uk.ac.ed.ph.qtiworks.domain.entities.AnonymousUser;
 import uk.ac.ed.ph.qtiworks.domain.entities.Assessment;
 import uk.ac.ed.ph.qtiworks.domain.entities.AssessmentPackage;
 import uk.ac.ed.ph.qtiworks.domain.entities.CandidateSession;
 import uk.ac.ed.ph.qtiworks.domain.entities.Delivery;
 import uk.ac.ed.ph.qtiworks.services.AssessmentDataService;
 import uk.ac.ed.ph.qtiworks.services.AssessmentManagementService;
-import uk.ac.ed.ph.qtiworks.services.CandidateSessionStarter;
 import uk.ac.ed.ph.qtiworks.services.candidate.CandidateException;
+import uk.ac.ed.ph.qtiworks.services.dao.DeliveryDao;
 import uk.ac.ed.ph.qtiworks.services.domain.AssessmentPackageDataImportException;
-import uk.ac.ed.ph.qtiworks.services.domain.PrivilegeException;
 import uk.ac.ed.ph.qtiworks.services.domain.AssessmentPackageDataImportException.ImportFailureReason;
 import uk.ac.ed.ph.qtiworks.services.domain.EnumerableClientFailure;
+import uk.ac.ed.ph.qtiworks.services.domain.PrivilegeException;
 import uk.ac.ed.ph.qtiworks.web.GlobalRouter;
+import uk.ac.ed.ph.qtiworks.web.candidate.CandidateSessionLaunchService;
+import uk.ac.ed.ph.qtiworks.web.candidate.CandidateSessionTicket;
 import uk.ac.ed.ph.qtiworks.web.domain.StandaloneRunCommand;
 
 import uk.ac.ed.ph.jqtiplus.validation.AssessmentObjectValidationResult;
 
+import java.io.IOException;
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * This controller is used by the current version of Uniqurate only.
+ * This controller is used by the current (and slightly out of date) version of Uniqurate only.
  * <p>
  * DO NOT USE this legacy controller for any new systems!
+ * <p>
+ * Note that the current version of UQ was developed before QTIWorks started using cookies for
+ * authenticating users to {@link CandidateSession}s. As a result, we now have a 2-step launch
+ * process using a hard-to-guess token for gaining access to the {@link Delivery} created by UQ.
+ * <p>
+ * Also note that the {@link AnonymousUser} who ends up running the {@link CandidateSession}
+ * is different from the one created when UQ triggers the initial {@link Delivery} creation.
+ * This is because UQ doesn't pass the JSESSIONID cookie password on, so a fresh session is created
+ * when the user's browser follows the redirect into the QTIWorks candidate session.
+ * <p>
+ * FIXME: Let's get UQ updated so that this doesn't have to be so complicated.
  *
  * @author David McKain
  */
@@ -75,10 +96,13 @@ public class UniqurateStandaloneRunner {
     private AssessmentManagementService assessmentManagementService;
 
     @Resource
-    private CandidateSessionStarter candidateSessionStarter;
+    private CandidateSessionLaunchService candidateSessionLaunchService;
 
     @Resource
     private AssessmentDataService assessmentDataService;
+
+    @Resource
+    private DeliveryDao deliveryDao;
 
     //--------------------------------------------------------------------
 
@@ -100,11 +124,8 @@ public class UniqurateStandaloneRunner {
                 return "standalonerunner/invalidUpload";
             }
             final Delivery delivery = assessmentManagementService.createDemoDelivery(assessment);
-            final String exitUrl = "/web/anonymous/standalonerunner";
-            final CandidateSession candidateSession = candidateSessionStarter.launchCandidateSession(delivery, true, exitUrl, null, null);
-
-            /* Redirect to candidate dispatcher */
-            return GlobalRouter.buildSessionStartRedirect(candidateSession);
+            final String deliveryToken = candidateSessionLaunchService.generateUniqurateDeliveryToken(delivery);
+            return "redirect:/web/anonymous/standalonerunner/uqlauncher/" + delivery.getId() + "/" + deliveryToken;
         }
         catch (final AssessmentPackageDataImportException e) {
             final EnumerableClientFailure<ImportFailureReason> failure = e.getFailure();
@@ -115,9 +136,35 @@ public class UniqurateStandaloneRunner {
             /* This should not happen if access control logic has been done correctly */
             throw QtiWorksRuntimeException.unexpectedException(e);
         }
+    }
+
+    /**
+     * FIXME: Yes, this really is a non-idempotent GET. Boo!
+     */
+    @RequestMapping(value="/standalonerunner/uqlauncher/{did}/{token}", method=RequestMethod.GET)
+    public String uniqurateLauncher(final HttpSession httpSession, final HttpServletResponse httpResponse,
+            @PathVariable final long did, @PathVariable final String token)
+            throws IOException {
+        try {
+            final String returnUrl = "/web/anonymous/standalonerunner/exit";
+            final CandidateSessionTicket candidateSessionTicket = candidateSessionLaunchService.launchLegacyUniqurateCandidateSession(httpSession, did, token, returnUrl);
+
+            /* Redirect to candidate dispatcher */
+            return GlobalRouter.buildSessionStartRedirect(candidateSessionTicket);
+        }
+        catch (final DomainEntityNotFoundException e) {
+            httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
         catch (final CandidateException e) {
             /* This should not happen if underlying logic has been done correctly */
             throw QtiWorksRuntimeException.unexpectedException(e);
         }
+    }
+
+    @RequestMapping(value="/standalonerunner/exit", method=RequestMethod.GET)
+    @ResponseBody()
+    public String showExitPage() {
+        return "You may now close this window.";
     }
 }

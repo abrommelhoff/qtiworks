@@ -70,6 +70,10 @@ import org.hibernate.annotations.Type;
  * Each assessment uploaded into the system by a user will create one of these
  * entities, which records where the files live, and information about the validation
  * status of the assessment.
+ * <p>
+ * Developer note: The ID of an {@link AssessmentPackage} is generally referred to as an
+ * <code>apid</code> in the code. This is also used as the name of the primary key column
+ * in the database mappings.
  *
  * @author David McKain
  */
@@ -127,7 +131,7 @@ public class AssessmentPackage implements BaseEntity, TimestampedOnCreation {
 
     /** Item or Test? */
     @Basic(optional=false)
-    @Column(name="type", updatable=false, length=15)
+    @Column(name="assessment_type", updatable=false, length=15)
     @Enumerated(EnumType.STRING)
     private AssessmentObjectType assessmentType;
 
@@ -202,7 +206,7 @@ public class AssessmentPackage implements BaseEntity, TimestampedOnCreation {
     /** Hrefs of all QTI XML file resources declared within this package */
     @Lob
     @Type(type="org.hibernate.type.TextType")
-    @ElementCollection(fetch=FetchType.LAZY)
+    @ElementCollection(fetch=FetchType.EAGER)
     @CollectionTable(name="assessment_package_qti_files", joinColumns=@JoinColumn(name="apid"))
     @Column(name="href")
     private Set<String> qtiFileHrefs;
@@ -210,7 +214,7 @@ public class AssessmentPackage implements BaseEntity, TimestampedOnCreation {
     /** Hrefs of all safe (non-QTI) file resources declared within this package */
     @Lob
     @Type(type="org.hibernate.type.TextType")
-    @ElementCollection(fetch=FetchType.LAZY)
+    @ElementCollection(fetch=FetchType.EAGER)
     @CollectionTable(name="assessment_package_safe_files", joinColumns=@JoinColumn(name="apid"))
     @Column(name="href")
     private Set<String> safeFileHrefs;

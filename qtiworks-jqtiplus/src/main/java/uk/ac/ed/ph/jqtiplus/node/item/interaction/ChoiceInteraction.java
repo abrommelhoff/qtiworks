@@ -106,7 +106,6 @@ public final class ChoiceInteraction extends BlockInteraction implements SimpleC
         getAttributes().add(new BooleanAttribute(this, ATTR_SHUFFLE_NAME, true));
         getAttributes().add(new IntegerAttribute(this, ATTR_MAX_CHOICES_NAME, ATTR_MAX_CHOICES_DEFAULT_VALUE, true));
         getAttributes().add(new IntegerAttribute(this, ATTR_MIN_CHOICES_NAME, ATTR_MIN_CHOICES_DEFAULT_VALUE, false));
-
         getNodeGroups().add(new SimpleChoiceGroup(this, 1));
     }
 

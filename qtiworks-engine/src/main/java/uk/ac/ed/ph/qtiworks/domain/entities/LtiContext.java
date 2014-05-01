@@ -67,6 +67,10 @@ import org.hibernate.annotations.Type;
  * context based on the <code>resource_link_id</code> to enable the ownership model to work correctly.
  * This means that data created within a particular resource link in this context is visible only
  * to that resource, but it's better than nothing.
+ * <p>
+ * Developer note: The ID of a {@link LtiContext} is generally referred to as an
+ * <code>lcid</code> in the code. This is also used as the name of the primary key column
+ * in the database mappings.
  *
  * @author David McKain
  */
@@ -110,12 +114,12 @@ public class LtiContext implements BaseEntity, TimestampedOnCreation {
      * This parameter is recommended but not mandatory in LTI.
      */
     @Basic(optional=true)
-    @Column(name="context_id", updatable=false, length=DomainConstants.LTI_TOKEN_LENGTH)
+    @Column(name="context_id", updatable=false, length=DomainConstants.LTI_TOKEN_MAX_LENGTH)
     private String contextId;
 
     /** Corresponds to the (recommended) LTI <code>context_label</code> parameter */
     @Basic(optional=true)
-    @Column(name="context_label", updatable=false, length=DomainConstants.LTI_TOKEN_LENGTH)
+    @Column(name="context_label", updatable=false, length=DomainConstants.LTI_TOKEN_MAX_LENGTH)
     private String contextLabel;
 
     /** Corresponds to the (recommended) LTI <code>context_title</code> parameter */
@@ -131,7 +135,7 @@ public class LtiContext implements BaseEntity, TimestampedOnCreation {
      * particularly useful for users, but keeps the ownership model working.
      */
     @Basic(optional=true)
-    @Column(name="fallback_resource_link_id", updatable=false, length=DomainConstants.LTI_TOKEN_LENGTH)
+    @Column(name="fallback_resource_link_id", updatable=false, length=DomainConstants.LTI_TOKEN_MAX_LENGTH)
     private String fallbackResourceLinkId;
 
     //------------------------------------------------------------

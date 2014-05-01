@@ -5,16 +5,19 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:qti="http://www.imsglobal.org/xsd/imsqti_v2p1"
   xmlns:qw="http://www.ph.ed.ac.uk/qtiworks"
-  xmlns:gdi="http://imsglobal.org/community/xsd/geometrydrawing"
+  xmlns:gdi="http://measuredprogress.org/schema/geometrydrawing"
   xmlns="http://www.w3.org/1999/xhtml"
   exclude-result-prefixes="qti qw xs gdi">
 
-  <xsl:template match="qti:customInteraction[@class='org.qtitools.geometrydrawing.GeometryDrawingInteraction']">
+  <xsl:template match="qti:customInteraction">
   	<html>
   		<head>
   			<script src="//jsxgraph.uni-bayreuth.de/distrib/jsxgraphcore.js"/>
   		</head>
   	</html>
+  <xsl:apply-templates />
+  </xsl:template>
+  <xsl:template match="gdi:*">
     <p/>
 	  <input type="checkbox" id="drawline"/>Draw a Line<br/>
 	  <span id="linedirections">Click two points between which to draw a line</span>

@@ -31,49 +31,54 @@
  * QTITools is (c) 2008, University of Southampton.
  * MathAssessEngine is (c) 2010, University of Edinburgh.
  */
-package uk.ac.ed.ph.qtiworks.manager;
+package uk.ac.ed.ph.qtiworks.web.candidate;
 
-import uk.ac.ed.ph.qtiworks.services.FilespaceManager;
+import uk.ac.ed.ph.qtiworks.domain.entities.CandidateSession;
+import uk.ac.ed.ph.qtiworks.services.IdentityService;
 
-import java.util.List;
+import uk.ac.ed.ph.jqtiplus.internal.util.Assert;
+import uk.ac.ed.ph.jqtiplus.internal.util.ObjectUtilities;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
+import java.io.Serializable;
 
 /**
- * Resets the database schema and wipes the file store
+ * This provides information about the "current" {@link CandidateSession} being accessed by
+ * a particular candidate. It is created by the {@link CandidateSessionAuthenticationFilter}
+ * and stored and accessed in the candidate services layer via the {@link IdentityService}.
+ *
+ * @see IdentityService#getCurrentThreadCandidateSessionContext()
+ * @see CandidateSessionAuthenticationFilter
  *
  * @author David McKain
  */
-public final class RebuildSchemaAction extends ManagerAction {
+public final class CandidateSessionContext implements Serializable {
 
-    private static final Logger logger = LoggerFactory.getLogger(RebuildSchemaAction.class);
+    private static final long serialVersionUID = 1412636123357858458L;
 
-    @Override
-    public String getActionSummary() {
-        return "Rebuilds the QTIWorks database schema and file store without loading any samples";
+    /**
+     * Indicates which {@link CandidateSession} this ticket provides access to
+     */
+    private final CandidateSession candidateSession;
+
+    /** Optional return URL to use when the session terminates */
+    private final String returnUrl;
+
+    public CandidateSessionContext(final CandidateSession candidateSession, final String returnUrl) {
+        Assert.notNull(candidateSession, "candidateSession");
+        this.candidateSession = candidateSession;
+        this.returnUrl = returnUrl;
+    }
+
+    public CandidateSession getCandidateSession() {
+        return candidateSession;
+    }
+
+    public String getReturnUrl() {
+        return returnUrl;
     }
 
     @Override
-    public String getSpringProfileName() {
-        return "bootstrap";
+    public String toString() {
+        return ObjectUtilities.beanToString(this);
     }
-
-    @Override
-    public void beforeApplicationContextInit() {
-        logger.warn("QTIWorks database and file store is being reset!!!");
-        logger.warn("Make sure you have created the QTIWorks database already. Refer to the documentation for help");
-    }
-
-    @Override
-    public void run(final ApplicationContext applicationContext, final List<String> parameters) {
-        /* Delete filesystem data too */
-        logger.info("Deleting all user data from filesystem");
-        final FilespaceManager filespaceManager = applicationContext.getBean(FilespaceManager.class);
-        filespaceManager.deleteAllUserData();
-
-        logger.info("Completed successfully");
-    }
-
 }

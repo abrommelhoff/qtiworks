@@ -145,6 +145,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import main.java.geometrydrawing.GeometryDrawingInteraction;
+
 /**
  * All the types of content.
  *
@@ -521,6 +523,16 @@ public enum ContentType {
         @Override
         public QtiNode create(final QtiNode parent) {
             throw new QtiLogicException("customInteractions should have been intercepted before this method got called");
+        }
+    },
+    /**
+     * geometryDrawingInteraction
+     */
+    GEOMETRY_DRAWING_INTERACTION(GeometryDrawingInteraction.QTI_CLASS_NAME, GeometryDrawingInteraction.class) {
+
+        @Override
+        public QtiNode create(final QtiNode parent) {
+            return new GeometryDrawingInteraction(parent);
         }
     },
     /**
