@@ -23,6 +23,11 @@ All Rights Reserved
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>geometrydrawing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>qtiworks-mathassess</artifactId>
       <version>${project.version}</version>
     </dependency>
