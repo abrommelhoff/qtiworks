@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://measuredprogress.org/schema/geometrydrawing"
+	xmlns:qti="http://www.imsglobal.org/xsd/imsqti_v2p1" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://measuredprogress.org/schema/geometrydrawing">
+
+	<xsd:import namespace="http://www.imsglobal.org/xsd/imsqti_v2p1"
+		schemaLocation="imsqti_v2p1.xsd" />
+
+	<xs:complexType name="GeometryDrawingInteraction.Type" mixed="false">
+        <xs:annotation>
+            <xs:documentation source="umldocumentation">
+                The GeometryDrawing complexType is the container for the information about a geometry drawing custom interaction.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+        	<xs:element ref="object" minOccurs = "1" maxOccurs = "1"/>
+        </xs:sequence>
+    </xs:complexType>
+</xsd:schema>
