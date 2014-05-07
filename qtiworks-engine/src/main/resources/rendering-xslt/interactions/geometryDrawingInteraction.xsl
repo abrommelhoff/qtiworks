@@ -9,15 +9,12 @@
   xmlns="http://www.w3.org/1999/xhtml"
   exclude-result-prefixes="qti qw xs gdi">
 
-  <xsl:template match="qti:customInteraction">
+  <xsl:template match="qti:customInteraction[@class='org.qtitools.geometrydrawing.GeometryDrawingInteraction']">
   	<html>
   		<head>
   			<script src="//jsxgraph.uni-bayreuth.de/distrib/jsxgraphcore.js"/>
   		</head>
   	</html>
-  <xsl:apply-templates />
-  </xsl:template>
-  <xsl:template match="gdi:*">
     <p/>
 	  <input type="checkbox" id="drawline"/>Draw a Line<br/>
 	  <span id="linedirections">Click two points between which to draw a line</span>

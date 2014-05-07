@@ -57,14 +57,11 @@ Renders a standalone assessmentItem
       </xsl:if>
       <head>
         <title><xsl:value-of select="@title"/></title>
-<<<<<<< HEAD
         <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"/>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"/>
         <script src="{$webappContextPath}/rendering/javascript/QtiWorksRendering.js?{$qtiWorksVersion}"/>
-=======
         <xsl:call-template name="includeAssessmentJsAndCss"/>
->>>>>>> upstream/master
 
         <!--
         Import ASCIIMathML stuff if there are any MathEntryInteractions in the question.
@@ -160,21 +157,21 @@ Renders a standalone assessmentItem
       		<xsl:when test="$calcType='Standard'">
 	      		<li>
 		          <form action="" method="post">
-		            <input type="button" value="Standard Calculator" onclick="QtiWorksRendering.calculator();"/>
+		            <input type="button" value="Standard Calculator" onclick="QtiWorksRendering.calculator('standard');"/>
 		          </form>
 		        </li>
       		</xsl:when>
       		<xsl:when test="$calcType='Scientific'">
-	        <li>
-	          <form action="" method="post">
-	            <input type="button" value="Scientific Calculator" onclick="QtiWorksRendering.calculator();"/>
-	          </form>
-	        </li>
+		        <li>
+		          <form action="" method="post">
+		            <input type="button" value="Scientific Calculator" onclick="QtiWorksRendering.calculator('standard');"/>
+		          </form>
+		        </li>
 	        </xsl:when>
 	      	<xsl:otherwise>
 	        <li>
 	          <form action="" method="post">
-	            <input type="button" value="Basic Calculator" onclick="QtiWorksRendering.calculator();"/>
+	            <input type="button" value="Basic Calculator" onclick="QtiWorksRendering.calculator('basic');"/>
 	          </form>
 	        </li>
 	        </xsl:otherwise>

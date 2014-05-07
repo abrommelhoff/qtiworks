@@ -180,21 +180,21 @@ NB: This is used both while being presented, and during review.
       		<xsl:when test="$calcType='Standard'">
 	      		<li>
 		          <form action="" method="post">
-		            <input type="button" value="Standard Calculator" onclick="QtiWorksRendering.calculator();"/>
+		            <input type="button" value="Standard Calculator" onclick="QtiWorksRendering.calculator("standard");"/>
 		          </form>
 		        </li>
       		</xsl:when>
       		<xsl:when test="$calcType='Scientific'">
 	        <li>
 	          <form action="" method="post">
-	            <input type="button" value="Scientific Calculator" onclick="QtiWorksRendering.calculator();"/>
+	            <input type="button" value="Scientific Calculator" onclick="QtiWorksRendering.calculator("standard");"/>
 	          </form>
 	        </li>
 	        </xsl:when>
 	      	<xsl:otherwise>
 	        <li>
 	          <form action="" method="post">
-	            <input type="button" value="Basic Calculator" onclick="QtiWorksRendering.calculator();"/>
+	            <input type="button" value="Basic Calculator" onclick="QtiWorksRendering.calculator("basic");"/>
 	          </form>
 	        </li>
 	        </xsl:otherwise>
