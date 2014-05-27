@@ -73,6 +73,9 @@ public final class TestRenderingOptions extends AbstractRenderingOptions {
     @NotNull
     private String exitTestUrl;
 
+    @NotNull
+    private String takeBreakUrl;
+
     //----------------------------------------------------
 
     public String getSelectTestItemUrl() {
@@ -153,6 +156,14 @@ public final class TestRenderingOptions extends AbstractRenderingOptions {
 
     public void setExitTestUrl(final String exitTestUrl) {
         this.exitTestUrl = exitTestUrl;
+    }
+
+    public String getTakeBreakUrl() {
+        return takeBreakUrl;
+    }
+
+    public void setTakeBreakUrl(final String takeBreakUrl) {
+        this.takeBreakUrl = takeBreakUrl;
     }
 
     //----------------------------------------------------

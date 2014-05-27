@@ -492,6 +492,36 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
     }
 
     //----------------------------------------------------
+    // Take a Break
+
+    public CandidateSession takeBreak(final CandidateSessionContext candidateSessionContext)
+            throws CandidateException {
+        Assert.notNull(candidateSessionContext, "candidateSessionContext");
+        assertSessionType(candidateSessionContext, AssessmentObjectType.ASSESSMENT_TEST);
+        final CandidateSession candidateSession = candidateSessionContext.getCandidateSession();
+
+        /* Get current JQTI state and create JQTI controller */
+        final NotificationRecorder notificationRecorder = new NotificationRecorder(NotificationLevel.INFO);
+        final CandidateEvent mostRecentEvent = assertSessionEntered(candidateSession);
+        final TestSessionController testSessionController = candidateDataService.createTestSessionController(mostRecentEvent, notificationRecorder);
+        final TestSessionState testSessionState = testSessionController.getTestSessionState();
+
+        /* Make sure caller may do this */
+       /* assertSessionNotTerminated(candidateSession);
+        if (testSessionState.getCurrentTestPartKey()==null || !testSessionState.getCurrentTestPartSessionState().isEnded()) {
+            //candidateAuditLogger.logAndThrowCandidateException(candidateSession, CandidateExceptionReason.CANNOT_REVIEW_TEST_PART);
+            return null;
+        }*/
+
+        /* Record and log event */
+        final CandidateEvent candidateTestEvent = candidateDataService.recordCandidateTestEvent(candidateSession,
+                CandidateTestEventType.TAKE_A_BREAK, null, null, testSessionState, notificationRecorder);
+        candidateAuditLogger.logCandidateEvent(candidateTestEvent);
+
+        return candidateSession;
+    }
+
+    //----------------------------------------------------
     // Review
 
     public CandidateSession reviewTestPart(final CandidateSessionContext candidateSessionContext)

@@ -151,6 +151,15 @@ NB: This is used both while being presented, and during review.
           </form>
         </li>
       </xsl:if>
+      <!-- Probably need to check for something here. Is 'Take a Break' defined in manifest or PNP?? -->
+      <xsl:if test="true()">
+      	<li>
+      	<form action="{$webappContextPath}{$takeBreakUrl}" method="post"
+            onsubmit="return confirm({qw:to-javascript-string($takeBreakAlertMessage)})">
+            <input type="submit" value="Take a Break"/>
+          </form>
+      	</li>
+      </xsl:if>
       <!-- Review state -->
       <xsl:if test="$reviewMode">
         <li>
@@ -180,21 +189,21 @@ NB: This is used both while being presented, and during review.
       		<xsl:when test="$calcType='Standard'">
 	      		<li>
 		          <form action="" method="post">
-		            <input type="button" value="Standard Calculator" onclick="QtiWorksRendering.calculator("standard");"/>
+		            <input type="button" value="Standard Calculator" onclick="QtiWorksRendering.calculator('standard');"/>
 		          </form>
 		        </li>
       		</xsl:when>
       		<xsl:when test="$calcType='Scientific'">
 	        <li>
 	          <form action="" method="post">
-	            <input type="button" value="Scientific Calculator" onclick="QtiWorksRendering.calculator("standard");"/>
+	            <input type="button" value="Scientific Calculator" onclick="QtiWorksRendering.calculator('standard');"/>
 	          </form>
 	        </li>
 	        </xsl:when>
 	      	<xsl:otherwise>
 	        <li>
 	          <form action="" method="post">
-	            <input type="button" value="Basic Calculator" onclick="QtiWorksRendering.calculator("basic");"/>
+	            <input type="button" value="Basic Calculator" onclick="QtiWorksRendering.calculator('basic');"/>
 	          </form>
 	        </li>
 	        </xsl:otherwise>

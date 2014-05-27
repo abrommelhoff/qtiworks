@@ -38,6 +38,7 @@ Base templates used in test rendering
   <xsl:param name="showTestItemSolutionUrl" as="xs:string" required="yes"/>
   <xsl:param name="advanceTestPartUrl" as="xs:string" required="yes"/>
   <xsl:param name="exitTestUrl" as="xs:string" required="yes"/>
+  <xsl:param name="takeBreakUrl" as="xs:string" required="yes"/>
 
   <!-- ************************************************************ -->
 
@@ -66,6 +67,9 @@ Base templates used in test rendering
 
   <xsl:variable name="exitTestAlertMessage" as="xs:string"
     select="'Are you sure? This will leave ths Test and you can''t go back in.'"/>
+    
+  <xsl:variable name="takeBreakAlertMessage" as="xs:string"
+  	select="'Are you sure you want to take a break now?'"/>
 
   <!-- ************************************************************ -->
 

@@ -122,6 +122,7 @@ public class CandidateTestController extends CandidateControllerBase {
         renderingOptions.setEndTestPartUrl(sessionBaseUrl + "/end-test-part");
         renderingOptions.setAdvanceTestPartUrl(sessionBaseUrl + "/advance-test-part");
         renderingOptions.setExitTestUrl(sessionBaseUrl + "/exit-test");
+        renderingOptions.setTakeBreakUrl(sessionBaseUrl + "/takeBreak");
 
         final ServletOutputStreamer outputStreamer = new ServletOutputStreamer(response, null /* No caching */);
         candidateRenderingService.renderCurrentCandidateTestSessionState(candidateSessionContext, renderingOptions, outputStreamer);
@@ -240,6 +241,20 @@ public class CandidateTestController extends CandidateControllerBase {
 
         /* Redirect to rendering of current session state */
         return redirectToRenderSession(xid, xsrfToken);
+    }
+
+    /**
+     * @see CandidateTestDeliveryService#takeBreak(CandidateSessionContext)
+     */
+    @RequestMapping(value="/testsession/{xid}/{xsrfToken}/takeBreak", method=RequestMethod.POST)
+    public String takeBreak(@PathVariable final long xid, @PathVariable final String xsrfToken)
+            throws CandidateException {
+        final CandidateSessionContext candidateSessionContext = getCandidateSessionContext();
+        candidateTestDeliveryService.takeBreak(candidateSessionContext);
+
+        /* You're taking a break now! Redirect to returnUrl */
+        return redirectToExitUrl(candidateSessionContext, xsrfToken);
+
     }
 
     /**

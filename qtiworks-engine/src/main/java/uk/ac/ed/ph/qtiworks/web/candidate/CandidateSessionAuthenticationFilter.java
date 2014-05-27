@@ -40,6 +40,8 @@ import uk.ac.ed.ph.qtiworks.services.dao.CandidateSessionDao;
 import uk.ac.ed.ph.qtiworks.services.dao.UserDao;
 import uk.ac.ed.ph.qtiworks.web.authn.AbstractWebAuthenticationFilter;
 
+import uk.ac.ed.ph.jqtiplus.node.AssessmentObjectType;
+
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -116,11 +118,20 @@ public final class CandidateSessionAuthenticationFilter extends AbstractWebAuthe
         }
 
         /* The user's ticket for accessing this CandidateSession should have been stored in the HTTP session previously */
-        final CandidateSessionTicket candidateSessionTicket = getCandidateSessionTicketForSession(httpSession, xid);
+        CandidateSessionTicket candidateSessionTicket = getCandidateSessionTicketForSession(httpSession, xid);
         if (candidateSessionTicket==null) {
-            logger.warn("Failed to retrieve CandidateSessionTicket from HttpSession for CandidateSession {}", xid);
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden. You do not have access to this assessment session. Please launch this assessment again.");
-            return;
+            // check if this is an existing session!
+            // first find (if there is) a userId associated with the xid
+            CandidateSession cs = new CandidateSession();
+            cs = candidateSessionDao.findById(xid);
+            if (cs==null) {
+                // ok, NOW it's a failure!
+                logger.warn("Failed to retrieve CandidateSessionTicket from HttpSession for CandidateSession {}", xid);
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden. You do not have access to this assessment session. Please launch this assessment again.");
+                return;
+            }
+            // TODO: returnUrl should be variable
+            candidateSessionTicket = new CandidateSessionTicket(xsrfToken, cs.getCandidate().getId(), xid, AssessmentObjectType.ASSESSMENT_TEST, "/instructor/assessment/188");
         }
 
         /* Make sure supplied XSRF token agrees with the one already generated */

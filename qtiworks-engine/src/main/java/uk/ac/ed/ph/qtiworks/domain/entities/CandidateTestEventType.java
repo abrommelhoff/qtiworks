@@ -106,6 +106,9 @@ public enum CandidateTestEventType {
     /** Solution of a particular item (in review state) */
     SOLUTION_ITEM,
 
+    /** Take a Break */
+    TAKE_A_BREAK,
+
     ;
 
 }
