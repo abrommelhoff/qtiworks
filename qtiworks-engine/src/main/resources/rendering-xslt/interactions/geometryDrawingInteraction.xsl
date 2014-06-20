@@ -16,8 +16,9 @@
   		</head>
   	</html>
     <p/>
-	  <input type="checkbox" id="drawline"/>Draw a Line<br/>
+	  <input type="checkbox" id="drawline"/>Draw a Line<input type="checkbox" id="drawray"/>Draw a Ray<br/>
 	  <span id="linedirections">Click two points between which to draw a line</span>
+	  <span id="raydirections">Click two points between which to draw a ray</span>
 	  <xsl:if test="exists(qti:object)">
 		  <xsl:variable name="object" select="qti:object" as="element(qti:object)"/>
 		  <jsObject type="gridImg" data="{qw:convert-link($object/@data)}" height="{$object/@height}" width="{$object/@width}"/>

@@ -453,7 +453,7 @@ var QtiWorksRendering = (function() {
     /* GeometryDrawingInteraction */
     var GeometryDrawingInteraction = function () {
     	var board;
-    	var lineMode = false;
+    	var mode = "point"; // point, line, or ray
     	var ptsSelected = [];
     	var ptsCreated = [];
     	var linesCreated = [];
@@ -493,10 +493,11 @@ var QtiWorksRendering = (function() {
 			var im = board.create('image',[gridImg.attr('data'), [1,0], [gridImg.attr('width'), gridImg.attr('height')] ]);
 		}
 		$('#linedirections').hide();
+		$('#raydirections').hide();
 		$('#jxgbox').mousedown(function(e) {
 			switch (e.which) {
 				case 1:
-					if (lineMode) {
+					if (mode != "point") {
 						lineSelect(e);
 					} else {
 						down(e);
@@ -510,8 +511,18 @@ var QtiWorksRendering = (function() {
 			}
 		});
 		$('#drawline').click(function () {
-			$("#linedirections").toggle(this.checked);
-			lineMode = this.checked;
+			$('#linedirections').toggle(this.checked);
+			mode = this.checked?'line':'point';
+			$('#drawray').removeAttr('checked');
+			$("#raydirections").toggle(false);
+			
+		});
+		$('#drawray').click(function () {
+			$('#raydirections').toggle(this.checked);
+			mode = this.checked?'ray':'point';
+			$('#drawline').removeAttr('checked');
+			$('#linedirections').toggle(false);
+			
 		});
 		$('#resetButton').click(function () {
 			var element;
@@ -559,7 +570,7 @@ var QtiWorksRendering = (function() {
 	        if (canCreate) {
 	            var newPoint = board.create('point', [coords.usrCoords[1], coords.usrCoords[2]], {snapToGrid:isSnapTo, withLabel:false});
 				JXG.addEvent(newPoint.rendNode, 'mouseover', 
-	             function(){ if (lineMode) {$("ellipse").css('cursor', 'crosshair');} else {$("ellipse").css('cursor', 'default');}}, 
+	             function(){ if (mode!="point") {$("ellipse").css('cursor', 'crosshair');} else {$("ellipse").css('cursor', 'default');}}, 
 	             newPoint);
 				ptsCreated.push(newPoint.id);
 	        }
@@ -741,12 +752,14 @@ var QtiWorksRendering = (function() {
         	var memory = 0;
         	var isMemorySet = false;
         	div.id = "dialog";
+        	div.innerHTML = '<span id="biggerCalc" class="ui-icon ui-icon-plusthick inline-span"></span><span id="smallerCalc" class="ui-icon ui-icon-minusthick inline-span"></span><span id="closeCalculator" class="ui-icon ui-icon-circle-close inline-span"></span>';
         	if (type == "standard") {
         		// standard calculator
-        		div.innerHTML = '<span id="closeCalculator" class="ui-icon ui-icon-circle-close"></span><FORM id="calculator" NAME="Calc"><TABLE BORDER=4><TR><TD><INPUT TYPE="text" maxlength="12" NAME="Input" Size="16"><br></TD></TR><TR><TD><INPUT TYPE="button" NAME="plusminus" VALUE=" +/- " OnClick="makenegative()"><INPUT TYPE="button" id="spacer" value="n/a"><INPUT TYPE="button" id="memset" NAME="memset" VALUE=" MS " OnCLick="memoryset()"><INPUT TYPE="button" id="memrecall" NAME="memrecall" VALUE=" MR " OnClick="memoryrecall()"><INPUT TYPE="button" id="memclear" NAME="memclear" VALUE=" MC " OnClick="memoryclear()"><br><INPUT TYPE="button" NAME="pct" VALUE="  %  " OnClick="Calc.Input.value = Calc.Input.value/100"><INPUT TYPE="button" NAME="seven" VALUE="  7  " OnClick="Calc.Input.value += &#39;7&#39;"><INPUT TYPE="button" NAME="eight" VALUE="  8  " OnCLick="Calc.Input.value += &#39;8&#39;"><INPUT TYPE="button" NAME="nine"  VALUE="  9  " OnClick="Calc.Input.value += &#39;9&#39;"><INPUT TYPE="button" NAME="plus"  VALUE="  +  " OnClick="Calc.Input.value += &#39; + &#39;"><br><INPUT TYPE="button" NAME="sqrt" VALUE="  &#8730;  " OnClick="Calc.Input.value = Math.sqrt(Calc.Input.value)"><INPUT TYPE="button" NAME="four"  VALUE="  4  " OnClick="Calc.Input.value += &#39;4&#39;"><INPUT TYPE="button" NAME="five"  VALUE="  5  " OnCLick="Calc.Input.value += &#39;5&#39;"><INPUT TYPE="button" NAME="six"   VALUE="  6  " OnClick="Calc.Input.value += &#39;6&#39;"><INPUT TYPE="button" NAME="minus" VALUE="  -  " OnClick="Calc.Input.value += &#39; - &#39;"><br><input type="button" id="spacer" value="n/a"><INPUT TYPE="button" NAME="one"   VALUE="  1  " OnClick="Calc.Input.value += &#39;1&#39;"><INPUT TYPE="button" NAME="two"   VALUE="  2  " OnCLick="Calc.Input.value += &#39;2&#39;"><INPUT TYPE="button" NAME="three" VALUE="  3  " OnClick="Calc.Input.value += &#39;3&#39;"><INPUT TYPE="button" NAME="times" VALUE="  x  " OnClick="Calc.Input.value += &#39; * &#39;"><br><INPUT TYPE="button" NAME="clear" VALUE="  c  " OnClick="Calc.Input.value = &#39;&#39;"><INPUT TYPE="button" NAME="zero"  VALUE="  0  " OnClick="Calc.Input.value += &#39;0&#39;"><INPUT TYPE="button" NAME="decimal" VALUE="  .  " OnClick="Calc.Input.value += &#39;.&#39;"><INPUT TYPE="button" NAME="DoIt"  VALUE="  =  " OnClick="Calc.Input.value = eval(Calc.Input.value)"><INPUT TYPE="button" NAME="div"   VALUE="  /  " OnClick="Calc.Input.value += &#39; / &#39;"><br></TD></TR></TABLE></FORM>';
+        		//div.innerHTML += '<span id="closeCalculator" class="ui-icon ui-icon-circle-close"></span><FORM id="calculator" NAME="Calc"><TABLE BORDER=4><TR><TD><INPUT TYPE="text" maxlength="12" NAME="Input" Size="16"><br></TD></TR><TR><TD><INPUT TYPE="button" NAME="plusminus" VALUE=" +/- " OnClick="makenegative()"><INPUT TYPE="button" id="spacer" value="n/a"><INPUT TYPE="button" id="memset" NAME="memset" VALUE=" MS " OnCLick="memoryset()"><INPUT TYPE="button" id="memrecall" NAME="memrecall" VALUE=" MR " OnClick="memoryrecall()"><INPUT TYPE="button" id="memclear" NAME="memclear" VALUE=" MC " OnClick="memoryclear()"><br><INPUT TYPE="button" NAME="pct" VALUE="  %  " OnClick="Calc.Input.value = Calc.Input.value/100"><INPUT TYPE="button" NAME="seven" VALUE="  7  " OnClick="Calc.Input.value += &#39;7&#39;"><INPUT TYPE="button" NAME="eight" VALUE="  8  " OnCLick="Calc.Input.value += &#39;8&#39;"><INPUT TYPE="button" NAME="nine"  VALUE="  9  " OnClick="Calc.Input.value += &#39;9&#39;"><INPUT TYPE="button" NAME="plus"  VALUE="  +  " OnClick="Calc.Input.value += &#39; + &#39;"><br><INPUT TYPE="button" NAME="sqrt" VALUE="  &#8730;  " OnClick="Calc.Input.value = squareRootWithErrorCheck(Calc.Input.value)"><INPUT TYPE="button" NAME="four"  VALUE="  4  " OnClick="Calc.Input.value += &#39;4&#39;"><INPUT TYPE="button" NAME="five"  VALUE="  5  " OnCLick="Calc.Input.value += &#39;5&#39;"><INPUT TYPE="button" NAME="six"   VALUE="  6  " OnClick="Calc.Input.value += &#39;6&#39;"><INPUT TYPE="button" NAME="minus" VALUE="  -  " OnClick="Calc.Input.value += &#39; - &#39;"><br><input type="button" id="spacer" value="n/a"><INPUT TYPE="button" NAME="one"   VALUE="  1  " OnClick="Calc.Input.value += &#39;1&#39;"><INPUT TYPE="button" NAME="two"   VALUE="  2  " OnCLick="Calc.Input.value += &#39;2&#39;"><INPUT TYPE="button" NAME="three" VALUE="  3  " OnClick="Calc.Input.value += &#39;3&#39;"><INPUT TYPE="button" NAME="times" VALUE="  x  " OnClick="Calc.Input.value += &#39; * &#39;"><br><INPUT TYPE="button" NAME="clear" VALUE="  c  " OnClick="Calc.Input.value = &#39;&#39;"><INPUT TYPE="button" NAME="zero"  VALUE="  0  " OnClick="Calc.Input.value += &#39;0&#39;"><INPUT TYPE="button" NAME="decimal" VALUE="  .  " OnClick="Calc.Input.value += &#39;.&#39;"><INPUT TYPE="button" NAME="DoIt"  VALUE="  =  " OnClick="Calc.Input.value = calculateWithErrorCheck(Calc.Input.value)"><INPUT TYPE="button" NAME="div"   VALUE="  /  " OnClick="Calc.Input.value += &#39; / &#39;"><br></TD></TR></TABLE></FORM>';
+        		div.innerHTML += '<FORM id="calculator" NAME="Calc"><TABLE BORDER=1><Thead><tr><INPUT TYPE="text" maxlength="18" NAME="Input" Size="16"></tr></Thead><TR><TD><INPUT TYPE="button" NAME="plusminus" VALUE=" +/- " OnClick="makenegative()"></td><td><INPUT TYPE="button" id="spacer" value="n/a"></td><td><INPUT TYPE="button" id="memset" NAME="memset" VALUE=" MS " OnCLick="memoryset()"></td><td><INPUT TYPE="button" id="memrecall" NAME="memrecall" VALUE=" MR " OnClick="memoryrecall()"></td><td><INPUT TYPE="button" id="memclear" NAME="memclear" VALUE=" MC " OnClick="memoryclear()"></td></tr><tr><td><INPUT TYPE="button" NAME="pct" VALUE="  %  " OnClick="Calc.Input.value = Calc.Input.value/100"></td><td><INPUT TYPE="button" NAME="seven" VALUE="  7  " OnClick="Calc.Input.value += &#39;7&#39;"></td><td><INPUT TYPE="button" NAME="eight" VALUE="  8  " OnCLick="Calc.Input.value += &#39;8&#39;"></td><td><INPUT TYPE="button" NAME="nine"  VALUE="  9  " OnClick="Calc.Input.value += &#39;9&#39;"></td><td><INPUT TYPE="button" NAME="plus"  VALUE="  +  " OnClick="Calc.Input.value += &#39; + &#39;"></td></tr><tr><td><INPUT TYPE="button" NAME="sqrt" VALUE="  &#8730;  " OnClick="Calc.Input.value = squareRootWithErrorCheck(Calc.Input.value)"></td><td><INPUT TYPE="button" NAME="four"  VALUE="  4  " OnClick="Calc.Input.value += &#39;4&#39;"></td><td><INPUT TYPE="button" NAME="five"  VALUE="  5  " OnCLick="Calc.Input.value += &#39;5&#39;"></td><td><INPUT TYPE="button" NAME="six"   VALUE="  6  " OnClick="Calc.Input.value += &#39;6&#39;"></td><td><INPUT TYPE="button" NAME="minus" VALUE="  -  " OnClick="Calc.Input.value += &#39; - &#39;"></td></tr><tr><td><input type="button" id="spacer" value="n/a"></td><td><INPUT TYPE="button" NAME="one"   VALUE="  1  " OnClick="Calc.Input.value += &#39;1&#39;"></td><td><INPUT TYPE="button" NAME="two"   VALUE="  2  " OnClick="Calc.Input.value += &#39;2&#39;"></td><td><INPUT TYPE="button" NAME="three" VALUE="  3  " OnClick="Calc.Input.value += &#39;3&#39;"></td><td><INPUT TYPE="button" NAME="times" VALUE="  x  " OnClick="Calc.Input.value += &#39; * &#39;"></td></tr><tr><td><INPUT TYPE="button" NAME="clear" VALUE="  c  " OnClick="Calc.Input.value = &#39;&#39;"></td><td><INPUT TYPE="button" NAME="zero"  VALUE="  0  " OnClick="Calc.Input.value += &#39;0&#39;"></td><td><INPUT TYPE="button" NAME="decimal" VALUE="  .  " OnClick="Calc.Input.value += &#39;.&#39;"></td><td><INPUT TYPE="button" NAME="DoIt"  VALUE="  =  " OnClick="Calc.Input.value = calculateWithErrorCheck(Calc.Input.value)"></td><td><INPUT TYPE="button" NAME="div"   VALUE="  /  " OnClick="Calc.Input.value += &#39; / &#39;"></td></TR></TABLE></FORM>';
         	} else {
         		// basic or otherwise
-        		div.innerHTML = '<span id="closeCalculator" class="ui-icon ui-icon-circle-close"></span><FORM id="calculator" NAME="Calc"><TABLE BORDER=4><TR><TD><INPUT TYPE="text" maxlength="12" NAME="Input" Size="16"><br></TD></TR><TR><TD><INPUT TYPE="button" id="spacer" value="n/a"><INPUT TYPE="button" NAME="seven" VALUE="  7  " OnClick="Calc.Input.value += &#39;7&#39;"><INPUT TYPE="button" NAME="eight" VALUE="  8  " OnCLick="Calc.Input.value += &#39;8&#39;"><INPUT TYPE="button" NAME="nine"  VALUE="  9  " OnClick="Calc.Input.value += &#39;9&#39;"><INPUT TYPE="button" NAME="plus"  VALUE="  +  " OnClick="Calc.Input.value += &#39; + &#39;"><br><INPUT TYPE="button" id="spacer" value="n/a"><INPUT TYPE="button" NAME="four"  VALUE="  4  " OnClick="Calc.Input.value += &#39;4&#39;"><INPUT TYPE="button" NAME="five"  VALUE="  5  " OnCLick="Calc.Input.value += &#39;5&#39;"><INPUT TYPE="button" NAME="six"   VALUE="  6  " OnClick="Calc.Input.value += &#39;6&#39;"><INPUT TYPE="button" NAME="minus" VALUE="  -  " OnClick="Calc.Input.value += &#39; - &#39;"><br><input type="button" id="spacer" value="n/a"><INPUT TYPE="button" NAME="one"   VALUE="  1  " OnClick="Calc.Input.value += &#39;1&#39;"><INPUT TYPE="button" NAME="two"   VALUE="  2  " OnCLick="Calc.Input.value += &#39;2&#39;"><INPUT TYPE="button" NAME="three" VALUE="  3  " OnClick="Calc.Input.value += &#39;3&#39;"><INPUT TYPE="button" NAME="times" VALUE="  x  " OnClick="Calc.Input.value += &#39; * &#39;"><br><INPUT TYPE="button" NAME="clear" VALUE="  c  " OnClick="Calc.Input.value = &#39;&#39;"><INPUT TYPE="button" NAME="zero"  VALUE="  0  " OnClick="Calc.Input.value += &#39;0&#39;"><INPUT TYPE="button" NAME="decimal" VALUE="  .  " OnClick="Calc.Input.value += &#39;.&#39;"><INPUT TYPE="button" NAME="DoIt"  VALUE="  =  " OnClick="Calc.Input.value = eval(Calc.Input.value)"><INPUT TYPE="button" NAME="div"   VALUE="  /  " OnClick="Calc.Input.value += &#39; / &#39;"><br></TD></TR></TABLE></FORM>';
+        		div.innerHTML += '<FORM id="calculator" NAME="Calc"><TABLE BORDER=1><Thead><INPUT TYPE="text" maxlength="12" NAME="Input" Size="15"><br></Thead><TR><TD><INPUT TYPE="button" id="spacer" value="n/a"></td><td><INPUT TYPE="button" NAME="seven" VALUE="  7  " OnClick="Calc.Input.value += &#39;7&#39;"></td><td><INPUT TYPE="button" NAME="eight" VALUE="  8  " OnCLick="Calc.Input.value += &#39;8&#39;"></td><td><INPUT TYPE="button" NAME="nine"  VALUE="  9  " OnClick="Calc.Input.value += &#39;9&#39;"></td><td><INPUT TYPE="button" NAME="plus"  VALUE="  +  " OnClick="Calc.Input.value += &#39; + &#39;"></td></tr><tr><td><INPUT TYPE="button" id="spacer" value="n/a"></td><td><INPUT TYPE="button" NAME="four"  VALUE="  4  " OnClick="Calc.Input.value += &#39;4&#39;"></td><td><INPUT TYPE="button" NAME="five"  VALUE="  5  " OnCLick="Calc.Input.value += &#39;5&#39;"></td><td><INPUT TYPE="button" NAME="six"   VALUE="  6  " OnClick="Calc.Input.value += &#39;6&#39;"></td><td><INPUT TYPE="button" NAME="minus" VALUE="  -  " OnClick="Calc.Input.value += &#39; - &#39;"></td></tr><tr><td><input type="button" id="spacer" value="n/a"></td><td><INPUT TYPE="button" NAME="one"   VALUE="  1  " OnClick="Calc.Input.value += &#39;1&#39;"></td><td><INPUT TYPE="button" NAME="two"   VALUE="  2  " OnCLick="Calc.Input.value += &#39;2&#39;"></td><td><INPUT TYPE="button" NAME="three" VALUE="  3  " OnClick="Calc.Input.value += &#39;3&#39;"></td><td><INPUT TYPE="button" NAME="times" VALUE="  x  " OnClick="Calc.Input.value += &#39; * &#39;"></td></tr><tr><td><INPUT TYPE="button" NAME="clear" VALUE="  c  " OnClick="Calc.Input.value = &#39;&#39;"></td><td><INPUT TYPE="button" NAME="zero"  VALUE="  0  " OnClick="Calc.Input.value += &#39;0&#39;"></td><td><INPUT TYPE="button" NAME="decimal" VALUE="   .   " OnClick="Calc.Input.value += &#39;.&#39;"></td><td><INPUT TYPE="button" NAME="DoIt"  VALUE="  =  " OnClick="Calc.Input.value = calculateWithErrorCheck(Calc.Input.value)"></td><td><INPUT TYPE="button" NAME="div"   VALUE="  /  " OnClick="Calc.Input.value += &#39; / &#39;"><br></TD></TR></TABLE></FORM>';
         	}
         	div.style.top = "50%";
         	div.style.left = "50%";
@@ -758,13 +771,19 @@ var QtiWorksRendering = (function() {
         	div.style.backgroundColor = "#ffffff";
         	document.body.appendChild(div);
         	$("#dialog").draggable();
-        	$("#dialog").resizable({
-        	      aspectRatio: true,
-        		  alsoResize: '#dialog *'
-            });
         	$( "#closeCalculator" ).click(function() {
         		  document.body.removeChild(div);
-        	}); 	
+        	}); 
+        	
+        	$("#biggerCalc").click(function(){
+        	    var fz = parseInt($('#calculator input[type="button"]').css('font-size'));
+        	    $('#calculator input').css({'font-size' : fz+2});
+        	});
+        	
+        	$("#smallerCalc").click(function(){
+        	    var fz = parseInt($('#calculator input[type="button"]').css('font-size'));
+        	    $('#calculator input').css({'font-size' : fz-2});
+        	});
         	
         	$("#memrecall").attr("disabled", !isMemorySet);
         	$("#memclear").attr("disabled", !isMemorySet);
@@ -807,6 +826,31 @@ var QtiWorksRendering = (function() {
         			}
         			
         		}
+        	}
+        	
+        	calculateWithErrorCheck = function (input) {
+        	    if (input.indexOf("/ 0") >= 0) {
+        	        return "Cannot divide by 0";
+        	    } 
+        	    else {
+        	        return displaySigDig(eval(input));
+        	    }
+        	}
+
+        	squareRootWithErrorCheck = function (input) {
+        	    if (input < 0) {
+        	        return "Input is not valid";
+        	    } else {
+        	        return displaySigDig(Math.sqrt(input));
+        	    }
+        	}
+
+        	displaySigDig = function (input) {
+        	    if (input.toString().length > 14) {
+        	        return input.toPrecision(14);
+        	    } else {
+        	        return input;
+        	    }
         	}
         	
         	String.prototype.insert = function (index, string) {

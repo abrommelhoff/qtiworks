@@ -2,8 +2,14 @@
     font-size:36px;
 }
 #calculator input[type="button"] {
-    width: 20%;
+    
+}
+#calculator tr {
+    text-align:center;
 }
 #spacer {
     visibility: hidden;
+}
+.inline-span {
+    display: inline-block;
 }
