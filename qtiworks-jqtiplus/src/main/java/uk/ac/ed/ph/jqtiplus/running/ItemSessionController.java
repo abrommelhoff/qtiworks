@@ -766,6 +766,11 @@ public final class ItemSessionController extends ItemProcessingController implem
         startItemSessionTimerIfOpen(timestamp);
     }
 
+    public void setMarkedForReview() {
+    	itemSessionState.setMarkedForReview(true);
+    	itemSessionState.setSessionStatus(SessionStatus.PENDING_SUBMISSION);
+    }
+
 
     /**
      * Performs response processing on the <em>currently committed</em> responses,
@@ -1043,6 +1048,7 @@ public final class ItemSessionController extends ItemProcessingController implem
         itemSessionState.clearInvalidResponseIdentifiers();
         itemSessionState.setNumAttempts(0);
         itemSessionState.setResponded(false);
+        itemSessionState.setMarkedForReview(false);
     }
 
     private void initOutcomeVariables() {

@@ -276,6 +276,7 @@ public class AssessmentRenderer {
         xsltParameters.put("advanceTestPartUrl", renderingOptions.getAdvanceTestPartUrl());
         xsltParameters.put("exitTestUrl", renderingOptions.getExitTestUrl());
         xsltParameters.put("takeBreakUrl", renderingOptions.getTakeBreakUrl());
+        xsltParameters.put("markForReviewUrl", renderingOptions.getMarkForReviewUrl());
 
         final TestRenderingMode testRenderingMode = request.getTestRenderingMode();
         if (testRenderingMode==TestRenderingMode.ITEM_REVIEW) {

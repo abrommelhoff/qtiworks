@@ -143,6 +143,13 @@ NB: This is used both while being presented, and during review.
           </form>
         </li>
       </xsl:if>
+      <xsl:if test="$testPartNavigationAllowed">
+      	<li>
+      	  <form action="{$webappContextPath}{$markForReviewUrl}" method="post">
+            <input type="submit" value="Mark for Review"/>
+          </form>
+      	</li>
+      </xsl:if>
       <xsl:if test="$endTestPartAllowed">
         <li>
           <form action="{$webappContextPath}{$endTestPartUrl}" method="post"
@@ -349,6 +356,9 @@ NB: This is used both while being presented, and during review.
         <xsl:choose>
           <xsl:when test="not(empty(@unboundResponseIdentifiers) and empty(@invalidResponseIdentifiers))">
             <span class="itemStatus reviewInvalid">Review (Invalid Answer)</span>
+          </xsl:when>
+          <xsl:when test="@markedForReview='true'">
+          	<span class="itemStatus markedForReview">Marked for Review</span>
           </xsl:when>
           <xsl:when test="@responded='true'">
             <span class="itemStatus review">Review</span>

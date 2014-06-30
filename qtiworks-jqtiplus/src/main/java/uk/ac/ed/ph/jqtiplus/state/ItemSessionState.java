@@ -131,6 +131,7 @@ public final class ItemSessionState extends AbstractPartSessionState implements 
     private boolean responded;
     private Date suspendTime;
     private String candidateComment;
+    private boolean markedForReview;
 
     public ItemSessionState() {
         super();
@@ -149,6 +150,8 @@ public final class ItemSessionState extends AbstractPartSessionState implements 
         this.sessionStatus = null;
         this.initialized = false;
         this.responded = false;
+        //this.markedForReview;
+        setMarkedForReview(false);
         this.suspendTime = null;
         this.candidateComment = null;
         resetBuiltinVariables();
@@ -174,6 +177,8 @@ public final class ItemSessionState extends AbstractPartSessionState implements 
         this.sessionStatus = SessionStatus.INITIAL;
         this.initialized = false;
         this.responded = false;
+        //this.markedForReview = false;
+        setMarkedForReview(false);
         this.suspendTime = null;
         this.candidateComment = null;
         resetBuiltinVariables();
@@ -248,6 +253,14 @@ public final class ItemSessionState extends AbstractPartSessionState implements 
 
     public void setResponded(final boolean responded) {
         this.responded = responded;
+    }
+
+    public boolean isMarkedForReview() {
+        return markedForReview;
+    }
+
+    public void setMarkedForReview(final boolean markedForReview) {
+        this.markedForReview = markedForReview;
     }
 
 
@@ -687,6 +700,7 @@ public final class ItemSessionState extends AbstractPartSessionState implements 
                 && numAttempts==other.numAttempts
                 && initialized==other.initialized
                 && responded==other.responded
+                && markedForReview==other.markedForReview
                 && ObjectUtilities.nullSafeEquals(suspendTime, other.suspendTime)
                 && ObjectUtilities.nullSafeEquals(completionStatus, other.completionStatus)
                 && ObjectUtilities.nullSafeEquals(sessionStatus, other.sessionStatus)
@@ -715,6 +729,7 @@ public final class ItemSessionState extends AbstractPartSessionState implements 
                 initialized,
                 sessionStatus,
                 responded,
+                markedForReview,
                 suspendTime,
                 candidateComment,
                 shuffledInteractionChoiceOrders,
@@ -748,6 +763,7 @@ public final class ItemSessionState extends AbstractPartSessionState implements 
                 + ",numAttempts=" + getNumAttempts()
                 + ",completionStatus=" + getCompletionStatus()
                 + ",responded=" + responded
+                + ",markedForReview=" + markedForReview
                 + ",suspendTime=" + suspendTime
                 + ",candidateComment=" + candidateComment
                 + ",shuffledInteractionChoiceOrders=" + shuffledInteractionChoiceOrders

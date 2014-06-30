@@ -39,6 +39,7 @@ Base templates used in test rendering
   <xsl:param name="advanceTestPartUrl" as="xs:string" required="yes"/>
   <xsl:param name="exitTestUrl" as="xs:string" required="yes"/>
   <xsl:param name="takeBreakUrl" as="xs:string" required="yes"/>
+  <xsl:param name="markForReviewUrl" as="xs:string" required="yes"/>
 
   <!-- ************************************************************ -->
 

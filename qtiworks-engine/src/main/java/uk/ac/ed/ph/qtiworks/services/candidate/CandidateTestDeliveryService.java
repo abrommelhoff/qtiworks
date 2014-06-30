@@ -317,6 +317,29 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
         return candidateSession;
     }
 
+    public CandidateSession handleMFR(final CandidateSessionContext candidateSessionContext) throws CandidateException {
+
+        final CandidateSession candidateSession = candidateSessionContext.getCandidateSession();
+
+        /* Get current JQTI state and create JQTI controller */
+        final NotificationRecorder notificationRecorder = new NotificationRecorder(NotificationLevel.INFO);
+        final CandidateEvent mostRecentEvent = assertSessionEntered(candidateSession);
+        final TestSessionController testSessionController = candidateDataService.createTestSessionController(mostRecentEvent, notificationRecorder);
+        final TestSessionState testSessionState = testSessionController.getTestSessionState();
+
+        final Date timestamp = requestTimestampContext.getCurrentRequestTimestamp();
+        testSessionController.markForReview(timestamp);
+
+        /* Record resulting event */
+        final CandidateEvent candidateEvent = candidateDataService.recordCandidateTestEvent(candidateSession,
+                CandidateTestEventType.ITEM_EVENT, CandidateItemEventType.RESPONSE_VALID, testSessionState, notificationRecorder);
+        candidateAuditLogger.logCandidateEvent(candidateEvent);
+
+        /* Save any change to session state */
+        candidateSessionDao.update(candidateSession);
+        return candidateSession;
+    }
+
     //----------------------------------------------------
     // Navigation
 

@@ -77,6 +77,7 @@ public final class ItemSessionStateXmlMarshaller {
         XmlMarshallerCore.addAbstractPartSessionStateAttributes(element, itemSessionState);
         element.setAttribute("initialized", StringUtilities.toTrueFalse(itemSessionState.isInitialized()));
         element.setAttribute("responded", StringUtilities.toTrueFalse(itemSessionState.isResponded()));
+        element.setAttribute("markedForReview", StringUtilities.toTrueFalse(itemSessionState.isMarkedForReview()));
         XmlMarshallerCore.maybeAddDateAttribute(element, "suspendTime", itemSessionState.getSuspendTime());
         final SessionStatus sessionStatus = itemSessionState.getSessionStatus();
         if (sessionStatus!=null) {
@@ -166,6 +167,7 @@ public final class ItemSessionStateXmlMarshaller {
         XmlMarshallerCore.parseAbstractPartSessionStateAttributes(result, element);
         result.setInitialized(XmlMarshallerCore.parseOptionalBooleanAttribute(element, "initialized", false));
         result.setResponded(XmlMarshallerCore.parseOptionalBooleanAttribute(element, "responded", false));
+        result.setMarkedForReview(XmlMarshallerCore.parseOptionalBooleanAttribute(element, "markedForReview", false));
         result.setSuspendTime(XmlMarshallerCore.parseOptionalDateAttribute(element, "suspendTime"));
         result.setUnboundResponseIdentifiers(parseOptionalIdentifierAttributeList(element, "unboundResponseIdentifiers"));
         result.setInvalidResponseIdentifiers(parseOptionalIdentifierAttributeList(element, "invalidResponseIdentifiers"));

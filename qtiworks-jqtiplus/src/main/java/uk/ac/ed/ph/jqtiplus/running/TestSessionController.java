@@ -1445,6 +1445,22 @@ public final class TestSessionController extends TestProcessingController {
         }
     }
 
+    public void markForReview(final Date timestamp) {
+     //   Assert.notNull(timestamp, "timestamp");
+     //   Assert.notNull(responseMap, "responseMap");
+        final TestPlanNodeKey currentItemKey = assertItemSelected();
+
+        /* Touch durations on item, ancestor sections, test part and test */
+        final TestPlanNode currentItemRefNode = expectItemRefNode(currentItemKey);
+        touchDurations(timestamp);
+
+        /* Bind responses */
+        final ItemSessionController itemSessionController = getItemSessionController(currentItemRefNode);
+
+        itemSessionController.setMarkedForReview();
+
+    }
+
     /**
      * Sets the candidate comment for the current item, replacing any comment that has already been
      * set.

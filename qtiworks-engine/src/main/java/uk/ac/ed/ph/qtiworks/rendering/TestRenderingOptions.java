@@ -76,6 +76,9 @@ public final class TestRenderingOptions extends AbstractRenderingOptions {
     @NotNull
     private String takeBreakUrl;
 
+    @NotNull
+    private String markForReviewUrl;
+
     //----------------------------------------------------
 
     public String getSelectTestItemUrl() {
@@ -164,6 +167,14 @@ public final class TestRenderingOptions extends AbstractRenderingOptions {
 
     public void setTakeBreakUrl(final String takeBreakUrl) {
         this.takeBreakUrl = takeBreakUrl;
+    }
+
+    public String getMarkForReviewUrl() {
+        return markForReviewUrl;
+    }
+
+    public void setMarkForReviewUrl(final String markForReviewUrl) {
+        this.markForReviewUrl = markForReviewUrl;
     }
 
     //----------------------------------------------------

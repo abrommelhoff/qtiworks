@@ -108,6 +108,10 @@ ul.sessionControl li form {
   background-color: #f52887;
 }
 
+.itemStatus.markedForReview {
+  background-color: #ffe87c;
+}
+
 .itemStatus.reviewNotAllowed,
 .itemStatus.reviewInvalid,
 .itemStatus.reviewNotAnswered,
