@@ -216,11 +216,11 @@ Renders a standalone assessmentItem
           </fieldset>
         </xsl:if>
 
-        <xsl:if test="$isItemSessionOpen">
+        <!-- <xsl:if test="$isItemSessionOpen"> -->
           <div class="controls">
             <input id="submit_button" name="submit" type="submit" value="SUBMIT RESPONSE"/>
           </div>
-        </xsl:if>
+        <!--  </xsl:if> -->
       </form>
     </div>
   </xsl:template>

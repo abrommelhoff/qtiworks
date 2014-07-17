@@ -146,7 +146,14 @@ NB: This is used both while being presented, and during review.
       <xsl:if test="$testPartNavigationAllowed">
       	<li>
       	  <form action="{$webappContextPath}{$markForReviewUrl}" method="post">
-            <input type="submit" value="Mark for Review"/>
+      	    <xsl:choose>
+	      	  	<xsl:when test="itemSessionState/@markedForReview='true'">
+	          		<input type="submit" value="Unmark for Review"/>
+	          	</xsl:when>
+	          	<xsl:otherwise>
+	            	<input type="submit" value="Mark for Review"/>
+	            </xsl:otherwise>
+            </xsl:choose>
           </form>
       	</li>
       </xsl:if>

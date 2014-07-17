@@ -451,7 +451,8 @@ var QtiWorksRendering = (function() {
     
     /************************************************************/
     /* GeometryDrawingInteraction */
-    var GeometryDrawingInteraction = function () {
+    var GeometryDrawingInteraction = function (responseIdentifier, configData) {
+    	this.responseIdentifier = responseIdentifier;
     	var board;
     	var mode = "point"; // point, line, or ray
     	var ptsSelected = [];
@@ -459,6 +460,7 @@ var QtiWorksRendering = (function() {
     	var linesCreated = [];
     	var isSnapTo = false;
     	var interaction = this;
+    	var inputElementQuery = $('input[name="qtiworks_response_' + 'RESPONSE' + '"]');
     	
     	var gridObject = $('[type=grid]');
 		var gridImg = $('[type=gridImg]');
@@ -493,7 +495,55 @@ var QtiWorksRendering = (function() {
 			var im = board.create('image',[gridImg.attr('data'), [1,0], [gridImg.attr('width'), gridImg.attr('height')] ]);
 		}
 		$('#linedirections').hide();
+		$('#linesegdirections').hide();
 		$('#raydirections').hide();
+		$('#angledirections').hide();
+		// restore any responses
+		function getValue() {
+        	var res = $("input[name='previousResponses']").attr("value");
+        	
+        	//parse values
+        	var res2 = res.replace('points:','').replace('lines:','');
+        	var resValues = res2.split("/");
+        	var ptsValues = resValues[0].split(";");
+        	for (var a = 0; a < ptsValues.length; a++) {
+        		var pt = ptsValues[a];
+        		var coord = pt.split(",");
+        		var x = parseInt(coord[0]);
+        		var y = parseInt(coord[1]);
+        		var newPoint = board.create('point', [x, y], {snapToGrid:isSnapTo, withLabel:false});
+        		JXG.addEvent(newPoint.rendNode, 'mouseover', 
+       	             function(){ if (mode!="point") {$("ellipse").css('cursor', 'crosshair');} else {$("ellipse").css('cursor', 'default');}}, 
+       	             newPoint);
+        		ptsCreated.push(newPoint.id);
+        		//this.setValue();
+        	}
+        	var resPtsSelected = [];
+        	var ptArr = [];
+        	var coord1;
+        	var coord2;
+        	if (resValues.length > 1) {      		
+        		var lnsValues = resValues[1].split(";");
+        		for (var b = 0; b < lnsValues.length; b++) {
+        			ptArr = lnsValues[b].split("_");
+        			for (var c=0; c < ptArr.length; c++) {
+        				if (c==0) {coord1 = ptArr[c];}
+        				else {coord2 = ptArr[c];}
+        				
+        			}
+        			var x1 = parseInt(coord1.split(",")[0]);
+        			var y1 = parseInt(coord1.split(",")[1]);
+        			var x2 = parseInt(coord2.split(",")[0]);
+        			var y2 = parseInt(coord2.split(",")[1]);
+        			if (!isNaN(x1) && !isNaN(y1) && !isNaN(x2) && !isNaN(y2)) {
+	        			var newLine = board.create('line',[[x1,y1],[x2,y2]], {straightFirst:mode=='line', straightLast:mode=='ray'||mode=='line', strokeColor:'#00ff00',strokeWidth:2});
+	    				linesCreated.push(newLine.id);
+	    				resPtsSelected = [];
+        			}
+        		}
+        	}
+        };
+		getValue();
 		$('#jxgbox').mousedown(function(e) {
 			switch (e.which) {
 				case 1:
@@ -504,7 +554,8 @@ var QtiWorksRendering = (function() {
 					}
 					break;
 				case 3:
-					remove(e);
+					//remove(e);
+					getValue();
 					break;
 				default:
 					alert('You have a strange mouse');
@@ -513,16 +564,49 @@ var QtiWorksRendering = (function() {
 		$('#drawline').click(function () {
 			$('#linedirections').toggle(this.checked);
 			mode = this.checked?'line':'point';
+			$('#drawlineseg').removeAttr('checked');
 			$('#drawray').removeAttr('checked');
+			$('#drawangle').removeAttr('checked');
+			$('#linesegdirections').toggle(false);
 			$("#raydirections").toggle(false);
+			$('#angledirections').toggle(false);
+			ptsSelected = [];
+			
+		});
+		$('#drawlineseg').click(function () {
+			$('#linesegdirections').toggle(this.checked);
+			mode = this.checked?'lineseg':'point';
+			$('#drawray').removeAttr('checked');
+			$('#drawline').removeAttr('checked');
+			$('#drawangle').removeAttr('checked');
+			$("#raydirections").toggle(false);
+			$('#linedirections').toggle(false);
+			$('#angledirections').toggle(false);
+			ptsSelected = [];
 			
 		});
 		$('#drawray').click(function () {
 			$('#raydirections').toggle(this.checked);
 			mode = this.checked?'ray':'point';
 			$('#drawline').removeAttr('checked');
+			$('#drawlineseg').removeAttr('checked');
+			$('#drawangle').removeAttr('checked');
 			$('#linedirections').toggle(false);
+			$('#linesegdirections').toggle(false);
+			$('#angledirections').toggle(false);
+			ptsSelected = [];
 			
+		});
+		$('#drawangle').click(function () {
+			$('#angledirections').toggle(this.checked);
+			mode = this.checked?'angle':'point';
+			$('#drawline').removeAttr('checked');
+			$('#drawlineseg').removeAttr('checked');
+			$('#drawray').removeAttr('checked');
+			$('#linedirections').toggle(false);
+			$('#linesegdirections').toggle(false);
+			$("#raydirections").toggle(false);		
+			ptsSelected = [];
 		});
 		$('#resetButton').click(function () {
 			var element;
@@ -540,7 +624,7 @@ var QtiWorksRendering = (function() {
 			ptsCreated = [];
 			ptsSelected = [];
 			linesCreated = [];
-			//$('#points').empty();
+			setValue();
 		});
 		
 		var getMouseCoords = function(e, i) {
@@ -573,6 +657,7 @@ var QtiWorksRendering = (function() {
 	             function(){ if (mode!="point") {$("ellipse").css('cursor', 'crosshair');} else {$("ellipse").css('cursor', 'default');}}, 
 	             newPoint);
 				ptsCreated.push(newPoint.id);
+				setValue();
 	        }
 	    },
 	    lineSelect = function(e) {
@@ -590,12 +675,42 @@ var QtiWorksRendering = (function() {
 	                break;
 	            }
 	        }
-			if (ptsSelected.length >= 2) {
-				var newLine = board.create('line',[ptsSelected[0],ptsSelected[1]], {straightFirst:false, straightLast:false,strokeColor:'#00ff00',strokeWidth:2});
+			if ( (ptsSelected.length >= 2) && (mode!='angle') ) {
+				var newLine = board.create('line',[ptsSelected[0],ptsSelected[1]], {straightFirst:mode=='line', straightLast:mode=='ray'||mode=='line', strokeColor:'#00ff00',strokeWidth:2});
 				linesCreated.push(newLine.id);
 				ptsSelected = [];
+				setValue();
+			} else if ( (ptsSelected.length > 2) && (mode == 'angle') ) {
+				var alpha = board.create('angle', [ptsSelected[0],ptsSelected[1],ptsSelected[2]], {radius:3});
+				linesCreated.push(alpha.id);
+				ptsSelected = [];
+				setValue();
 			}
 	    },
+	    setValue = function() {
+	    	var ptsValues = "points:";
+	    	for (var a=0; a < ptsCreated.length; a++) {
+	    		var eX = board.objects[ptsCreated[a]].XEval();
+				var eY = board.objects[ptsCreated[a]].YEval();
+				ptsValues += eX.toString()+","+eY.toString()+";";
+	    	}
+	    	var linesValues = "/lines:"
+	    	for (var b=0; b < linesCreated.length; b++) {
+	    		var x1 = board.objects[linesCreated[b]].point1.XEval();
+	    		var y1 = board.objects[linesCreated[b]].point1.YEval();
+	    		var x2 = board.objects[linesCreated[b]].point2.XEval();
+	    		var y2 = board.objects[linesCreated[b]].point2.YEval();
+	    		// let's calculate the slope when we need to. For now just store the points.
+	    		// lines:3,4_5,6;
+	    		//var m = y2-y1/x2-x1;
+	    		/*
+	    		 * NB: May not need the b (y-intercept) value. Parallel lines will be m1 = m2, perpendicular lines m1 = -1 * m2
+	    		 * and intersecting lines m1 != m2
+	    		 */
+	    		linesValues += x1.toString()+","+y1.toString()+"_"+x2.toString()+","+y2.toString()+";";
+	    	}
+            inputElementQuery.get(0).value = ptsValues + linesValues;
+        },
 		remove = function(e) {
 			var i, newcoords, el;
 			
@@ -619,7 +734,7 @@ var QtiWorksRendering = (function() {
 					linesCreated.splice(k, 1);
 				}
 			}
-			//$('#points').empty();
+			setValue();
 		},
 		containsId = function(e) {
 			for (var a = 0; a < ptsCreated.length; a++) {
@@ -739,8 +854,8 @@ var QtiWorksRendering = (function() {
             new GapMatchInteraction(responseIdentifier, gapChoiceData, gapData).init();
         },
         
-        registerGeometryDrawingInteraction: function() {
-            new GeometryDrawingInteraction().init();
+        registerGeometryDrawingInteraction: function(responseIdentifier, configData) {
+            new GeometryDrawingInteraction(responseIdentifier, configData);
         },
 
         registerAppletBasedInteractionContainer: function(containerId, responseIdentifiers) {
