@@ -843,7 +843,7 @@ public final class TestSessionController extends TestProcessingController {
         final TestPlanNode currentTestPartNode = assertCurrentTestPartNode();
         final TestPartSessionState currentTestPartSessionState = expectTestPartSessionState(currentTestPartNode);
         assertNonlinearTestPart(currentTestPartNode);
-        assertTestPartOpen(currentTestPartSessionState);
+        //assertTestPartOpen(currentTestPartSessionState);
 
         /* If an item is currently selected then suspend the session (if still open) and update timer on parent sections */
         final TestPlanNode currentItemRefNode = getCurrentItemRefNode();
@@ -1856,9 +1856,10 @@ public final class TestSessionController extends TestProcessingController {
     }
 
     private void endControlObjectTimer(final ControlObjectSessionState controlObjectState, final Date timestamp) {
-        final Date startTime = controlObjectState.getDurationIntervalStartTime();
+        Date startTime = controlObjectState.getDurationIntervalStartTime();
         if (startTime==null) {
-            throw new QtiLogicException("Start time on control Object " + controlObjectState + " was not expected to be null");
+            //throw new QtiLogicException("Start time on control Object " + controlObjectState + " was not expected to be null");
+        	startTime = controlObjectState.getEntryTime();
         }
         final long durationDelta = timestamp.getTime() - startTime.getTime();
         controlObjectState.setDurationAccumulated(controlObjectState.getDurationAccumulated() + durationDelta);

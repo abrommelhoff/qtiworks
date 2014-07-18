@@ -38,7 +38,6 @@ import uk.ac.ed.ph.jqtiplus.JqtiExtensionPackage;
 import uk.ac.ed.ph.jqtiplus.JqtiLifecycleEventType;
 import uk.ac.ed.ph.jqtiplus.QtiConstants;
 import uk.ac.ed.ph.jqtiplus.exception.QtiCandidateStateException;
-import uk.ac.ed.ph.jqtiplus.exception.QtiLogicException;
 import uk.ac.ed.ph.jqtiplus.exception.ResponseBindingException;
 import uk.ac.ed.ph.jqtiplus.exception.TemplateProcessingInterrupt;
 import uk.ac.ed.ph.jqtiplus.internal.util.Assert;
@@ -644,7 +643,8 @@ public final class ItemSessionController extends ItemProcessingController implem
             final ResponseData responseData = responseEntry.getValue();
             Assert.notNull(responseData, "responseMap entry for key " + responseIdentifier);
         }
-        assertItemOpen();
+        //assertItemOpen();
+        assertItemEntered();
         assertItemNotSuspended();
         logger.debug("Binding responses {} on item {}", responseMap, item.getSystemId());
 
@@ -735,7 +735,8 @@ public final class ItemSessionController extends ItemProcessingController implem
      */
     public void commitResponses(final Date timestamp) {
         Assert.notNull(timestamp);
-        assertItemOpen();
+        //assertItemOpen();
+        assertItemEntered();
         assertItemNotSuspended();
         logger.debug("Committing currently saved responses to item {}", item.getSystemId());
 
@@ -786,7 +787,8 @@ public final class ItemSessionController extends ItemProcessingController implem
      */
     public void performResponseProcessing(final Date timestamp) {
         Assert.notNull(timestamp);
-        assertItemOpen();
+        //assertItemOpen();
+        assertItemEntered();
         assertItemNotSuspended();
         logger.debug("Response processing starting on item {}", item.getSystemId());
 
@@ -1014,9 +1016,10 @@ public final class ItemSessionController extends ItemProcessingController implem
     }
 
     private void endItemSessionTimer(final Date timestamp) {
-        final Date durationIntervalStartTime = itemSessionState.getDurationIntervalStartTime();
+        Date durationIntervalStartTime = itemSessionState.getDurationIntervalStartTime();
         if (durationIntervalStartTime==null) {
-            throw new QtiLogicException("Expected durationIntervalStartTime to be not null");
+            //throw new QtiLogicException("Expected durationIntervalStartTime to be not null");
+        	durationIntervalStartTime = itemSessionState.getEntryTime();
         }
         final long durationDelta = timestamp.getTime() - durationIntervalStartTime.getTime();
         itemSessionState.setDurationAccumulated(itemSessionState.getDurationAccumulated() + durationDelta);

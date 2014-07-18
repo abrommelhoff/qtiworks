@@ -143,7 +143,8 @@ public abstract class ControlObjectSessionState implements Serializable {
 
     @ObjectDumperOptions(DumpMode.IGNORE)
     public final boolean isEnded() {
-        return endTime!=null;
+        // NB: Need a "ended for now" kind of thing...
+    	return endTime!=null;
     }
 
     @ObjectDumperOptions(DumpMode.IGNORE)

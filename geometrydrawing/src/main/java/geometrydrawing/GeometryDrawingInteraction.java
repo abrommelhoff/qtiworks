@@ -1,5 +1,7 @@
 package main.java.geometrydrawing;
 
+import java.util.List;
+
 import uk.ac.ed.ph.jqtiplus.attribute.value.BooleanAttribute;
 import uk.ac.ed.ph.jqtiplus.attribute.value.IntegerAttribute;
 import uk.ac.ed.ph.jqtiplus.attribute.value.StringAttribute;
@@ -12,6 +14,7 @@ import uk.ac.ed.ph.jqtiplus.node.item.interaction.CustomInteraction;
 import uk.ac.ed.ph.jqtiplus.node.item.response.declaration.ResponseDeclaration;
 import uk.ac.ed.ph.jqtiplus.running.InteractionBindingContext;
 import uk.ac.ed.ph.jqtiplus.types.ResponseData;
+import uk.ac.ed.ph.jqtiplus.types.StringResponseData;
 import uk.ac.ed.ph.jqtiplus.validation.ValidationContext;
 import uk.ac.ed.ph.jqtiplus.value.NullValue;
 import uk.ac.ed.ph.jqtiplus.value.Signature;
@@ -67,7 +70,9 @@ public final class GeometryDrawingInteraction extends CustomInteraction<Geometry
     protected Value parseResponse(final GeometryDrawingExtensionPackage geometryDrawingExtensionPackage, final ResponseDeclaration responseDeclaration, final ResponseData responseData)
             throws ResponseBindingException {
         Value responseValue;
-        responseValue = NullValue.INSTANCE;
+        // parse responseValue into a stringResponseValue for easier consumption by parseSingleValueLax
+        final List<String> stringResponseData = ((StringResponseData) responseData).getResponseData();
+        responseValue = responseDeclaration.getBaseType().parseSingleValueLax(stringResponseData.get(0));
         return responseValue;
     }
 

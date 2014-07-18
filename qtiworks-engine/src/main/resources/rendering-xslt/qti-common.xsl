@@ -497,11 +497,11 @@ rendering.
   <!-- Basic item states. NB: Some templates override this -->
   <xsl:template match="qw:itemSessionState" mode="item-status">
     <xsl:choose>
-      <xsl:when test="@endTime!=''">
-        <span class="itemStatus ended">Finished</span>
-      </xsl:when>
       <xsl:when test="@markedForReview='true'">
 		<span class="itemStatus markedForReview">Marked for Review</span>
+      </xsl:when>
+      <xsl:when test="@endTime!=''">
+        <span class="itemStatus ended">Finished</span>
       </xsl:when>
       <xsl:when test="not(empty(@unboundResponseIdentifiers) and empty(@invalidResponseIdentifiers))">
         <span class="itemStatus invalid">Needs Attention</span>
