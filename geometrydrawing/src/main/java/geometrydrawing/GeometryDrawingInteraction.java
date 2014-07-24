@@ -16,7 +16,6 @@ import uk.ac.ed.ph.jqtiplus.running.InteractionBindingContext;
 import uk.ac.ed.ph.jqtiplus.types.ResponseData;
 import uk.ac.ed.ph.jqtiplus.types.StringResponseData;
 import uk.ac.ed.ph.jqtiplus.validation.ValidationContext;
-import uk.ac.ed.ph.jqtiplus.value.NullValue;
 import uk.ac.ed.ph.jqtiplus.value.Signature;
 import uk.ac.ed.ph.jqtiplus.value.Value;
 
@@ -57,7 +56,7 @@ public final class GeometryDrawingInteraction extends CustomInteraction<Geometry
     @Override
     public void validateThis(final GeometryDrawingExtensionPackage jqtiExtensionPackage, final ValidationContext context, final ResponseDeclaration responseDeclaration) {
         if (responseDeclaration!=null) {
-            context.checkSignature(this, responseDeclaration, Signature.SINGLE_FILE);
+            context.checkSignature(this, responseDeclaration, Signature.SINGLE_STRING);
         }
 
         final Object object = getObject();

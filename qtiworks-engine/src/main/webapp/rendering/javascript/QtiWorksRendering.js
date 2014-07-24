@@ -458,6 +458,9 @@ var QtiWorksRendering = (function() {
     	var ptsSelected = [];
     	var ptsCreated = [];
     	var linesCreated = [];
+    	var raysCreated = [];
+    	var lineSegmentsCreated = [];
+    	var anglesCreated = [];
     	var isSnapTo = false;
     	var interaction = this;
     	var inputElementQuery = $('input[name="qtiworks_response_' + 'RESPONSE' + '"]');
@@ -503,7 +506,7 @@ var QtiWorksRendering = (function() {
         	var res = $("input[name='previousResponses']").attr("value");
         	
         	//parse values
-        	var res2 = res.replace('points:','').replace('lines:','');
+        	var res2 = res.replace('points:','').replace('lines:','').replace('linesegs:','').replace('rays:','').replace('angles:','');
         	var resValues = res2.split("/");
         	var ptsValues = resValues[0].split(";");
         	for (var a = 0; a < ptsValues.length; a++) {
@@ -521,26 +524,51 @@ var QtiWorksRendering = (function() {
         	var resPtsSelected = [];
         	var ptArr = [];
         	var coord1;
-        	var coord2;
-        	if (resValues.length > 1) {      		
-        		var lnsValues = resValues[1].split(";");
-        		for (var b = 0; b < lnsValues.length; b++) {
-        			ptArr = lnsValues[b].split("_");
-        			for (var c=0; c < ptArr.length; c++) {
-        				if (c==0) {coord1 = ptArr[c];}
-        				else {coord2 = ptArr[c];}
-        				
+        	var coord2 = "";
+        	var coord3 = "";
+        	if (resValues.length > 1) {
+        		var index = 1;
+        		for (var index=1; index < resValues.length; index++) {
+        			switch (index) {
+	        			case 1:
+	        				mode = 'line';
+	        				break;
+	        			case 2:
+	        				mode = 'lineseg';
+	        				break;
+	        			case 3:
+	        				mode = 'ray';
+	        				break;
+	        			default:
+	        				mode = 'angle';
+	        				break;
         			}
-        			var x1 = parseInt(coord1.split(",")[0]);
-        			var y1 = parseInt(coord1.split(",")[1]);
-        			var x2 = parseInt(coord2.split(",")[0]);
-        			var y2 = parseInt(coord2.split(",")[1]);
-        			if (!isNaN(x1) && !isNaN(y1) && !isNaN(x2) && !isNaN(y2)) {
-	        			var newLine = board.create('line',[[x1,y1],[x2,y2]], {straightFirst:mode=='line', straightLast:mode=='ray'||mode=='line', strokeColor:'#00ff00',strokeWidth:2});
-	    				linesCreated.push(newLine.id);
-	    				resPtsSelected = [];
-        			}
-        		}
+	        		var lnsValues = resValues[index].split(";");
+	        		for (var b = 0; b < lnsValues.length; b++) {
+	        			ptArr = lnsValues[b].split("_");
+	        			for (var c=0; c < ptArr.length; c++) {
+	        				if (c==0) {coord1 = ptArr[c];}
+	        				else if (c==1) {coord2 = ptArr[c];}
+	        				else {coord3 = ptArr[c];}
+	        			}
+	        			var x1 = parseInt(coord1.split(",")[0]);
+	        			var y1 = parseInt(coord1.split(",")[1]);
+	        			var x2 = parseInt(coord2.split(",")[0]);
+	        			var y2 = parseInt(coord2.split(",")[1]);
+	        			var x3, y3;
+	        			if (mode == 'angle') {
+	        				x3 = parseInt(coord3.split(",")[0]);
+	        				y3 = parseInt(coord3.split(",")[1]);
+	        			}
+	        			
+	        			if (!isNaN(x1) && !isNaN(y1) && !isNaN(x2) && !isNaN(y2) && mode != 'angle') {
+		        			var newLine = board.create('line',[[x1,y1],[x2,y2]], {straightFirst:mode=='line', straightLast:mode=='ray'||mode=='line', strokeColor:'#00ff00',strokeWidth:2});
+		    				resPtsSelected = [];
+	        			} else if (mode == 'angle') {
+	        				var alpha = board.create('angle', [[x1,y1],[x2,y2],[x3,y3]], {radius:3});
+	        			}
+	        		}
+	        	}
         	}
         };
 		getValue();
@@ -624,6 +652,8 @@ var QtiWorksRendering = (function() {
 			ptsCreated = [];
 			ptsSelected = [];
 			linesCreated = [];
+			raysCreated = [];
+			lineSegmentsCreated = [];
 			setValue();
 		});
 		
@@ -677,12 +707,19 @@ var QtiWorksRendering = (function() {
 	        }
 			if ( (ptsSelected.length >= 2) && (mode!='angle') ) {
 				var newLine = board.create('line',[ptsSelected[0],ptsSelected[1]], {straightFirst:mode=='line', straightLast:mode=='ray'||mode=='line', strokeColor:'#00ff00',strokeWidth:2});
-				linesCreated.push(newLine.id);
+				if (mode == 'line') {
+    				linesCreated.push(newLine.id);
+    			} else if (mode == 'ray') {
+    				raysCreated.push(newLine.id);
+    			} else {
+    				lineSegmentsCreated.push(newLine.id);
+    			}
 				ptsSelected = [];
 				setValue();
 			} else if ( (ptsSelected.length > 2) && (mode == 'angle') ) {
 				var alpha = board.create('angle', [ptsSelected[0],ptsSelected[1],ptsSelected[2]], {radius:3});
-				linesCreated.push(alpha.id);
+				//linesCreated.push(alpha.id);
+				anglesCreated.push(alpha.id);
 				ptsSelected = [];
 				setValue();
 			}
@@ -694,7 +731,7 @@ var QtiWorksRendering = (function() {
 				var eY = board.objects[ptsCreated[a]].YEval();
 				ptsValues += eX.toString()+","+eY.toString()+";";
 	    	}
-	    	var linesValues = "/lines:"
+	    	var linesValues = "/lines:";
 	    	for (var b=0; b < linesCreated.length; b++) {
 	    		var x1 = board.objects[linesCreated[b]].point1.XEval();
 	    		var y1 = board.objects[linesCreated[b]].point1.YEval();
@@ -709,7 +746,33 @@ var QtiWorksRendering = (function() {
 	    		 */
 	    		linesValues += x1.toString()+","+y1.toString()+"_"+x2.toString()+","+y2.toString()+";";
 	    	}
-            inputElementQuery.get(0).value = ptsValues + linesValues;
+	    	var lineSegValues = "/linesegs:";
+	    	for (var c=0; c < lineSegmentsCreated.length; c++) {
+	    		var sx1 = board.objects[lineSegmentsCreated[c]].point1.XEval();
+	    		var sy1 = board.objects[lineSegmentsCreated[c]].point1.YEval();
+	    		var sx2 = board.objects[lineSegmentsCreated[c]].point2.XEval();
+	    		var sy2 = board.objects[lineSegmentsCreated[c]].point2.YEval();
+	    		lineSegValues += sx1.toString()+","+sy1.toString()+"_"+sx2.toString()+","+sy2.toString()+";";
+	    	}
+	    	var rayValues = "/rays:"
+	    	for (var d=0; d < raysCreated.length; d++) {
+	    		var rx1 = board.objects[raysCreated[d]].point1.XEval();
+	    		var ry1 = board.objects[raysCreated[d]].point1.YEval();
+	    		var rx2 = board.objects[raysCreated[d]].point2.XEval();
+	    		var ry2 = board.objects[raysCreated[d]].point2.YEval();
+	    		rayValues += rx1.toString()+","+ry1.toString()+"_"+rx2.toString()+","+ry2.toString()+";";
+	    	}
+	    	var angleValues = "/angles:"
+		    for (var e=0; e < anglesCreated.length; e++) {
+		    	var ax1 = board.objects[anglesCreated[e]].point1.XEval();
+		    	var ay1 = board.objects[anglesCreated[e]].point1.YEval();
+		    	var ax2 = board.objects[anglesCreated[e]].point2.XEval();
+		    	var ay2 = board.objects[anglesCreated[e]].point2.YEval();
+		    	var ax3 = board.objects[anglesCreated[e]].point3.XEval();
+		    	var ay3 = board.objects[anglesCreated[e]].point3.YEval();
+		    	angleValues += ax1.toString()+","+ay1.toString()+"_"+ax2.toString()+","+ay2.toString()+"_"+ax3.toString()+","+ay3.toString()+";";
+		    }
+            inputElementQuery.get(0).value = ptsValues + linesValues + lineSegValues + rayValues + angleValues;
         },
 		remove = function(e) {
 			var i, newcoords, el;
