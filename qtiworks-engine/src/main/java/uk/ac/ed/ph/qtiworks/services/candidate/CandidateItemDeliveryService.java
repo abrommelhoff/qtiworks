@@ -41,6 +41,7 @@ import uk.ac.ed.ph.qtiworks.domain.entities.CandidateResponse;
 import uk.ac.ed.ph.qtiworks.domain.entities.CandidateSession;
 import uk.ac.ed.ph.qtiworks.domain.entities.Delivery;
 import uk.ac.ed.ph.qtiworks.domain.entities.ItemDeliverySettings;
+import uk.ac.ed.ph.qtiworks.domain.entities.ResponseCorrectness;
 import uk.ac.ed.ph.qtiworks.domain.entities.ResponseLegality;
 import uk.ac.ed.ph.qtiworks.domain.entities.User;
 import uk.ac.ed.ph.qtiworks.services.AssessmentDataService;
@@ -50,10 +51,28 @@ import uk.ac.ed.ph.qtiworks.services.IdentityService;
 import uk.ac.ed.ph.qtiworks.services.dao.CandidateResponseDao;
 import uk.ac.ed.ph.qtiworks.web.candidate.CandidateSessionContext;
 
+import uk.ac.ed.ph.jqtiplus.attribute.Attribute;
+import uk.ac.ed.ph.jqtiplus.attribute.AttributeList;
 import uk.ac.ed.ph.jqtiplus.exception.QtiCandidateStateException;
+import uk.ac.ed.ph.jqtiplus.exception.QtiNodeGroupException;
+import uk.ac.ed.ph.jqtiplus.group.NodeGroup;
+import uk.ac.ed.ph.jqtiplus.group.NodeGroupList;
+import uk.ac.ed.ph.jqtiplus.group.content.BlockGroup;
+import uk.ac.ed.ph.jqtiplus.group.expression.ExpressionGroup;
 import uk.ac.ed.ph.jqtiplus.internal.util.Assert;
 import uk.ac.ed.ph.jqtiplus.node.AssessmentObjectType;
+import uk.ac.ed.ph.jqtiplus.node.content.ItemBody;
+import uk.ac.ed.ph.jqtiplus.node.content.basic.Block;
+import uk.ac.ed.ph.jqtiplus.node.content.basic.FlowStatic;
+import uk.ac.ed.ph.jqtiplus.node.content.basic.TextRun;
+import uk.ac.ed.ph.jqtiplus.node.content.variable.FeedbackInline;
+import uk.ac.ed.ph.jqtiplus.node.expression.general.BaseValue;
+import uk.ac.ed.ph.jqtiplus.node.expression.operator.UnsupportedCustomOperator;
 import uk.ac.ed.ph.jqtiplus.node.item.AssessmentItem;
+import uk.ac.ed.ph.jqtiplus.node.item.interaction.ChoiceInteraction;
+import uk.ac.ed.ph.jqtiplus.node.item.interaction.choice.SimpleChoice;
+import uk.ac.ed.ph.jqtiplus.node.item.response.processing.ResponseProcessing;
+import uk.ac.ed.ph.jqtiplus.node.item.response.processing.ResponseRule;
 import uk.ac.ed.ph.jqtiplus.node.result.AssessmentResult;
 import uk.ac.ed.ph.jqtiplus.notification.NotificationLevel;
 import uk.ac.ed.ph.jqtiplus.notification.NotificationRecorder;
@@ -63,10 +82,13 @@ import uk.ac.ed.ph.jqtiplus.types.FileResponseData;
 import uk.ac.ed.ph.jqtiplus.types.Identifier;
 import uk.ac.ed.ph.jqtiplus.types.ResponseData;
 import uk.ac.ed.ph.jqtiplus.types.StringResponseData;
+import uk.ac.ed.ph.jqtiplus.value.SingleValue;
 
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -234,6 +256,7 @@ public class CandidateItemDeliveryService extends CandidateServiceBase {
             candidateResponse.setResponseIdentifier(responseIdentifier.toString());
             candidateResponse.setResponseDataType(responseData.getType());
             candidateResponse.setResponseLegality(ResponseLegality.VALID); /* (May change this below) */
+            candidateResponse.setResponseCorrectness(ResponseCorrectness.CORRECT);
             switch (responseData.getType()) {
                 case STRING:
                     candidateResponse.setStringResponseData(((StringResponseData) responseData).getResponseData());
@@ -253,6 +276,7 @@ public class CandidateItemDeliveryService extends CandidateServiceBase {
          * NB: Do this first in case next actions end the item session.
          */
         final Date timestamp = requestTimestampContext.getCurrentRequestTimestamp();
+
         if (candidateComment!=null) {
             try {
                 itemSessionController.setCandidateComment(timestamp, candidateComment);
@@ -317,6 +341,70 @@ public class CandidateItemDeliveryService extends CandidateServiceBase {
         /* Link and persist CandidateResponse entities */
         for (final CandidateResponse candidateResponse : candidateResponseMap.values()) {
             candidateResponse.setCandidateEvent(candidateEvent);
+            candidateResponse.setResponseCorrectness(itemSessionController.countCorrect() == 1 ? ResponseCorrectness.CORRECT : ResponseCorrectness.INCORRECT);
+            candidateResponse.setTimeOnTask(Double.toString(itemSessionState.computeDuration()));
+            final Map<String,String> feedbackMap = new HashMap<String, String>();
+            final ItemBody itemBody = itemSessionController.getNodeGroups().getItemBodyGroup().getChild();
+            final BlockGroup blockGroup = itemBody.getNodeGroups().getBlockGroup();
+            final Iterator<Block> blockIter = blockGroup.getChildren().iterator();
+            while (blockIter.hasNext()) {
+                final Block thisBlock = blockIter.next();
+                if (thisBlock.getQtiClassName() == "choiceInteraction") {
+                    final ChoiceInteraction choiceInteraction = (ChoiceInteraction) thisBlock;
+                    final List<SimpleChoice> simpleChoices = choiceInteraction.getSimpleChoices();
+                    final Iterator<SimpleChoice> iterator = simpleChoices.iterator();
+                    while (iterator.hasNext()) {
+                        final SimpleChoice entry = iterator.next();
+                        final List<FlowStatic> flowStatics = entry.getFlowStatics();
+                        final Iterator<FlowStatic> fsIter = flowStatics.iterator();
+                        while (fsIter.hasNext()) {
+                            final FlowStatic thisFS = fsIter.next();
+                            if (thisFS.getQtiClassName() == "feedbackInline") {
+                                final FeedbackInline feedbackInline = (FeedbackInline) thisFS;
+                                final NodeGroupList feedbackNodeGroups = feedbackInline.getNodeGroups();
+                                final NodeGroup<?, ?> feedbackNodeGroup = feedbackNodeGroups.get(0);
+                                final TextRun textRun = (TextRun)feedbackNodeGroup.getChildren().get(0);
+                                final String valString = textRun.getTextContent();  // this is the feedback value
+                                final AttributeList attributeList = feedbackInline.getAttributes();
+                                final Iterator<Attribute<?>> attIter = attributeList.iterator();
+                                String idString = "";
+                                while (attIter.hasNext()) {
+                                    final Attribute<?> attr = attIter.next();
+                                    if (attr.getLocalName() == "identifier") {
+                                        idString = attr.getValue().toString();  // this is the answer identifier
+                                        feedbackMap.put(idString, valString);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            final String responseId = candidateResponse.getStringResponseData().get(0);
+            final ResponseProcessing responseProcessing = itemSessionController.getNodeGroups().getResponseProcessingGroup().getResponseProcessing();
+            final Iterator<ResponseRule> responseRuleIter = responseProcessing.getResponseRules().iterator();
+            while (responseRuleIter.hasNext()) {
+                final ResponseRule thisResponseRule = responseRuleIter.next();
+                try {
+                    final ExpressionGroup expressionGroup = thisResponseRule.getNodeGroups().getExpressionGroup();
+                    if (expressionGroup.getChildren().get(0).getQtiClassName() == "customOperator") {
+                        final UnsupportedCustomOperator customOperator = (UnsupportedCustomOperator) expressionGroup.getChildren().get(0);
+                        final BaseValue baseValue = (BaseValue) customOperator.getNodeGroups().getExpressionGroup().getChildren().get(0);
+                        final SingleValue singleValue = baseValue.getSingleValue();
+                        final String[] misconceptionsArr = singleValue.toQtiString().split(":::")[1].split(";;;");
+                        candidateResponse.setMisconceptionType(singleValue.toQtiString().split(":::")[0]);
+                        for (int x=0;x<misconceptionsArr.length;x++) {
+                            if (misconceptionsArr[x].split(",,,")[0].matches(responseId)) {
+                                candidateResponse.setMisconceptionValue(misconceptionsArr[x].split(",,,")[1]);
+                            }
+                        }
+                    }
+                } catch (final QtiNodeGroupException e) {
+                    continue;
+                }
+
+            }
+            candidateResponse.setResponseFeedback(feedbackMap.get(responseId));
             candidateResponseDao.persist(candidateResponse);
         }
 

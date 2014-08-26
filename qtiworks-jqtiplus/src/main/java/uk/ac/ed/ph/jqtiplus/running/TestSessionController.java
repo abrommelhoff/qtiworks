@@ -1445,6 +1445,7 @@ public final class TestSessionController extends TestProcessingController {
         }
     }
 
+
     public void markForReview(final Date timestamp) {
      //   Assert.notNull(timestamp, "timestamp");
      //   Assert.notNull(responseMap, "responseMap");
@@ -1458,7 +1459,6 @@ public final class TestSessionController extends TestProcessingController {
         final ItemSessionController itemSessionController = getItemSessionController(currentItemRefNode);
 
         itemSessionController.setMarkedForReview();
-
     }
 
     /**

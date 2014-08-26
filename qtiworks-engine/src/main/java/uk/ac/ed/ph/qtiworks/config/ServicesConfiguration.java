@@ -46,6 +46,8 @@ import uk.ac.ed.ph.jqtiplus.xmlutils.SimpleSchemaCache;
 import uk.ac.ed.ph.jqtiplus.xmlutils.xslt.SimpleXsltStylesheetCache;
 import uk.ac.ed.ph.jqtiplus.xmlutils.xslt.XsltStylesheetCache;
 
+import geometrydrawing.GeometryDrawingExtensionPackage;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -54,8 +56,6 @@ import javax.activation.FileTypeMap;
 import javax.activation.MimetypesFileTypeMap;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-
-import main.java.geometrydrawing.GeometryDrawingExtensionPackage;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.ejb.HibernatePersistence;

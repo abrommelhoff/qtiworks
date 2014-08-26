@@ -41,6 +41,7 @@ import uk.ac.ed.ph.qtiworks.domain.entities.CandidateResponse;
 import uk.ac.ed.ph.qtiworks.domain.entities.CandidateSession;
 import uk.ac.ed.ph.qtiworks.domain.entities.CandidateTestEventType;
 import uk.ac.ed.ph.qtiworks.domain.entities.Delivery;
+import uk.ac.ed.ph.qtiworks.domain.entities.ResponseCorrectness;
 import uk.ac.ed.ph.qtiworks.domain.entities.ResponseLegality;
 import uk.ac.ed.ph.qtiworks.domain.entities.User;
 import uk.ac.ed.ph.qtiworks.services.CandidateSessionFinisher;
@@ -190,6 +191,7 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
         final NotificationRecorder notificationRecorder = new NotificationRecorder(NotificationLevel.INFO);
         final CandidateEvent mostRecentEvent = assertSessionEntered(candidateSession);
         final TestSessionController testSessionController = candidateDataService.createTestSessionController(mostRecentEvent, notificationRecorder);
+        //final ItemSessionController itemSessionController = candidateDataService.createItemSessionController(mostRecentEvent, notificationRecorder);
         final TestSessionState testSessionState = testSessionController.getTestSessionState();
 
         /* FIXME: Next wodge of code has some cut & paste! */
@@ -232,6 +234,7 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
             candidateItemResponse.setResponseIdentifier(responseIdentifier.toString());
             candidateItemResponse.setResponseDataType(responseData.getType());
             candidateItemResponse.setResponseLegality(ResponseLegality.VALID); /* (May change this below) */
+            candidateItemResponse.setResponseCorrectness(ResponseCorrectness.CORRECT);
             switch (responseData.getType()) {
                 case STRING:
                     candidateItemResponse.setStringResponseData(((StringResponseData) responseData).getResponseData());
@@ -306,6 +309,8 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
         /* Persist CandidateResponse entities */
         for (final CandidateResponse candidateResponse : candidateResponseMap.values()) {
             candidateResponse.setCandidateEvent(candidateEvent);
+            candidateResponse.setResponseCorrectness(testSessionController.isCurrentItemCorrect() ? ResponseCorrectness.CORRECT : ResponseCorrectness.INCORRECT);
+            candidateResponse.setTimeOnTask(Double.toString(itemSessionState.computeDuration()));
             candidateResponseDao.persist(candidateResponse);
         }
 

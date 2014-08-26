@@ -40,6 +40,7 @@ import uk.ac.ed.ph.jqtiplus.QtiConstants;
 import uk.ac.ed.ph.jqtiplus.exception.QtiCandidateStateException;
 import uk.ac.ed.ph.jqtiplus.exception.ResponseBindingException;
 import uk.ac.ed.ph.jqtiplus.exception.TemplateProcessingInterrupt;
+import uk.ac.ed.ph.jqtiplus.group.NodeGroupList;
 import uk.ac.ed.ph.jqtiplus.internal.util.Assert;
 import uk.ac.ed.ph.jqtiplus.internal.util.StringUtilities;
 import uk.ac.ed.ph.jqtiplus.node.item.AssessmentItem;
@@ -1163,5 +1164,9 @@ public final class ItemSessionController extends ItemProcessingController implem
                 + "(resolvedAssessmentItem=" + resolvedAssessmentItem
                 + ",itemSessionState=" + itemSessionState
                 + ")";
+    }
+
+    public NodeGroupList getNodeGroups() {
+    	return this.item.getNodeGroups();
     }
 }

@@ -1,4 +1,4 @@
-package main.java.geometrydrawing;
+package geometrydrawing;
 
 public final class GeometryDrawingConstants {
 

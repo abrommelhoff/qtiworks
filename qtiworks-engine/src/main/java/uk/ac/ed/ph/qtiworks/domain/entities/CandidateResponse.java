@@ -104,6 +104,32 @@ public class CandidateResponse implements BaseEntity {
     @Enumerated(EnumType.STRING)
     private ResponseLegality responseLegality;
 
+    /** Correctness of response */
+    @Basic(optional=false)
+    @Column(name="response_correctness", updatable=false, length=10)
+    @Enumerated(EnumType.STRING)
+    private ResponseCorrectness responseCorrectness;
+
+    /** Response Feedback */
+    @Basic(optional=false)
+    @Column(name="response_feedback")
+    private String responseFeedback;
+
+    /** Misconception Type */
+    @Basic(optional=false)
+    @Column(name="misconception_type")
+    private String misconceptionType;
+
+    /** Misconception Value */
+    @Basic(optional=false)
+    @Column(name="misconception_value")
+    private String misconceptionValue;
+
+    /** Time on task */
+    @Basic(optional=false)
+    @Column(name="time_on_task")
+    private String timeOnTask;
+
     /** Raw response string data (only used for {@link ResponseDataType#STRING} */
     @Lob
     @Type(type="org.hibernate.type.TextType")
@@ -165,11 +191,38 @@ public class CandidateResponse implements BaseEntity {
         this.responseLegality = responseLegality;
     }
 
+    public void setResponseCorrectness(final ResponseCorrectness responseCorrectness) {
+        this.responseCorrectness = responseCorrectness;
+    }
+
+
+    public void setTimeOnTask(final String timeOnTask) {
+        this.timeOnTask = timeOnTask;
+    }
+
+    public void setResponseFeedback(final String responseFeedback) {
+        this.responseFeedback = responseFeedback;
+    }
+
+    public void setMisconceptionType(final String misconceptionType) {
+        this.misconceptionType = misconceptionType;
+    }
+
+    public String getMisconceptionType() {
+        return misconceptionType;
+    }
+
+    public void setMisconceptionValue(final String misconceptionValue) {
+        this.misconceptionValue = misconceptionValue;
+    }
+
+    public String getMisconceptionValue() {
+        return misconceptionValue;
+    }
 
     public List<String> getStringResponseData() {
         return stringResponseData;
     }
-
 
     public void setStringResponseData(final List<String> stringResponseData) {
         this.stringResponseData = stringResponseData;

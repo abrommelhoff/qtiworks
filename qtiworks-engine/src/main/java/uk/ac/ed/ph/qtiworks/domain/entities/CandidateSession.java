@@ -327,7 +327,8 @@ public class CandidateSession implements BaseEntity, TimestampedOnCreation {
     }
 
     public boolean isFinished() {
-        return finishTime!=null;
+        //return finishTime!=null;
+    	return false;
     }
 
     public void setFinishTime(final Date finishTime) {
@@ -340,7 +341,8 @@ public class CandidateSession implements BaseEntity, TimestampedOnCreation {
     }
 
     public boolean isTerminated() {
-        return terminationTime!=null;
+        //return terminationTime!=null;
+    	return false;
     }
 
     public void setTerminationTime(final Date terminationTime) {

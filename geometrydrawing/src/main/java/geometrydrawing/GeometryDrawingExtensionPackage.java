@@ -1,4 +1,4 @@
-package main.java.geometrydrawing;
+package geometrydrawing;
 
 import java.util.Arrays;
 import java.util.Collections;
