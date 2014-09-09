@@ -496,6 +496,13 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 			updateShape(pos);
 		}
 
+		public void setPos2(final Point pos, final int yOffset)
+		{
+		    this.pos = pos;
+		    this.pos.y += yOffset;
+		    updateShape(pos);
+		}
+
 		public void resetPos()
 		{
 			setPos(this.startPos);
@@ -631,6 +638,21 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 
 				g.drawImage((Image)label, pos.x-(enclose.width/2), pos.y-(enclose.height/2), null);
 			}
+		}
+
+		public void render2(final Graphics2D g)
+		{
+		    if(label instanceof String)
+            {
+                g.drawString((String)label, pos.x-(coords[2]), pos.y+(coords[3]/2));
+            }else
+            {
+                final Rectangle enclose = obj.getBounds();
+
+                g.drawImage((Image)label, pos.x-(enclose.width/2), pos.y-(enclose.height/2), null);
+                //g.drawImage((Image)label, pos.x, pos.y, null);
+                //System.out.println("x: "+pos.x+", y: "+pos.y);
+            }
 		}
 
 		MovableObject(){}
@@ -1217,8 +1239,9 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
     	 			 end.assCount++;
     	 			 if(end.isAssociatable(mov.keyCode))
     	 			 {
+    	 			     final int somesize = mov.obj.getBounds().height;
 	    	 			 mov.bound.put(end.keyCode, new Boolean(true));
-	    	 			 mov.setPos(end.getCentrePoint());
+	    	 			 mov.setPos2(end.getCentrePoint(), somesize*(end.assCount-1));
 	    	 			 if(om.equals("gap_match_interaction"))
 	 					 {
 	    	 				System.out.println("looking to clone...");
@@ -1233,6 +1256,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 	    	 					final MovableObject copy = mov.lightClone();
 	    	 					copy.resetPos();
 	    	 					movableObjects.add(copy);
+	    	 					System.out.println("maxsize is 0 or something");
 	    	 				}
 	 					 }
     	 			 }
@@ -1305,7 +1329,9 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 			if(movableObjects != null)
 			{
 				for(int i=0; i < movableObjects.size(); i++)
-					movableObjects.elementAt(i).render(g2);
+				{
+					movableObjects.elementAt(i).render2(g2);
+				}
 			}
             g2.setComposite(normC);
             if(drawHSLabel != null)
