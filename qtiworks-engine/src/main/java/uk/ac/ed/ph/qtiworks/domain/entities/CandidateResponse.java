@@ -111,6 +111,8 @@ public class CandidateResponse implements BaseEntity {
     private ResponseCorrectness responseCorrectness;
 
     /** Response Feedback */
+    @Lob
+    @Type(type="org.hibernate.type.TextType")
     @Basic(optional=true)
     @Column(name="response_feedback")
     private String responseFeedback;
