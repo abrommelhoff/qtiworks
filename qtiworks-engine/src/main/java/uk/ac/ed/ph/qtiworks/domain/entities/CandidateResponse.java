@@ -105,28 +105,32 @@ public class CandidateResponse implements BaseEntity {
     private ResponseLegality responseLegality;
 
     /** Correctness of response */
-    @Basic(optional=false)
+    @Basic(optional=true)
     @Column(name="response_correctness", updatable=false, length=10)
     @Enumerated(EnumType.STRING)
     private ResponseCorrectness responseCorrectness;
 
     /** Response Feedback */
-    @Basic(optional=false)
+    @Basic(optional=true)
     @Column(name="response_feedback")
     private String responseFeedback;
 
     /** Misconception Type */
-    @Basic(optional=false)
+    @Lob
+    @Type(type="org.hibernate.type.TextType")
+    @Basic(optional=true)
     @Column(name="misconception_type")
     private String misconceptionType;
 
     /** Misconception Value */
-    @Basic(optional=false)
+    @Lob
+    @Type(type="org.hibernate.type.TextType")
+    @Basic(optional=true)
     @Column(name="misconception_value")
     private String misconceptionValue;
 
     /** Time on task */
-    @Basic(optional=false)
+    @Basic(optional=true)
     @Column(name="time_on_task")
     private String timeOnTask;
 
