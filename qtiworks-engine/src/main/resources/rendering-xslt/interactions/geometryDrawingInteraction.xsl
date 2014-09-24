@@ -22,8 +22,8 @@
 	  <span id="linesegdirections">Click two points between which to draw a line</span>
 	  <span id="raydirections">Click two points between which to draw a ray</span>
 	  <span id="angledirections">Click three points by which to construct an angle</span>
-	  <xsl:if test="exists(qti:object)">
-		  <xsl:variable name="object" select="qti:object" as="element(qti:object)"/>
+	  <xsl:if test="exists(gdi:object)">
+		  <xsl:variable name="object" select="gdi:object" as="element(gdi:object)"/>
 		  <jsObject type="gridImg" data="{qw:convert-link($object/@data)}" height="{$object/@height}" width="{$object/@width}"/>
 	  </xsl:if>
 	  <input type="hidden" name="qtiworks_response_{@responseIdentifier}"/> 
