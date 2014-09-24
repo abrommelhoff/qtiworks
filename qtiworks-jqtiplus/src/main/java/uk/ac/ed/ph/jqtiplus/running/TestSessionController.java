@@ -1461,6 +1461,15 @@ public final class TestSessionController extends TestProcessingController {
         itemSessionController.setMarkedForReview();
     }
 
+    public boolean isCurrentItemCorrect() {
+        final TestPlanNodeKey currentItemKey = assertItemSelected();
+        final TestPlanNode currentItemRefNode = expectItemRefNode(currentItemKey);
+
+        /* Bind responses */
+        final ItemSessionController itemSessionController = getItemSessionController(currentItemRefNode);
+        return itemSessionController.countCorrect() == 1;
+    }
+
     /**
      * Sets the candidate comment for the current item, replacing any comment that has already been
      * set.
