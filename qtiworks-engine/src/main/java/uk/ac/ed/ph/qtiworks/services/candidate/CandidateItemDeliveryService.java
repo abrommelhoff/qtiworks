@@ -382,27 +382,29 @@ public class CandidateItemDeliveryService extends CandidateServiceBase {
             }
             final String responseId = candidateResponse.getStringResponseData().get(0);
             final ResponseProcessing responseProcessing = itemSessionController.getNodeGroups().getResponseProcessingGroup().getResponseProcessing();
-            final Iterator<ResponseRule> responseRuleIter = responseProcessing.getResponseRules().iterator();
-            while (responseRuleIter.hasNext()) {
-                final ResponseRule thisResponseRule = responseRuleIter.next();
-                try {
-                    final ExpressionGroup expressionGroup = thisResponseRule.getNodeGroups().getExpressionGroup();
-                    if (expressionGroup.getChildren().get(0).getQtiClassName() == "customOperator") {
-                        final UnsupportedCustomOperator customOperator = (UnsupportedCustomOperator) expressionGroup.getChildren().get(0);
-                        final BaseValue baseValue = (BaseValue) customOperator.getNodeGroups().getExpressionGroup().getChildren().get(0);
-                        final SingleValue singleValue = baseValue.getSingleValue();
-                        final String[] misconceptionsArr = singleValue.toQtiString().split(":::")[1].split(";;;");
-                        candidateResponse.setMisconceptionType(singleValue.toQtiString().split(":::")[0]);
-                        for (int x=0;x<misconceptionsArr.length;x++) {
-                            if (misconceptionsArr[x].split(",,,")[0].matches(responseId)) {
-                                candidateResponse.setMisconceptionValue(misconceptionsArr[x].split(",,,")[1]);
+            if (responseProcessing != null) {
+                final Iterator<ResponseRule> responseRuleIter = responseProcessing.getResponseRules().iterator();
+                while (responseRuleIter.hasNext()) {
+                    final ResponseRule thisResponseRule = responseRuleIter.next();
+                    try {
+                        final ExpressionGroup expressionGroup = thisResponseRule.getNodeGroups().getExpressionGroup();
+                        if (expressionGroup.getChildren().get(0).getQtiClassName() == "customOperator") {
+                            final UnsupportedCustomOperator customOperator = (UnsupportedCustomOperator) expressionGroup.getChildren().get(0);
+                            final BaseValue baseValue = (BaseValue) customOperator.getNodeGroups().getExpressionGroup().getChildren().get(0);
+                            final SingleValue singleValue = baseValue.getSingleValue();
+                            final String[] misconceptionsArr = singleValue.toQtiString().split(":::")[1].split(";;;");
+                            candidateResponse.setMisconceptionType(singleValue.toQtiString().split(":::")[0]);
+                            for (int x=0;x<misconceptionsArr.length;x++) {
+                                if (misconceptionsArr[x].split(",,,")[0].matches(responseId)) {
+                                    candidateResponse.setMisconceptionValue(misconceptionsArr[x].split(",,,")[1]);
+                                }
                             }
                         }
+                    } catch (final QtiNodeGroupException e) {
+                        continue;
                     }
-                } catch (final QtiNodeGroupException e) {
-                    continue;
-                }
 
+                }
             }
             candidateResponse.setResponseFeedback(feedbackMap.get(responseId));
             candidateResponseDao.persist(candidateResponse);

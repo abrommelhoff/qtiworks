@@ -22,18 +22,17 @@
 	  <span id="linesegdirections">Click two points between which to draw a line</span>
 	  <span id="raydirections">Click two points between which to draw a ray</span>
 	  <span id="angledirections">Click three points by which to construct an angle</span>
-	  <xsl:if test="exists(qti:object)">
-		  <xsl:variable name="object" select="qti:object" as="element(qti:object)"/>
+	  <xsl:if test="exists(gdi:object)">
+		  <xsl:variable name="object" select="gdi:object" as="element(gdi:object)"/>
 		  <jsObject type="gridImg" data="{qw:convert-link($object/@data)}" height="{$object/@height}" width="{$object/@width}"/>
 	  </xsl:if>
-	  <input type="hidden" name="qtiworks_response_{@responseIdentifier}"/> 
+	  <input type="hidden" name="qtiworks_response_RESPONSE"/> 
 	  <input type="hidden" name="previousResponses" value="{$responseValues}"/>
 	  <div id="jxgbox" class="jxgbox" height="{@gdi:height}" width="{@gdi:width}">
 	  	<jsObject id="{@id}" type="grid" grid="{@gdi:grid}" bounds="{@gdi:bounds}" axis="{@gdi:axis}" snapTo="{@gdi:snapTo}" />
 		<script type="text/javascript">
 	          $(document).ready(function() {
-	            QtiWorksRendering.registerGeometryDrawingInteraction('<xsl:value-of
-                select="@responseIdentifier"/>', {
+	            QtiWorksRendering.registerGeometryDrawingInteraction('<xsl:value-of select="@responseIdentifier"/>', {
                 min: 5,
                 max: 10
                 });

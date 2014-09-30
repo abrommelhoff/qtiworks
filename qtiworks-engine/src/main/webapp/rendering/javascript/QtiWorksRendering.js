@@ -495,7 +495,8 @@ var QtiWorksRendering = (function() {
 			}
 			var h = gridImg.attr('height');
 			var w = gridImg.attr('width');
-			var im = board.create('image',[gridImg.attr('data'), [1,0], [gridImg.attr('width'), gridImg.attr('height')] ]);
+			var im = board.create('image',[gridImg.attr('data'), [1,0], [gridImg.attr('width'), gridImg.attr('height')] ], {isDraggable:false});
+			im.isDraggable = false;
 		}
 		$('#linedirections').hide();
 		$('#linesegdirections').hide();
@@ -514,7 +515,7 @@ var QtiWorksRendering = (function() {
         		var coord = pt.split(",");
         		var x = parseInt(coord[0]);
         		var y = parseInt(coord[1]);
-        		var newPoint = board.create('point', [x, y], {snapToGrid:isSnapTo, withLabel:false});
+        		var newPoint = board.create('point', [x, y], {snapToGrid:isSnapTo, withLabel:false, showInfobox:false});
         		JXG.addEvent(newPoint.rendNode, 'mouseover', 
        	             function(){ if (mode!="point") {$("ellipse").css('cursor', 'crosshair');} else {$("ellipse").css('cursor', 'default');}}, 
        	             newPoint);
@@ -573,6 +574,9 @@ var QtiWorksRendering = (function() {
         };
 		getValue();
 		$('#jxgbox').mousedown(function(e) {
+			if (e.target.nodeName == "image") {
+
+			}
 			switch (e.which) {
 				case 1:
 					if (mode != "point") {
@@ -588,6 +592,9 @@ var QtiWorksRendering = (function() {
 				default:
 					alert('You have a strange mouse');
 			}
+		});
+		$('#jxgbox').on('dragstart', function (e) {
+			e.preventDefault();
 		});
 		$('#drawline').click(function () {
 			$('#linedirections').toggle(this.checked);
@@ -682,7 +689,7 @@ var QtiWorksRendering = (function() {
 	        }
 	 
 	        if (canCreate) {
-	            var newPoint = board.create('point', [coords.usrCoords[1], coords.usrCoords[2]], {snapToGrid:isSnapTo, withLabel:false});
+	            var newPoint = board.create('point', [coords.usrCoords[1], coords.usrCoords[2]], {snapToGrid:isSnapTo, withLabel:false, showInfobox:false});
 				JXG.addEvent(newPoint.rendNode, 'mouseover', 
 	             function(){ if (mode!="point") {$("ellipse").css('cursor', 'crosshair');} else {$("ellipse").css('cursor', 'default');}}, 
 	             newPoint);
