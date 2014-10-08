@@ -36,7 +36,7 @@ session_start();
     "lis_person_name_given" => 'Given',
     "lis_person_contact_email_primary" => "user@school.edu",
     "lis_person_sourcedid" => "school.edu:user",
-    "lis_outcome_service_url" => "http://innoca01-nc-dv.measuredprogress.org/coordinator/Student/Result.aspx",
+    "lis_outcome_service_url" => "http://innoca01-nc-dv.measuredprogress.org/coordinator/Student/Result.aspx", 
     "context_id" => "456434513",
     "context_title" => "Design of Personal Environments",
     "context_label" => "SI182",
