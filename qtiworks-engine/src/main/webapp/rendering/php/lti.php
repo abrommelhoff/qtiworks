@@ -15,6 +15,7 @@ session_start();
   if ( ! $key ) $key = "3X1Kk1tThrVTQH8aLJSsaKnvGYbDHM4TXc";
   $secret = trim($_REQUEST["secret"]);
   //$secret = "dy65bjEFcpNCcGJt0kMb70iO2XgNnzoU";
+  $userid = trim($_REQUEST["userid"]);
   if ( ! $secret ) $secret = "dy65bjEFcpNCcGJt0kMb70iO2XgNnzoU";
   $endpoint = "http://innoqti01-nc-dv.measuredprogress.org:8080/qtiworks/lti/linklaunch";
 
@@ -28,7 +29,7 @@ session_start();
     "resource_link_id" => "120988f929-274612",
     "resource_link_title" => "Weekly Blog",
     "resource_link_description" => "A weekly blog.",
-    "user_id" => "292832126",
+    "user_id" => $userid,
     "roles" => "Instructor",  // or Learner
     "lis_person_name_full" => 'Jane Q. Public',
     "lis_person_name_family" => 'Public',
