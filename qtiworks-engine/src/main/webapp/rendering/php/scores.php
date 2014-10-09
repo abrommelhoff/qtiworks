@@ -6,7 +6,7 @@ function getUsers($dbname)
 	mysql_connect($dbHost,$dbUser,$dbPass) or die("no connect");
 	mysql_select_db($dbname);
 	$result = mysql_query("select response_correctness, string_data, candidate_responses.xrid, xeid, misconception_type, misconception_value from candidate_responses left outer join candidate_string_response_items on candidate_string_response_items.xrid=candidate_responses.xrid;");
-	if(mysql_num_rows($result) == 0) {
+	if(mysql_num_rows($result) == 0) { 
 		return false;
 	} else {
 		return $result;
