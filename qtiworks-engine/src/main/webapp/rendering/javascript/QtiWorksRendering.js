@@ -635,8 +635,10 @@ var QtiWorksRendering = (function() {
 								&& !isNaN(y2) && mode != 'angle') {
 							var newLine = board.create('line', [ [ x1, y1 ],
 									[ x2, y2 ] ], {
-								straightFirst : mode == 'line',
-								straightLast : mode == 'ray' || mode == 'line',
+								firstArrow : mode == 'line',
+								lastArrow : mode == 'ray' || mode == 'line',
+								straightFirst: mode == 'line',
+								straightLast: mode == 'ray' || mode == 'line',
 								strokeColor : '#00ff00',
 								strokeWidth : 2
 							});
@@ -676,12 +678,16 @@ var QtiWorksRendering = (function() {
 		$('#jxgbox').on('dragstart', function(e) {
 			e.preventDefault();
 		});
+		$('#plotPoint').click(function() {
+			mode = this.checked ? 'point' : 'point';
+			$('#linesegdirections').toggle(false);
+			$("#raydirections").toggle(false);
+			$('#linedirections').toggle(false);
+			$('#angledirections').toggle(false);
+		});
 		$('#drawline').click(function() {
 			$('#linedirections').toggle(this.checked);
 			mode = this.checked ? 'line' : 'point';
-			$('#drawlineseg').removeAttr('checked');
-			$('#drawray').removeAttr('checked');
-			$('#drawangle').removeAttr('checked');
 			$('#linesegdirections').toggle(false);
 			$("#raydirections").toggle(false);
 			$('#angledirections').toggle(false);
@@ -691,9 +697,6 @@ var QtiWorksRendering = (function() {
 		$('#drawlineseg').click(function() {
 			$('#linesegdirections').toggle(this.checked);
 			mode = this.checked ? 'lineseg' : 'point';
-			$('#drawray').removeAttr('checked');
-			$('#drawline').removeAttr('checked');
-			$('#drawangle').removeAttr('checked');
 			$("#raydirections").toggle(false);
 			$('#linedirections').toggle(false);
 			$('#angledirections').toggle(false);
@@ -703,9 +706,6 @@ var QtiWorksRendering = (function() {
 		$('#drawray').click(function() {
 			$('#raydirections').toggle(this.checked);
 			mode = this.checked ? 'ray' : 'point';
-			$('#drawline').removeAttr('checked');
-			$('#drawlineseg').removeAttr('checked');
-			$('#drawangle').removeAttr('checked');
 			$('#linedirections').toggle(false);
 			$('#linesegdirections').toggle(false);
 			$('#angledirections').toggle(false);
@@ -715,9 +715,6 @@ var QtiWorksRendering = (function() {
 		$('#drawangle').click(function() {
 			$('#angledirections').toggle(this.checked);
 			mode = this.checked ? 'angle' : 'point';
-			$('#drawline').removeAttr('checked');
-			$('#drawlineseg').removeAttr('checked');
-			$('#drawray').removeAttr('checked');
 			$('#linedirections').toggle(false);
 			$('#linesegdirections').toggle(false);
 			$("#raydirections").toggle(false);
@@ -803,8 +800,10 @@ var QtiWorksRendering = (function() {
 			if ((ptsSelected.length >= 2) && (mode != 'angle')) {
 				var newLine = board.create('line', [ ptsSelected[0],
 						ptsSelected[1] ], {
-					straightFirst : mode == 'line',
-					straightLast : mode == 'ray' || mode == 'line',
+					firstArrow : mode == 'line',
+					lastArrow : mode == 'ray' || mode == 'line',
+					straightFirst: mode == 'line',
+					straightLast: mode == 'ray' || mode == 'line',
 					strokeColor : '#00ff00',
 					strokeWidth : 2
 				});
