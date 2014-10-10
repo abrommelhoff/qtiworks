@@ -406,6 +406,8 @@ public class CandidateItemDeliveryService extends CandidateServiceBase {
 
                 }
             }
+            final AssessmentItem assessmentItem = itemSessionController.getSubjectItem();
+            candidateResponse.setIdentifier(assessmentItem.getIdentifier());
             candidateResponse.setResponseFeedback(feedbackMap.get(responseId));
             candidateResponseDao.persist(candidateResponse);
         }
