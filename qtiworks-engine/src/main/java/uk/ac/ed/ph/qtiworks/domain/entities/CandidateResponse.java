@@ -117,6 +117,11 @@ public class CandidateResponse implements BaseEntity {
     @Column(name="response_feedback")
     private String responseFeedback;
 
+    /** Identifier */
+    @Basic(optional=true)
+    @Column(name="identifier", length=64)
+    private String identifier;
+
     /** Misconception Type */
     @Lob
     @Type(type="org.hibernate.type.TextType")
@@ -208,6 +213,10 @@ public class CandidateResponse implements BaseEntity {
 
     public void setResponseFeedback(final String responseFeedback) {
         this.responseFeedback = responseFeedback;
+    }
+
+    public void setIdentifier(final String identifier) {
+        this.identifier = identifier;
     }
 
     public void setMisconceptionType(final String misconceptionType) {
