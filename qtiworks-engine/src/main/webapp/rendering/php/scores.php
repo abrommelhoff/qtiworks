@@ -37,7 +37,7 @@ if (!$getResponse) {
 		echo $row[5];
 		echo '" stringvalue="';
 		echo $row[6];
-		echo '" score=" ';
+		echo '" score="';
 		echo $row[7];
 		echo '"/>';
 	}
