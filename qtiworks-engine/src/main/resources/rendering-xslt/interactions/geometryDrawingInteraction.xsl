@@ -17,7 +17,7 @@
   	</html>
     <p/>
       <input name="qtiworks_presented_{@responseIdentifier}" type="hidden" value="1"/>
-	  <input type="checkbox" id="drawline"/>Draw a Line<input type="checkbox" id="drawlineseg"/>Draw a Line Segment<input type="checkbox" id="drawray"/>Draw a Ray<input type="checkbox" id="drawangle"/>Draw an Angle<br/>
+	  <input type="radio" name="drawingMode" id="plotPoint" value="plotPoint" checked="checked"/>Plot a Point<input type="radio" name="drawingMode" id="drawline" value="drawline"/>Draw a Line<input type="radio" name="drawingMode" id="drawlineseg" value="drawlineseg"/>Draw a Line Segment<input type="radio" name="drawingMode" id="drawray" value="drawray"/>Draw a Ray<input type="radio" name="drawingMode" id="drawangle" value="drawangle"/>Draw an Angle<br/>
 	  <span id="linedirections">Click two points between which to draw a line</span>
 	  <span id="linesegdirections">Click two points between which to draw a line</span>
 	  <span id="raydirections">Click two points between which to draw a ray</span>
