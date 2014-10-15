@@ -18,7 +18,7 @@ $xml = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>';
 echo $xml;
 
 $getResponse = getUsers('qtiworksdev');
-if (!$getResponse) {
+if (!$getResponse) { 
 	echo 'No scores returned';
 } else {
 	echo '<root>';
