@@ -1,7 +1,5 @@
 package geometrydrawing;
 
-import java.util.List;
-
 import uk.ac.ed.ph.jqtiplus.attribute.value.BooleanAttribute;
 import uk.ac.ed.ph.jqtiplus.attribute.value.IntegerAttribute;
 import uk.ac.ed.ph.jqtiplus.attribute.value.StringAttribute;
@@ -19,28 +17,31 @@ import uk.ac.ed.ph.jqtiplus.validation.ValidationContext;
 import uk.ac.ed.ph.jqtiplus.value.Signature;
 import uk.ac.ed.ph.jqtiplus.value.Value;
 
+import java.util.List;
+
 public final class GeometryDrawingInteraction extends CustomInteraction<GeometryDrawingExtensionPackage> {
 
     //private static final long serialVersionUID = 6364289440013765516L;
 	private static final long serialVersionUID = 364289440013765516L;
-	
+
 	/** Name of this class in xml schema. */
     public static final String QTI_CLASS_NAME = "geometryDrawingInteraction";
 
     public GeometryDrawingInteraction(final QtiNode parent) {
         super(parent);
-        
+
         getAttributes().add(new IntegerAttribute(this, GeometryDrawingConstants.ATTR_WIDTH_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, false));
         getAttributes().add(new IntegerAttribute(this, GeometryDrawingConstants.ATTR_HEIGHT_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, false));
         getAttributes().add(new StringAttribute(this, GeometryDrawingConstants.ATTR_BOUNDS_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, false));
         getAttributes().add(new BooleanAttribute(this, GeometryDrawingConstants.ATTR_GRID_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, true, false));
         getAttributes().add(new BooleanAttribute(this, GeometryDrawingConstants.ATTR_SNAPTO_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, true, false));
+        getAttributes().add(new IntegerAttribute(this, GeometryDrawingConstants.ATTR_MAXCHOICES_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, true));
         getNodeGroups().add(new BlockGroup(this));
         getNodeGroups().add(new ObjectGroup(this, false));
     }
 
     public Object getObject() {
-    	Object object = getNodeGroups().getObjectGroup().getObject();
+    	final Object object = getNodeGroups().getObjectGroup().getObject();
     	if (object == null) {
     		return null;
     	} else {
@@ -64,7 +65,7 @@ public final class GeometryDrawingInteraction extends CustomInteraction<Geometry
             context.fireValidationError(this, "Object child must have an image type");
         }
     }
-    
+
     @Override
     protected Value parseResponse(final GeometryDrawingExtensionPackage geometryDrawingExtensionPackage, final ResponseDeclaration responseDeclaration, final ResponseData responseData)
             throws ResponseBindingException {

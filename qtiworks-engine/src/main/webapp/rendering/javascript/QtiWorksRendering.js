@@ -433,8 +433,8 @@ var QtiWorksRendering = (function() {
 					function(index) {
 						var choiceId = this.id
 								.substring('qtiworks_response_'.length); // Trim
-																			// leading
-																			// 'qtiworks_response_'
+						// leading
+						// 'qtiworks_response_'
 						var inputElement = $('<input type="hidden">');
 						inputElement.attr('name', 'qtiworks_response_'
 								+ interaction.responseIdentifier);
@@ -506,6 +506,7 @@ var QtiWorksRendering = (function() {
 		var lineSegmentsCreated = [];
 		var anglesCreated = [];
 		var isSnapTo = false;
+		var maxChoices = 0;
 		var interaction = this;
 		var inputElementQuery = $('input[name="qtiworks_response_' + 'RESPONSE'
 				+ '"]');
@@ -529,6 +530,7 @@ var QtiWorksRendering = (function() {
 			styleString += 'width: 500px;';
 		}
 		isSnapTo = (gridObject.attr('snapTo') == 'true');
+		maxChoices = gridObject.attr('maxChoices') != null?parseInt(gridObject.attr('maxChoices')):0;
 		gridContainer.attr('style', styleString);
 		board = JXG.JSXGraph.initBoard('jxgbox', {
 			boundingbox : [ boundsArray[0], boundsArray[1], boundsArray[2],
@@ -637,8 +639,8 @@ var QtiWorksRendering = (function() {
 									[ x2, y2 ] ], {
 								firstArrow : mode == 'line',
 								lastArrow : mode == 'ray' || mode == 'line',
-								straightFirst: mode == 'line',
-								straightLast: mode == 'ray' || mode == 'line',
+								straightFirst : mode == 'line',
+								straightLast : mode == 'ray' || mode == 'line',
 								strokeColor : '#00ff00',
 								strokeWidth : 2
 							});
@@ -668,8 +670,8 @@ var QtiWorksRendering = (function() {
 				}
 				break;
 			case 3:
-				// remove(e);
-				getValue();
+				remove(e);
+				//getValue();
 				break;
 			default:
 				alert('You have a strange mouse');
@@ -747,6 +749,10 @@ var QtiWorksRendering = (function() {
 			return new JXG.Coords(JXG.COORDS_BY_SCREEN, [ dx, dy ], board);
 		}, down = function(e) {
 			var canCreate = true, i, coords, el;
+			
+			if (maxChoices <= (ptsCreated.length - 1)) {
+				return;
+			}
 
 			if (e[JXG.touchProperty]) {
 				// index of the finger that is used to extract the coordinates
@@ -781,7 +787,11 @@ var QtiWorksRendering = (function() {
 				setValue();
 			}
 		}, lineSelect = function(e) {
-			var i, coords, el;
+			var canCreate = true, i, coords, el;
+			
+			if (maxChoices <= (ptsCreated.length - 1)) {
+				return;
+			}
 
 			if (e[JXG.touchProperty]) {
 				// index of the finger that is used to extract the coordinates
@@ -793,17 +803,36 @@ var QtiWorksRendering = (function() {
 				if (JXG.isPoint(board.objects[el])
 						&& board.objects[el].hasPoint(coords.scrCoords[1],
 								coords.scrCoords[2])) {
-					ptsSelected.push(board.objects[el]);
+					//ptsSelected.push(board.objects[el]);
+					canCreate = false;
 					break;
 				}
+			}
+			if (canCreate) {
+				var newPoint = board.create('point', [ coords.usrCoords[1],
+						coords.usrCoords[2] ], {
+					snapToGrid : isSnapTo,
+					withLabel : false,
+					showInfobox : false
+				});
+				JXG.addEvent(newPoint.rendNode, 'mouseover', function() {
+					if (mode != "point") {
+						$("ellipse").css('cursor', 'crosshair');
+					} else {
+						$("ellipse").css('cursor', 'default');
+					}
+				}, newPoint);
+				ptsCreated.push(newPoint.id);
+				ptsSelected.push(newPoint.id);
+				setValue();
 			}
 			if ((ptsSelected.length >= 2) && (mode != 'angle')) {
 				var newLine = board.create('line', [ ptsSelected[0],
 						ptsSelected[1] ], {
 					firstArrow : mode == 'line',
 					lastArrow : mode == 'ray' || mode == 'line',
-					straightFirst: mode == 'line',
-					straightLast: mode == 'ray' || mode == 'line',
+					straightFirst : mode == 'line',
+					straightLast : mode == 'ray' || mode == 'line',
 					strokeColor : '#00ff00',
 					strokeWidth : 2
 				});
@@ -834,22 +863,59 @@ var QtiWorksRendering = (function() {
 				ptsValues += eX.toString() + "," + eY.toString() + ";";
 			}
 			var linesValues = "/lines:";
-			var linePointValues = "/linePoints:"
+			var linePointValues = "/linePoints:";
+			var lineParaCount = 0;
+			var linePerpCount = 0;
+			var lineMetaString = "/lines:";
 			for (var b = 0; b < linesCreated.length; b++) {
 				var x1 = board.objects[linesCreated[b]].point1.XEval();
 				var y1 = board.objects[linesCreated[b]].point1.YEval();
 				var x2 = board.objects[linesCreated[b]].point2.XEval();
 				var y2 = board.objects[linesCreated[b]].point2.YEval();
 				// let's calculate the slope
-				var m = (y2 - y1) / (x2 - x1);
-				var b = y1 - (m * x1);
+				if (x2 - x1 != 0) {
+					var m = (y2 - y1) / (x2 - x1);
+				} else {
+					m = 0;
+				}
+				var yint = y1 - (m * x1);
 
 				linePointValues += x1.toString() + "," + y1.toString() + "_"
 						+ x2.toString() + "," + y2.toString() + ";";
-				linesValues += "y="+m.toString()+"x+"+b.toString()+";";
+				linesValues += "y=" + m.toString() + "x+" + yint.toString() + ";";
+				
+				for (var i = 0; i < linesCreated.length; i++) {
+					var x1c = board.objects[linesCreated[i]].point1.XEval();
+					var y1c = board.objects[linesCreated[i]].point1.YEval();
+					var x2c = board.objects[linesCreated[i]].point2.XEval();
+					var y2c = board.objects[linesCreated[i]].point2.YEval();
+					if (x2c - x1c != 0) {
+						var mc = (y2c - y1c) / (x2c - x1c);
+					} else {
+						mc = 0;
+					}
+					if (i != b) {
+						if (mc == m) {
+							lineParaCount++;
+						} else if (mc == (m * -1)) {
+							linePerpCount++;
+						} else {
+							// nothing special here, move along!
+						}
+					}
+				}
+			}
+			if (lineParaCount > 0) {
+				lineMetaString += lineParaCount.toString()+";parallel;line";
+			}
+			if (linePerpCount > 0) {
+				lineMetaString += linePerpCount.toString()+";perpendicular;line";
 			}
 			var lineSegValues = "/linesegs:";
 			var lineSegPointValues = "/linesegPoints:";
+			var linesegParaCount = 0;
+			var linesegPerpCount = 0;
+			var linesegMetaString = "/linesegs:";
 			for (var c = 0; c < lineSegmentsCreated.length; c++) {
 				var sx1 = board.objects[lineSegmentsCreated[c]].point1.XEval();
 				var sy1 = board.objects[lineSegmentsCreated[c]].point1.YEval();
@@ -858,12 +924,37 @@ var QtiWorksRendering = (function() {
 				// let's calculate the slope
 				var m = (sy2 - sy1) / (sx2 - sx1);
 				var b = sy1 - (m * sx1);
-				lineSegPointValues += sx1.toString() + "," + sy1.toString() + "_"
-						+ sx2.toString() + "," + sy2.toString() + ";";
-				lineSegValues += "y="+m.toString()+"x+"+b.toString()+";";
+				lineSegPointValues += sx1.toString() + "," + sy1.toString()
+						+ "_" + sx2.toString() + "," + sy2.toString() + ";";
+				lineSegValues += "y=" + m.toString() + "x+" + b.toString()
+						+ ";";
+				
+				for (var i = 0; i < lineSegmentsCreated.length; i++) {
+					var x1c = board.objects[lineSegmentsCreated[i]].point1.XEval();
+					var y1c = board.objects[lineSegmentsCreated[i]].point1.YEval();
+					var x2c = board.objects[lineSegmentsCreated[i]].point2.XEval();
+					var y2c = board.objects[lineSegmentsCreated[i]].point2.YEval();
+					var mc = (y2c - y1c) / (x2c - x1c);
+					if (mc == m) {
+						linesegParaCount++;
+					} else if (mc == (m * -1)) {
+						linesegPerpCount++;
+					} else {
+						// nothing special here, move along!
+					}
+				}
+			}
+			if (linesegParaCount > 0) {
+				linesegMetaString += linesegParaCount.toString()+";parallel;";
+			}
+			if (linesegPerpCount > 0) {
+				linesegMetaString += linesegPerpCount.toString()+";perpendicular;";
 			}
 			var rayValues = "/rays:";
 			var rayPointValues = "/rayPoints:";
+			var rayParaCount = 0;
+			var rayPerpCount = 0;
+			var rayMetaString = "/rays:";
 			for (var d = 0; d < raysCreated.length; d++) {
 				var rx1 = board.objects[raysCreated[d]].point1.XEval();
 				var ry1 = board.objects[raysCreated[d]].point1.YEval();
@@ -874,7 +965,28 @@ var QtiWorksRendering = (function() {
 				var b = ry1 - (m * rx1);
 				rayPointValues += rx1.toString() + "," + ry1.toString() + "_"
 						+ rx2.toString() + "," + ry2.toString() + ";";
-				rayValues += "y="+m.toString()+"x+"+b.toString()+";";
+				rayValues += "y=" + m.toString() + "x+" + b.toString() + ";";
+				
+				for (var i = 0; i < raysCreated.length; i++) {
+					var x1c = board.objects[raysCreated[i]].point1.XEval();
+					var y1c = board.objects[raysCreated[i]].point1.YEval();
+					var x2c = board.objects[raysCreated[i]].point2.XEval();
+					var y2c = board.objects[raysCreated[i]].point2.YEval();
+					var mc = (y2c - y1c) / (x2c - x1c);
+					if (mc == m) {
+						rayParaCount++;
+					} else if (mc == (m * -1)) {
+						rayPerpCount++;
+					} else {
+						// nothing special here, move along!
+					}
+				}
+			}
+			if (rayParaCount > 0) {
+				rayMetaString += rayParaCount.toString()+";parallel;";
+			}
+			if (rayPerpCount > 0) {
+				rayMetaString += rayPerpCount.toString()+";perpendicular;";
 			}
 			var angleValues = "/angles:"
 			for (var e = 0; e < anglesCreated.length; e++) {
@@ -888,10 +1000,12 @@ var QtiWorksRendering = (function() {
 						+ ax2.toString() + "," + ay2.toString() + "_"
 						+ ax3.toString() + "," + ay3.toString() + ";";
 			}
-			// we'll append the "point" value strings to the end for response re-creation.
+			// we'll append the "point" value strings to the end for response
+			// re-creation.
 			inputElementQuery.get(0).value = ptsValues + linesValues
-					+ lineSegValues + rayValues + angleValues + linePointValues 
-					+ lineSegPointValues + rayPointValues;
+					+ lineSegValues + rayValues + angleValues + linePointValues
+					+ lineSegPointValues + rayPointValues + lineMetaString;
+			// TODO: add additional meta strings for the other geometric types.
 		}, remove = function(e) {
 			var i, newcoords, el;
 

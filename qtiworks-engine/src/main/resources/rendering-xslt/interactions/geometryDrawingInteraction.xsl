@@ -29,7 +29,7 @@
 	  <input type="hidden" name="qtiworks_response_RESPONSE"/> 
 	  <input type="hidden" name="previousResponses" value="{$responseValues}"/>
 	  <div id="jxgbox" class="jxgbox" height="{@gdi:height}" width="{@gdi:width}">
-	  	<jsObject id="{@id}" type="grid" grid="{@gdi:grid}" bounds="{@gdi:bounds}" axis="{@gdi:axis}" snapTo="{@gdi:snapTo}" />
+	  	<jsObject id="{@id}" type="grid" grid="{@gdi:grid}" bounds="{@gdi:bounds}" axis="{@gdi:axis}" snapTo="{@gdi:snapTo}" maxChoices="{@gdi:maxChoices}" />
 		<script type="text/javascript">
 	          $(document).ready(function() {
 	            QtiWorksRendering.registerGeometryDrawingInteraction('<xsl:value-of select="@responseIdentifier"/>', {
