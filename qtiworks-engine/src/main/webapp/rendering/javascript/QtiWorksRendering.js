@@ -846,6 +846,24 @@ var QtiWorksRendering = (function() {
 				ptsSelected = [];
 				setValue();
 			} else if ((ptsSelected.length > 2) && (mode == 'angle')) {
+				var angleRay1 = board.create('line', [ ptsSelected[1],
+				             						ptsSelected[0] ], {
+				             					firstArrow : false,
+				             					lastArrow : true,
+				             					straightFirst : false,
+				             					straightLast : true,
+				             					strokeColor : '#00ff00',
+				             					strokeWidth : 2
+				             				});
+				var angleRay2 = board.create('line', [ ptsSelected[1],
+					             						ptsSelected[2] ], {
+					             					firstArrow : false,
+					             					lastArrow : true,
+					             					straightFirst : false,
+					             					straightLast : true,
+					             					strokeColor : '#00ff00',
+					             					strokeWidth : 2
+					             				});
 				var alpha = board.create('angle', [ ptsSelected[0],
 						ptsSelected[1], ptsSelected[2] ], {
 					radius : 3
@@ -855,6 +873,8 @@ var QtiWorksRendering = (function() {
 				ptsSelected = [];
 				setValue();
 			}
+		}, getAngle = function(p1,p2,p3) {
+			
 		}, setValue = function() {
 			var ptsValues = "points:";
 			for (var a = 0; a < ptsCreated.length; a++) {
