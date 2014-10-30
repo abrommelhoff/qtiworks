@@ -803,7 +803,7 @@ var QtiWorksRendering = (function() {
 				if (JXG.isPoint(board.objects[el])
 						&& board.objects[el].hasPoint(coords.scrCoords[1],
 								coords.scrCoords[2])) {
-					//ptsSelected.push(board.objects[el]);
+					ptsSelected.push(board.objects[el]);
 					canCreate = false;
 					break;
 				}
