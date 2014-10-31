@@ -543,14 +543,9 @@ var QtiWorksRendering = (function() {
 			grid = board.create('grid', []);
 		}
 		if (gridObject.attr('axis') == 'true') {
-			var xaxis = board.create('axis',
-					[ [0,0],[1,0] ], {
-					 label: {offset: [7, -10]}, // Doesn't do anything here.
-					 drawZero:false // Doesn't do anything here.
-					}
-				); 
+			var xaxis = board.create('axis',[ [0,0],[1,0] ]); 
 			xaxis.removeAllTicks();
-			var yaxis = board.create('axis',	[ [0,0],[0,1] ]);
+			var yaxis = board.create('axis',[ [0,0],[0,1] ]);
 			yaxis.removeAllTicks();
 		}
 		if (gridImg.length > 0) {
@@ -763,7 +758,7 @@ var QtiWorksRendering = (function() {
 		}, down = function(e) {
 			var canCreate = true, i, coords, el;
 			
-			if (maxChoices <= (ptsCreated.length - 1)) {
+			if (maxChoices > 0 && maxChoices <= (ptsCreated.length - 1)) {
 				return;
 			}
 
@@ -801,11 +796,7 @@ var QtiWorksRendering = (function() {
 			}
 		}, lineSelect = function(e) {
 			var canCreate = true, i, coords, el;
-			
-			if (maxChoices <= (ptsCreated.length - 1)) {
-				return;
-			}
-
+		
 			if (e[JXG.touchProperty]) {
 				// index of the finger that is used to extract the coordinates
 				i = 0;
@@ -820,6 +811,9 @@ var QtiWorksRendering = (function() {
 					canCreate = false;
 					break;
 				}
+			}
+			if (maxChoices > 0 && maxChoices <= (ptsCreated.length - 1) && canCreate) {
+				return;
 			}
 			if (canCreate) {
 				var newPoint = board.create('point', [ coords.usrCoords[1],
