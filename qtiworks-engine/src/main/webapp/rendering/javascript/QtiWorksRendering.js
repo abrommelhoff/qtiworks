@@ -498,6 +498,7 @@ var QtiWorksRendering = (function() {
 	var GeometryDrawingInteraction = function(responseIdentifier, configData) {
 		this.responseIdentifier = responseIdentifier;
 		var board;
+		var grid;
 		var mode = "point"; // point, line, or ray
 		var ptsSelected = [];
 		var ptsCreated = [];
@@ -535,11 +536,23 @@ var QtiWorksRendering = (function() {
 		board = JXG.JSXGraph.initBoard('jxgbox', {
 			boundingbox : [ boundsArray[0], boundsArray[1], boundsArray[2],
 					boundsArray[3] ],
-			axis : (gridObject.attr('axis') == 'true'),
-			grid : (gridObject.attr('grid') == 'true'),
 			showCopyright : false,
 			showNavigation : false
 		});
+		if (gridObject.attr('grid') == 'true') {
+			grid = board.create('grid', []);
+		}
+		if (gridObject.attr('axis') == 'true') {
+			var xaxis = board.create('axis',
+					[ [0,0],[1,0] ], {
+					 label: {offset: [7, -10]}, // Doesn't do anything here.
+					 drawZero:false // Doesn't do anything here.
+					}
+				); 
+			xaxis.removeAllTicks();
+			var yaxis = board.create('axis',	[ [0,0],[0,1] ]);
+			yaxis.removeAllTicks();
+		}
 		if (gridImg.length > 0) {
 			if (!gridImg.attr('height')) {
 				gridImg.attr('height', '5');
