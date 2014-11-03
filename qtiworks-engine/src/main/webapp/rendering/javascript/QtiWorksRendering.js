@@ -555,6 +555,12 @@ var QtiWorksRendering = (function() {
 			if (!gridImg.attr('width')) {
 				gridImg.attr('width', '5')
 			}
+			if (!gridImg.attr('x')) {
+				gridImg.attr('x', '0');
+			}
+			if (!gridImg.attr('y')) {
+				gridImg.attr('y', '0')
+			}
 			var h = gridImg.attr('height');
 			var w = gridImg.attr('width');
 			var im = board.create('image', [ gridImg.attr('data'), [ gridImg.attr('x'), gridImg.attr('y') ],
