@@ -557,7 +557,7 @@ var QtiWorksRendering = (function() {
 			}
 			var h = gridImg.attr('height');
 			var w = gridImg.attr('width');
-			var im = board.create('image', [ gridImg.attr('data'), [ 1, 0 ],
+			var im = board.create('image', [ gridImg.attr('data'), [ gridImg.attr('x'), gridImg.attr('y') ],
 					[ gridImg.attr('width'), gridImg.attr('height') ] ], {
 				isDraggable : false
 			});

@@ -24,7 +24,7 @@
 	  <span id="angledirections">Click three points by which to construct an angle</span>
 	  <xsl:if test="exists(gdi:object)">
 		  <xsl:variable name="object" select="gdi:object" as="element(gdi:object)"/>
-		  <jsObject type="gridImg" data="{qw:convert-link($object/@data)}" height="{$object/@height}" width="{$object/@width}"/>
+		  <jsObject type="gridImg" data="{qw:convert-link($object/@data)}" height="{$object/@height}" width="{$object/@width}" x="{$object/@x}" y="{$object/@y}"/>
 	  </xsl:if>
 	  <input type="hidden" name="qtiworks_response_RESPONSE"/> 
 	  <input type="hidden" name="previousResponses" value="{$responseValues}"/>
