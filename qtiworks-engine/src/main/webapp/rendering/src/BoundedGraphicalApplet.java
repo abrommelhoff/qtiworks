@@ -487,6 +487,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 		{
 			this.startPos = startPos;
 			setPos(startPos);
+			System.out.println("Just set a startPos! x: "+startPos.x+", y: "+startPos.y);
 		}
 
 
@@ -718,8 +719,10 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 	 */
 	public void setFeedback()
 	{
-		if(feedback == null || feedback.equals(""))
-			return;
+		if(feedback == null || feedback.equals("")) {
+		    System.out.println("");
+		    return;
+		}
 		System.out.println("here in feedback!");
 		final StringTokenizer st = new StringTokenizer(feedback,",");
 		//switch dependants mode based on om string
@@ -834,6 +837,23 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 				}
 				user_responses++;
 			}
+		} else if (om.equals("figure_placement_interaction")) {
+		    while (st.hasMoreTokens()) {
+		        final String[] codepair = st.nextToken().split(":");
+		        final String[] coords = codepair[1].split(" ");
+		        MovableObject movObj = null;
+		        for(int i=0; i < movableObjects.size(); i++)
+                {
+		            System.out.println("keycode is: " + movableObjects.elementAt(i).getKeyCode() + " saved one is: " + codepair[0]);
+                    if(movableObjects.elementAt(i).getKeyCode().equals(codepair[0])) {
+                        movObj = movableObjects.elementAt(i);
+                        break;
+                    }
+                }
+		        if (movObj != null) {
+		            movObj.setPos(new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1])));
+		        }
+		    }
 		}
 	}
 
@@ -879,13 +899,22 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 			}
 		}else if(om.equals("graphic_order_interaction"))
 		{
-			for(int i=0; i< movableObjects.size(); i++)
+			for(int i = 0; i < movableObjects.size(); i++)
 			{
 				final Iterator<String> vals = movableObjects.elementAt(i).bound.keySet().iterator();
-				while(vals.hasNext())
+				while(vals.hasNext()) {
 					values.add(vals.next());
+				}
 			}
-		}else if(om.equals("gap_match_interaction"))
+		}else if(om.equals("figure_placement_interaction"))
+        {
+            for(int i = 0; i < movableObjects.size(); i++)
+            {
+                //System.out.println("The point is: " + movableObjects.elementAt(i).pos.x + ", " + movableObjects.elementAt(i).pos.y);
+                System.out.println("The movable Object thingy is: "+movableObjects.elementAt(i).getKeyCode());
+                values.add(movableObjects.elementAt(i).getKeyCode()+":"+movableObjects.elementAt(i).pos.x + " " + movableObjects.elementAt(i).pos.y);
+            }
+        }else if(om.equals("gap_match_interaction"))
 		{
 			for(int i=0; i< hotspots.size(); i++)
 			{
@@ -902,6 +931,11 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 					}
 				}
 			}
+		}
+		if (om.equals("figure_placement_interaction")) {
+		    System.out.println("Got here! values is "+values.size());
+		    for (final String element : values)
+    		    System.out.println("Got here! values is " + element);
 		}
 		return values;
 	}
@@ -1002,16 +1036,49 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 
 	    		//work out horizontal spacing
 
-	    		final int space = this.getWidth() / movCount+1;
+	    		int space = this.getWidth() / movCount+1;
 
 	    		if(movCount > 0)
 	    		{
+	    		    // pre-process movable objects' widths and heights
+	    		    int maxHeight = 0;
+	    		    int totalWidth = 0;
+	    		    boolean twoRows = false;
+	    		    for(int h=0; h<movCount; h++)
+                    {
+	    		        final MovableObject mov = (MovableObject)getBoundObjFromStr(getParameter("movable_object"+h), true, imCount, m,font,frc, new Point(0,0));
+	    		        System.out.println("The width of this object is: "+mov.obj.getBounds().width);
+	    		        totalWidth += mov.obj.getBounds().width;
+
+	    		        System.out.println("IS "+mov.obj.getBounds().height+" GREATER THAN "+maxHeight);
+	    		        if (maxHeight < mov.obj.getBounds().height) {
+	    		            maxHeight = mov.obj.getBounds().height;
+	    		            System.out.println("MAX HEIGHT IS NOW: "+maxHeight);
+	    		        }
+                    }
+
+	    		    if (totalWidth > this.getWidth()) {
+	    		        twoRows = true;
+	    		        space = this.getWidth() / (movCount/2)+1;
+	    		    }
+
 	    			movableObjects = new Vector<MovableObject>();
 		    		for(int i=0; i<movCount; i++)
 		    		{
+		    		    int j = i;
+		    		    int heightOffset = 0;
 		    			final MovableObject mo = (MovableObject)getBoundObjFromStr(getParameter("movable_object"+i), true, imCount, m,font,frc, new Point(0,0));
 
-		    			final Point p = new Point((space/2)+(space*i),this.getHeight()-20);
+		    			// TODO: Fix the y-values, veer away from hard-coded values.
+		    			if (twoRows && i >= movCount/2) {
+		    			    j = j - (movCount/2);
+		    			    heightOffset = maxHeight;
+		    			} else if (twoRows && i < movCount/2) {
+		    			    heightOffset = maxHeight * 2;
+		    			} else {
+		    			    heightOffset = 50;
+		    			}
+		    			final Point p = new Point((space/2)+(space*j),this.getHeight()-heightOffset);
 		    			mo.setStartPos(p);
 		    			movableObjects.add(mo);
 		     		}
@@ -1047,7 +1114,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
     @Override
     public void mouseMoved(final MouseEvent me)
     {
-    	if(!om.equals("hotspot_interaction"))
+    	if(!om.equals("hotspot_interaction") && !om.equals("figure_placement_interaction"))
     	{
 	    	for(int i=hotspots.size()-1; i > -1; --i)
 	    		if(hotspots.elementAt(i).inside(me.getPoint()))
@@ -1057,9 +1124,11 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
     	}
 
     	drawHSLabel = null;
-    	for(int i=hotspots.size()-1; i > -1; --i)
-    		if(hotspots.elementAt(i).inside(me.getPoint()))
-    			this.drawHSLabel = hotspots.elementAt(i);
+    	if (!om.equals("figure_placement_interaction")) {
+        	for(int i=hotspots.size()-1; i > -1; --i)
+        		if(hotspots.elementAt(i).inside(me.getPoint()))
+        			this.drawHSLabel = hotspots.elementAt(i);
+    	}
     	mpos = me.getPoint();
     	repaint();
     }
@@ -1083,11 +1152,14 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 	    			hotspots.elementAt(i).setHighlighted(false);
 	    	repaint();
     	}
-    	if(om.equals("graphic_order_interaction") || om.equals("gap_match_interaction"))
+    	if(om.equals("graphic_order_interaction") || om.equals("gap_match_interaction") || om.equals("figure_placement_interaction"))
     	{
     		if(mov != null)
     		{
     			mov.setPos(me.getPoint());
+    		}
+    		if (om.equals("figure_placement_interaction")) {
+    		    repaint();
     		}
     	}
     	drawHSLabel = null;
@@ -1165,6 +1237,13 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
     		}
 
     		repaint();
+    	} else { //figure_placement_interaction
+    	    System.out.println("There are "+movableObjects.size()+ " movable objects");
+    	    mov = null;
+            for(int i=movableObjects.size()-1; i > -1; --i)
+                if(movableObjects.elementAt(i).inside(event.getPoint()))
+                    mov = movableObjects.elementAt(i);
+    	    repaint();
     	}
     }
 
@@ -1514,6 +1593,6 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
     Image offScreenImg;
     //graphics object for offscreen image
     Graphics offScreenG;
-    //local hoverd label reference
+    //local hovered label reference
     BoundObject drawHSLabel = null;
 }
