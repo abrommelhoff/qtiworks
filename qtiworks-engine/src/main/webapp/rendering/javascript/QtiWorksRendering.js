@@ -543,31 +543,33 @@ var QtiWorksRendering = (function() {
 			grid = board.create('grid', []);
 		}
 		if (gridObject.attr('axis') == 'true') {
-			var xaxis = board.create('axis',[ [0,0],[1,0] ]); 
-			xaxis.removeAllTicks();
-			var yaxis = board.create('axis',[ [0,0],[0,1] ]);
-			yaxis.removeAllTicks();
+			var xaxis = board.create('line', [[0,0], [1,0]], {strokeColor:'#222222', lastArrow:true, name:"", withLabel:true});
+	        var yaxis = board.create('line', [[0,0], [0,1]], {strokeColor:'#222222', lastArrow:true, name:"", withLabel:true});
+	        var xticks = board.create('ticks',[xaxis, 1], {drawLabels: true, minorTicks: 0});
+	        var yticks = board.create('ticks',[yaxis, 1], {drawLabels: true, minorTicks: 0});
 		}
 		if (gridImg.length > 0) {
-			if (!gridImg.attr('height')) {
-				gridImg.attr('height', '5');
-			}
-			if (!gridImg.attr('width')) {
-				gridImg.attr('width', '5')
-			}
-			if (!gridImg.attr('x')) {
-				gridImg.attr('x', '0');
-			}
-			if (!gridImg.attr('y')) {
-				gridImg.attr('y', '0')
-			}
-			var h = gridImg.attr('height');
-			var w = gridImg.attr('width');
-			var im = board.create('image', [ gridImg.attr('data'), [ gridImg.attr('x'), gridImg.attr('y') ],
-					[ gridImg.attr('width'), gridImg.attr('height') ] ], {
-				isDraggable : false
+			$('[type="gridImg"]').each(function(){
+				if (!$(this).attr('height')) {
+					$(this).attr('height', '5');
+				}
+				if (!$(this).attr('width')) {
+					$(this).attr('width', '5')
+				}
+				if (!$(this).attr('x')) {
+					$(this).attr('x', '0');
+				}
+				if (!$(this).attr('y')) {
+					$(this).attr('y', '0')
+				}
+				var h = $(this).attr('height');
+				var w = $(this).attr('width');
+				var im = board.create('image', [ $(this).attr('data'), [ $(this).attr('x'), $(this).attr('y') ],
+						[ $(this).attr('width'), $(this).attr('height') ] ], {
+					isDraggable : false
+				});
+				im.isDraggable = false;
 			});
-			im.isDraggable = false;
 		}
 		$('#linedirections').hide();
 		$('#linesegdirections').hide();
@@ -672,9 +674,6 @@ var QtiWorksRendering = (function() {
 		;
 		getValue();
 		$('#jxgbox').mousedown(function(e) {
-			if (e.target.nodeName == "image") {
-
-			}
 			switch (e.which) {
 			case 1:
 				if (mode != "point") {
@@ -690,9 +689,6 @@ var QtiWorksRendering = (function() {
 			default:
 				alert('You have a strange mouse');
 			}
-		});
-		$('#jxgbox').on('dragstart', function(e) {
-			e.preventDefault();
 		});
 		$('#plotPoint').click(function() {
 			mode = this.checked ? 'point' : 'point';
@@ -877,10 +873,58 @@ var QtiWorksRendering = (function() {
 					             					strokeColor : '#00ff00',
 					             					strokeWidth : 2
 					             				});
-				var alpha = board.create('angle', [ ptsSelected[0],
-						ptsSelected[1], ptsSelected[2] ], {
-					radius : 3
-				});
+				var alpha;
+				if (((board.objects[ptsSelected[1]].YEval() < board.objects[ptsSelected[0]].YEval()) && (board.objects[ptsSelected[1]].YEval() < board.objects[ptsSelected[2]].YEval()))) {
+					if (board.objects[ptsSelected[0]].XEval() > board.objects[ptsSelected[2]].XEval()) {
+						alpha = board.create('angle', [ ptsSelected[0],
+						    							ptsSelected[1], ptsSelected[2] ], {
+						    						radius : 3
+						    					});
+					} else {
+						alpha = board.create('angle', [ ptsSelected[2],
+						    							ptsSelected[1], ptsSelected[0] ], {
+						    						radius : 3
+						    					});
+					}
+				}
+				else if (((board.objects[ptsSelected[1]].YEval() > board.objects[ptsSelected[0]].YEval()) && (board.objects[ptsSelected[1]].YEval() > board.objects[ptsSelected[2]].YEval()))) {
+					if (board.objects[ptsSelected[0]].XEval() > board.objects[ptsSelected[2]].XEval()) {
+						alpha = board.create('angle', [ ptsSelected[2],
+						    							ptsSelected[1], ptsSelected[0] ], {
+						    						radius : 3
+						    					});
+					} else {
+						alpha = board.create('angle', [ ptsSelected[0],
+						    							ptsSelected[1], ptsSelected[2] ], {
+						    						radius : 3
+						    					});
+					}
+				}
+				else if (board.objects[ptsSelected[0]].XEval() < board.objects[ptsSelected[1]].XEval()) {
+					if (board.objects[ptsSelected[0]].YEval() > board.objects[ptsSelected[2]].YEval()) {
+						alpha = board.create('angle', [ ptsSelected[0],
+						    							ptsSelected[1], ptsSelected[2] ], {
+						    						radius : 3
+						    					});
+					} else {
+						alpha = board.create('angle', [ ptsSelected[2],
+								ptsSelected[1], ptsSelected[0] ], {
+							radius : 3
+						});
+					}
+				} else {
+					if (board.objects[ptsSelected[0]].YEval() > board.objects[ptsSelected[2]].YEval()) {
+						alpha = board.create('angle', [ ptsSelected[2],
+						    							ptsSelected[1], ptsSelected[0] ], {
+						    						radius : 3
+						    					});
+					} else {
+						alpha = board.create('angle', [ ptsSelected[0],
+								ptsSelected[1], ptsSelected[2] ], {
+							radius : 3
+						});
+					}
+				}
 				// linesCreated.push(alpha.id);
 				anglesCreated.push(alpha.id);
 				ptsSelected = [];

@@ -22,10 +22,9 @@
 	  <span id="linesegdirections">Click two points between which to draw a line</span>
 	  <span id="raydirections">Click two points between which to draw a ray</span>
 	  <span id="angledirections">Click three points by which to construct an angle</span>
-	  <xsl:if test="exists(gdi:object)">
-		  <xsl:variable name="object" select="gdi:object" as="element(gdi:object)"/>
-		  <jsObject type="gridImg" data="{qw:convert-link($object/@data)}" height="{$object/@height}" width="{$object/@width}" x="{$object/@x}" y="{$object/@y}"/>
-	  </xsl:if>
+	  <xsl:for-each select="gdi:object">
+	  	<jsObject type="gridImg" name="movable_object{position()-1}" data="{qw:convert-link(@data)}" height="{@height}" width="{@width}" x="{@x}" y="{@y}"/>
+      </xsl:for-each>
 	  <input type="hidden" name="qtiworks_response_RESPONSE"/> 
 	  <input type="hidden" name="previousResponses" value="{$responseValues}"/>
 	  <div id="jxgbox" class="jxgbox" height="{@gdi:height}" width="{@gdi:width}">
