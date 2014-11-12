@@ -3059,6 +3059,34 @@
     <xs:attributeGroup name="minAssociations.AssociateInteraction.Attr">
         <xs:attribute name="minAssociations" use="optional" default="0" type="xs:int"/>
     </xs:attributeGroup>
+    
+    <xs:attributeGroup name="xmlbase.FigurePlacementInteraction.Attr">
+        <xs:attribute ref="xml:base" use="optional"/>
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="id.FigurePlacementInteraction.Attr">
+        <xs:attribute name="id" use="optional" type="UniqueIdentifier.Type"/>
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="class.FigurePlacementInteraction.Attr">
+        <xs:attribute name="class" use="optional">
+            <xs:simpleType>
+                <xs:list itemType="StringList.Type"/>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="xmllang.FigurePlacementInteraction.Attr">
+        <xs:attribute ref="xml:lang" use="optional"/>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="label.FigurePlacementInteraction.Attr">
+        <xs:attribute name="label" use="optional" type="String256.Type"/>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="responseIdentifier.FigurePlacementInteraction.Attr">
+        <xs:attribute name="responseIdentifier" use="required" type="Identifier.Type"/>
+    </xs:attributeGroup>
 
     <xs:attributeGroup name="xmlbase.CustomInteraction.Attr">
         <xs:attribute ref="xml:base" use="optional"/>
@@ -4235,6 +4263,7 @@
                 <xs:element ref="extendedTextInteraction" minOccurs = "1" maxOccurs = "1"/>
                 <xs:element ref="uploadInteraction" minOccurs = "1" maxOccurs = "1"/>
                 <xs:element ref="associateInteraction" minOccurs = "1" maxOccurs = "1"/>
+                <xs:element ref="figurePlacementInteraction" minOccurs = "1" maxOccurs = "1"/>
                 <xs:element name="feedbackBlock" type="FeedbackBlock.Type" minOccurs = "1" maxOccurs = "1"/>
                 <xs:element name="templateBlock" type="TemplateBlock.Type" minOccurs = "1" maxOccurs = "1"/>
                 <xs:element ref="infoControl" minOccurs = "1" maxOccurs = "1"/>
@@ -4581,6 +4610,7 @@
                 <xs:element ref="extendedTextInteraction" minOccurs = "1" maxOccurs = "1"/>
                 <xs:element ref="uploadInteraction" minOccurs = "1" maxOccurs = "1"/>
                 <xs:element ref="associateInteraction" minOccurs = "1" maxOccurs = "1"/>
+                <xs:element ref="figurePlacementInteraction" minOccurs = "1" maxOccurs = "1"/>
                 <xs:choice minOccurs = "1" maxOccurs = "1">
                     <xs:element ref="pre" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element ref="h1" minOccurs = "1" maxOccurs = "1"/>
@@ -4681,6 +4711,7 @@
                     <xs:element ref="extendedTextInteraction" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element ref="uploadInteraction" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element ref="associateInteraction" minOccurs = "1" maxOccurs = "1"/>
+                    <xs:element ref="figurePlacementInteraction" minOccurs = "1" maxOccurs = "1"/>
                     <xs:choice minOccurs = "1" maxOccurs = "1">
                         <xs:element ref="pre" minOccurs = "1" maxOccurs = "1"/>
                         <xs:element ref="h1" minOccurs = "1" maxOccurs = "1"/>
@@ -4760,6 +4791,7 @@
         <xs:sequence>
             <xs:element ref="prompt" minOccurs = "0" maxOccurs = "1"/>
             <xs:element ref="object" minOccurs = "1" maxOccurs = "1"/>
+            <xs:element ref="gapImg" minOccurs = "1" maxOccurs = "unbounded"/>
         </xs:sequence>
         <xs:attributeGroup ref="xmlbase.DrawingInteraction.Attr"/>
         <xs:attributeGroup ref="id.DrawingInteraction.Attr"/>
@@ -4767,6 +4799,25 @@
         <xs:attributeGroup ref="xmllang.DrawingInteraction.Attr"/>
         <xs:attributeGroup ref="label.DrawingInteraction.Attr"/>
         <xs:attributeGroup ref="responseIdentifier.DrawingInteraction.Attr"/>
+    </xs:complexType>
+    
+    <xs:complexType name="FigurePlacementInteraction.Type" mixed="false">
+        <xs:annotation>
+            <xs:documentation source="umldocumentation">
+                FigurePlacemnet is the complexType for graphic gap match QTI interactions.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element ref="prompt" minOccurs = "0" maxOccurs = "1"/>
+            <xs:element ref="object" minOccurs = "1" maxOccurs = "1"/>
+            <xs:element ref="gapImg" minOccurs = "1" maxOccurs = "unbounded"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="xmlbase.FigurePlacementInteraction.Attr"/>
+        <xs:attributeGroup ref="id.FigurePlacementInteraction.Attr"/>
+        <xs:attributeGroup ref="class.FigurePlacementInteraction.Attr"/>
+        <xs:attributeGroup ref="xmllang.FigurePlacementInteraction.Attr"/>
+        <xs:attributeGroup ref="label.FigurePlacementInteraction.Attr"/>
+        <xs:attributeGroup ref="responseIdentifier.FigurePlacementInteraction.Attr"/>
     </xs:complexType>
 
     <xs:complexType name="DT.Type" mixed="true">
@@ -5033,6 +5084,7 @@
                     <xs:element ref="extendedTextInteraction" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element ref="uploadInteraction" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element ref="associateInteraction" minOccurs = "1" maxOccurs = "1"/>
+                    <xs:element ref="figurePlacementInteraction" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element name="feedbackBlock" type="FeedbackBlock.Type" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element name="templateBlock" type="TemplateBlock.Type" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element ref="infoControl" minOccurs = "1" maxOccurs = "1"/>
@@ -5846,6 +5898,7 @@
                     <xs:element ref="extendedTextInteraction" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element ref="uploadInteraction" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element ref="associateInteraction" minOccurs = "1" maxOccurs = "1"/>
+                    <xs:element ref="figurePlacementInteraction" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element name="feedbackBlock" type="FeedbackBlock.Type" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element name="templateBlock" type="TemplateBlock.Type" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element ref="infoControl" minOccurs = "1" maxOccurs = "1"/>
@@ -5914,6 +5967,7 @@
                 <xs:element ref="extendedTextInteraction" minOccurs = "1" maxOccurs = "1"/>
                 <xs:element ref="uploadInteraction" minOccurs = "1" maxOccurs = "1"/>
                 <xs:element ref="associateInteraction" minOccurs = "1" maxOccurs = "1"/>
+                <xs:element ref="figurePlacementInteraction" minOccurs = "1" maxOccurs = "1"/>
                 <xs:choice minOccurs = "1" maxOccurs = "1">
                     <xs:element ref="pre" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element ref="h1" minOccurs = "1" maxOccurs = "1"/>
@@ -8231,6 +8285,7 @@
                 <xs:element ref="extendedTextInteraction" minOccurs = "1" maxOccurs = "1"/>
                 <xs:element ref="uploadInteraction" minOccurs = "1" maxOccurs = "1"/>
                 <xs:element ref="associateInteraction" minOccurs = "1" maxOccurs = "1"/>
+                <xs:element ref="figurePlacementInteraction" minOccurs = "1" maxOccurs = "1"/>
                 <xs:choice minOccurs = "1" maxOccurs = "1">
                     <xs:element ref="pre" minOccurs = "1" maxOccurs = "1"/>
                     <xs:element ref="h1" minOccurs = "1" maxOccurs = "1"/>
@@ -9542,6 +9597,8 @@
     <xs:element name="feedbackInline" type="FeedbackInline.Type"/>
 
     <xs:element name="fieldValue" type="FieldValue.Type"/>
+    
+    <xs:element name="figurePlacementInteraction" type="FigurePlacementInteraction.Type"/>
 
     <xs:element name="gapImg" type="GapImg.Type"/>
 

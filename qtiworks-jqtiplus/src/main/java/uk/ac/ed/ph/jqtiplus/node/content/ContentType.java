@@ -110,6 +110,7 @@ import uk.ac.ed.ph.jqtiplus.node.item.interaction.CustomInteraction;
 import uk.ac.ed.ph.jqtiplus.node.item.interaction.DrawingInteraction;
 import uk.ac.ed.ph.jqtiplus.node.item.interaction.EndAttemptInteraction;
 import uk.ac.ed.ph.jqtiplus.node.item.interaction.ExtendedTextInteraction;
+import uk.ac.ed.ph.jqtiplus.node.item.interaction.FigurePlacementInteraction;
 import uk.ac.ed.ph.jqtiplus.node.item.interaction.GapMatchInteraction;
 import uk.ac.ed.ph.jqtiplus.node.item.interaction.GraphicAssociateInteraction;
 import uk.ac.ed.ph.jqtiplus.node.item.interaction.GraphicGapMatchInteraction;
@@ -311,6 +312,16 @@ public enum ContentType {
         @Override
         public QtiNode create(final QtiNode parent) {
             return new UploadInteraction(parent);
+        }
+    },
+    /**
+     * figurePlacementInteraction
+     */
+    FIGURE_PLACEMENT_INTERACTION(FigurePlacementInteraction.QTI_CLASS_NAME, FigurePlacementInteraction.class) {
+
+        @Override
+        public QtiNode create(final QtiNode parent) {
+            return new FigurePlacementInteraction(parent);
         }
     },
     //blockStatic,

@@ -548,20 +548,17 @@ var QtiWorksRendering = (function() {
 		if (gridObject.attr('axis') == 'true') {
 			var xaxis = board.create('line', [[0,0], [1,0]], {strokeColor:'#222222', lastArrow:true, name:"", withLabel:true});
 	        var yaxis = board.create('line', [[0,0], [0,1]], {strokeColor:'#222222', lastArrow:true, name:"", withLabel:true});
-	        var xticks = board.create('ticks',[xaxis, 1], {strokeColor:'#ccc', drawLabels: true, minorTicks: 0, majorHeight: -1});
+	        var xticks = board.create('ticks',[xaxis, 1], {strokeColor:'#ccc', drawLabels: true, minorTicks: 0, majorHeight: -1, label: {offset: [-3, 7.5]}});
 	        var yticks;
 	        if (yScaleSymbol != '') {
-	        	yticks = board.create('ticks',[yaxis, 2], {strokeColor:'#ccc', drawZero: true, drawLabels: true, minorTicks: 0, scaleSymbol: yScaleSymbol, majorHeight: -1});
+	        	yticks = board.create('ticks',[yaxis, 2], {strokeColor:'#ccc', drawZero: true, drawLabels: true, minorTicks: 0, scaleSymbol: yScaleSymbol, majorHeight: -1, label: {offset: [5, 0]}});
 	        } else {
-		       /* if (parseInt(boundsArray[1]) >= 60 || parseInt(boundsArray[3] >= 60) ) {
-		        	yticks = board.create('ticks',[yaxis, 20], {strokeColor:'#ccc', drawLabels: true, minorTicks: 0, tickDistance: 20, majorHeight: -1, scaleSymbol: yScaleSymbol});
-		        } else if (parseInt(boundsArray[1]) >= 20 || parseInt(boundsArray[3] >= 20)) {
-		        	yticks = board.create('ticks',[yaxis, 5], {drawLabels: true, minorTicks: 0});
-		        }
-		        else {*/
-		        	yticks = board.create('ticks',[yaxis, 1], {strokeColor:'#ccc', drawZero: true, drawLabels: true, minorTicks: 0});
-		       //}
+		        yticks = board.create('ticks',[yaxis, 1], {strokeColor:'#ccc', drawZero: false, drawLabels: true, minorTicks: 0, label: {offset: [5, 0]}});
 	        }
+	        xaxis.isDraggable = false;
+	        yaxis.isDraggable = false;
+	        xticks.isDraggable = false;
+	        yticks.isDraggable = false;
 		}
 		if (gridImg.length > 0) {
 			$('[type="gridImg"]').each(function(){

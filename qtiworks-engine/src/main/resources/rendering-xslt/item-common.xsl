@@ -84,6 +84,7 @@ rendering.
   <xsl:include href="interactions/uploadInteraction.xsl"/>
   <xsl:include href="interactions/mathEntryInteraction.xsl"/>
   <xsl:include href="interactions/geometryDrawingInteraction.xsl"/>
+  <xsl:include href="interactions/figurePlacementInteraction.xsl"/>
 
   <!-- ************************************************************ -->
 
