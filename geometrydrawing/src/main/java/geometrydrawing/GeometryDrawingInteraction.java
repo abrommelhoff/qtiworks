@@ -36,6 +36,7 @@ public final class GeometryDrawingInteraction extends CustomInteraction<Geometry
         getAttributes().add(new BooleanAttribute(this, GeometryDrawingConstants.ATTR_GRID_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, true, false));
         getAttributes().add(new BooleanAttribute(this, GeometryDrawingConstants.ATTR_SNAPTO_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, true, false));
         getAttributes().add(new IntegerAttribute(this, GeometryDrawingConstants.ATTR_MAXCHOICES_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, true));
+        getAttributes().add(new StringAttribute(this, GeometryDrawingConstants.ATTR_YSCALESYMBOL_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, false));
         getNodeGroups().add(new BlockGroup(this));
         getNodeGroups().add(new ObjectGroup(this, false));
     }

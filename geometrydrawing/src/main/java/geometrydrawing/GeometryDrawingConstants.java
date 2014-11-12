@@ -22,4 +22,6 @@ public final class GeometryDrawingConstants {
 
     public static final String ATTR_MAXCHOICES_NAME = "maxChoices";
 
+    public static final String ATTR_YSCALESYMBOL_NAME = "yScaleSymbol";
+
 }
