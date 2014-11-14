@@ -235,6 +235,7 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
             candidateItemResponse.setResponseDataType(responseData.getType());
             candidateItemResponse.setResponseLegality(ResponseLegality.VALID); /* (May change this below) */
             candidateItemResponse.setResponseCorrectness(ResponseCorrectness.CORRECT);
+            candidateItemResponse.setIdentifier(responseIdentifier.toString());
             switch (responseData.getType()) {
                 case STRING:
                     candidateItemResponse.setStringResponseData(((StringResponseData) responseData).getResponseData());
