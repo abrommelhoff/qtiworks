@@ -298,6 +298,17 @@ public final class TestSessionController extends TestProcessingController {
         touchControlObjectTimerIfOpen(testSessionState, timestamp);
     }
 
+    public ItemSessionController getCurrentItemSessionController() {
+    	final TestPlanNodeKey currentItemKey = testSessionState.getCurrentItemKey();
+    	if (currentItemKey!=null) {
+            final TestPlanNode currentItemRefNode = expectItemRefNode(currentItemKey);
+            final ItemSessionController itemSessionController = getItemSessionController(currentItemRefNode);
+            return itemSessionController;
+    	} else {
+    		return null;
+    	}
+    }
+
     /**
      * Returns the currently visited {@link TestPart}, or null if we are not currently
      * inside a {@link TestPart}.

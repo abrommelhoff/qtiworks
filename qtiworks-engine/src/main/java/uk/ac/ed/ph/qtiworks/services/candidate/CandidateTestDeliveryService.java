@@ -53,11 +53,13 @@ import uk.ac.ed.ph.qtiworks.web.candidate.CandidateSessionContext;
 import uk.ac.ed.ph.jqtiplus.exception.QtiCandidateStateException;
 import uk.ac.ed.ph.jqtiplus.internal.util.Assert;
 import uk.ac.ed.ph.jqtiplus.node.AssessmentObjectType;
+import uk.ac.ed.ph.jqtiplus.node.item.AssessmentItem;
 import uk.ac.ed.ph.jqtiplus.node.result.AssessmentResult;
 import uk.ac.ed.ph.jqtiplus.node.test.AssessmentTest;
 import uk.ac.ed.ph.jqtiplus.node.test.SubmissionMode;
 import uk.ac.ed.ph.jqtiplus.notification.NotificationLevel;
 import uk.ac.ed.ph.jqtiplus.notification.NotificationRecorder;
+import uk.ac.ed.ph.jqtiplus.running.ItemSessionController;
 import uk.ac.ed.ph.jqtiplus.running.TestSessionController;
 import uk.ac.ed.ph.jqtiplus.state.ItemSessionState;
 import uk.ac.ed.ph.jqtiplus.state.TestPlanNode;
@@ -191,7 +193,7 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
         final NotificationRecorder notificationRecorder = new NotificationRecorder(NotificationLevel.INFO);
         final CandidateEvent mostRecentEvent = assertSessionEntered(candidateSession);
         final TestSessionController testSessionController = candidateDataService.createTestSessionController(mostRecentEvent, notificationRecorder);
-        //final ItemSessionController itemSessionController = candidateDataService.createItemSessionController(mostRecentEvent, notificationRecorder);
+
         final TestSessionState testSessionState = testSessionController.getTestSessionState();
 
         /* FIXME: Next wodge of code has some cut & paste! */
@@ -235,6 +237,10 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
             candidateItemResponse.setResponseDataType(responseData.getType());
             candidateItemResponse.setResponseLegality(ResponseLegality.VALID); /* (May change this below) */
             candidateItemResponse.setResponseCorrectness(ResponseCorrectness.CORRECT);
+            final ItemSessionController itemSessionController = testSessionController.getCurrentItemSessionController();
+            final AssessmentItem assessmentItem = itemSessionController.getSubjectItem();
+            candidateItemResponse.setIdentifier(assessmentItem.getIdentifier());
+
             switch (responseData.getType()) {
                 case STRING:
                     candidateItemResponse.setStringResponseData(((StringResponseData) responseData).getResponseData());
