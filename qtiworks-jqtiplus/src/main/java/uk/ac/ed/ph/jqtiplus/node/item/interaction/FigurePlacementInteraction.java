@@ -2,16 +2,21 @@ package uk.ac.ed.ph.jqtiplus.node.item.interaction;
 
 import uk.ac.ed.ph.jqtiplus.group.content.ObjectGroup;
 import uk.ac.ed.ph.jqtiplus.group.item.interaction.choice.GapImgGroup;
+import uk.ac.ed.ph.jqtiplus.group.item.interaction.graphic.AssociableHotspotGroup;
 import uk.ac.ed.ph.jqtiplus.node.QtiNode;
 import uk.ac.ed.ph.jqtiplus.node.content.xhtml.object.Object;
+import uk.ac.ed.ph.jqtiplus.node.item.interaction.graphic.AssociableHotspot;
+import uk.ac.ed.ph.jqtiplus.node.item.interaction.graphic.AssociableHotspotContainer;
 import uk.ac.ed.ph.jqtiplus.node.item.response.declaration.ResponseDeclaration;
 import uk.ac.ed.ph.jqtiplus.running.InteractionBindingContext;
 import uk.ac.ed.ph.jqtiplus.validation.ValidationContext;
 import uk.ac.ed.ph.jqtiplus.value.Signature;
 import uk.ac.ed.ph.jqtiplus.value.Value;
 
+import java.util.List;
 
-public final class FigurePlacementInteraction extends BlockInteraction {
+
+public final class FigurePlacementInteraction extends BlockInteraction implements AssociableHotspotContainer {
 
     private static final long serialVersionUID = 6364289440013765516L;
 
@@ -23,6 +28,7 @@ public final class FigurePlacementInteraction extends BlockInteraction {
 
         getNodeGroups().add(new ObjectGroup(this, true));
         getNodeGroups().add(new GapImgGroup(this, 1));
+        getNodeGroups().add(new AssociableHotspotGroup(this, 1));
     }
 
 
@@ -34,6 +40,9 @@ public final class FigurePlacementInteraction extends BlockInteraction {
         getNodeGroups().getObjectGroup().setObject(object);
     }
 
+    public List<AssociableHotspot> getAssociableHotspots() {
+        return getNodeGroups().getAssociableHotspotGroup().getAssociableHotspots();
+    }
 
     @Override
     public void validateThis(final ValidationContext context, final ResponseDeclaration responseDeclaration) {

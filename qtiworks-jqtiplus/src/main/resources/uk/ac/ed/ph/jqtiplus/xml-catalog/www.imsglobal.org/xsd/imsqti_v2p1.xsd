@@ -4811,6 +4811,7 @@
             <xs:element ref="prompt" minOccurs = "0" maxOccurs = "1"/>
             <xs:element ref="object" minOccurs = "1" maxOccurs = "1"/>
             <xs:element ref="gapImg" minOccurs = "1" maxOccurs = "unbounded"/>
+            <xs:element ref="associableHotspot" minOccurs = "0" maxOccurs = "unbounded"/>
         </xs:sequence>
         <xs:attributeGroup ref="xmlbase.FigurePlacementInteraction.Attr"/>
         <xs:attributeGroup ref="id.FigurePlacementInteraction.Attr"/>

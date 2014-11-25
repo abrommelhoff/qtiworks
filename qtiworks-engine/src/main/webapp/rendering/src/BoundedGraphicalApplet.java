@@ -51,6 +51,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -641,6 +642,25 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 			}
 		}
 
+		public BufferedImage toBufferedImage(final Image img)
+		{
+		    if (img instanceof BufferedImage)
+		    {
+		        return (BufferedImage) img;
+		    }
+
+		    // Create a buffered image with transparency
+		    final BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+		    // Draw the image on to the buffered image
+		    final Graphics2D bGr = bimage.createGraphics();
+		    bGr.drawImage(img, 0, 0, null);
+		    bGr.dispose();
+
+		    // Return the buffered image
+		    return bimage;
+		}
+
 		public void render2(final Graphics2D g)
 		{
 		    if(label instanceof String)
@@ -650,8 +670,19 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
             {
                 final Rectangle enclose = obj.getBounds();
 
-                g.drawImage((Image)label, pos.x-(enclose.width/2), pos.y-(enclose.height/2), null);
-                //g.drawImage((Image)label, pos.x, pos.y, null);
+                /*final BufferedImage alphaImg = toBufferedImage((Image)label);
+                for (int a=0; a < alphaImg.getWidth(); a++) {
+                    for (int b=0; b < alphaImg.getHeight(); b++) {
+                        //System.out.println("The color is: "+alphaImg.getRGB(a, b));
+                        if (alphaImg.getRGB(a, b) == 0xFFFFFF) {
+                            final int rgb = (0 << 24) | (255 << 16) | (255 << 8) | 255;
+                            alphaImg.setRGB(a, b, rgb);
+                        }
+                    }
+                }
+                g.drawImage(alphaImg, pos.x-(enclose.width/2), pos.y-(enclose.height/2), null);
+                */
+                g.drawImage((Image)label, pos.x, pos.y, null);
                 //System.out.println("x: "+pos.x+", y: "+pos.y);
             }
 		}
@@ -663,6 +694,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 			super(keyCode,label,shape,coords,legitimateLinks,hotSpotLabel,maxAssociations);
 		}
 	}
+    private int bottom;
 
 	/*
 	 * the reset method allows an external source, such as javascript in the html page in which the applet
@@ -911,8 +943,18 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
             for(int i = 0; i < movableObjects.size(); i++)
             {
                 //System.out.println("The point is: " + movableObjects.elementAt(i).pos.x + ", " + movableObjects.elementAt(i).pos.y);
-                System.out.println("The movable Object thingy is: "+movableObjects.elementAt(i).getKeyCode());
-                values.add(movableObjects.elementAt(i).getKeyCode()+":"+movableObjects.elementAt(i).pos.x + " " + movableObjects.elementAt(i).pos.y);
+                System.out.println("The movable Object thingy is: "+movableObjects.elementAt(i).getKeyCode()+" and bottom is: "+bottom);
+                for (int q=0; q < hotspots.size(); q++) {
+                    final Rectangle hsRect = new Rectangle(hotspots.elementAt(q).coords[0],hotspots.elementAt(q).coords[1],hotspots.elementAt(q).coords[2],hotspots.elementAt(q).coords[3]);
+                    final Rectangle mvRect = new Rectangle(movableObjects.elementAt(i).pos.x, movableObjects.elementAt(i).pos.y, movableObjects.elementAt(i).obj.getBounds().width, movableObjects.elementAt(i).obj.getBounds().height);
+                    System.out.println("The bounds for "+ hotspots.elementAt(q).getKeyCode() +" are: "+hsRect+ ". Is "+movableObjects.elementAt(i).getKeyCode() +" at: "+mvRect+" in there?");
+                    //System.out.println("The bounds for "+ hotspots.elementAt(q).getKeyCode() +" are: "+hsRect+ ". Is "+movableObjects.elementAt(i).getKeyCode() +" at: "+movableObjects.elementAt(i).pos.x+","+movableObjects.elementAt(i).pos.y+" in there?");
+                    //if (hotspots.elementAt(q).obj.contains(movableObjects.elementAt(i).obj.getBounds2D())) {
+                    if (hsRect.contains(mvRect)) {
+                        values.add(movableObjects.elementAt(i).getKeyCode()+":"+hotspots.elementAt(q).getKeyCode());
+                    }
+                }
+                //values.add(movableObjects.elementAt(i).getKeyCode()+":"+movableObjects.elementAt(i).pos.x+", "+movableObjects.elementAt(i).pos.y);
             }
         }else if(om.equals("gap_match_interaction"))
 		{
@@ -928,6 +970,8 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 						pair_add += " ";
 						pair_add += hotspots.elementAt(i).getKeyCode();
 						values.add(pair_add);
+						pair_add = "";
+						System.out.println("The pair we're adding is: "+pair_add);
 					}
 				}
 			}
@@ -937,7 +981,12 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 		    for (final String element : values)
     		    System.out.println("Got here! values is " + element);
 		}
-		return values;
+		if (values.size() > 0) {
+		    return values;
+		} else {
+		    values.add("");
+		    return values;
+		}
 	}
 
 
@@ -1062,6 +1111,11 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 	    		        space = this.getWidth() / (movCount/2)+1;
 	    		    }
 
+	    		    if (twoRows) {
+	    		        bottom = this.getHeight() - (maxHeight*2);
+	    		    } else {
+	    		        bottom = this.getHeight() - maxHeight;
+	    		    }
 	    			movableObjects = new Vector<MovableObject>();
 		    		for(int i=0; i<movCount; i++)
 		    		{
@@ -1245,6 +1299,13 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
                     mov = movableObjects.elementAt(i);
     	    repaint();
     	}
+
+    	if (om.equals("graphic_order_interaction")) {
+    	    for (int g=0; g < hotspots.size(); g++) {
+    	        final Graphics gr = this.getGraphics();
+    	        gr.drawRect(hotspots.elementAt(g).coords[0],hotspots.elementAt(g).coords[1],hotspots.elementAt(g).coords[2],hotspots.elementAt(g).coords[3]);
+    	    }
+    	}
     }
 
     /*
@@ -1335,7 +1396,6 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 	    	 					final MovableObject copy = mov.lightClone();
 	    	 					copy.resetPos();
 	    	 					movableObjects.add(copy);
-	    	 					System.out.println("maxsize is 0 or something");
 	    	 				}
 	 					 }
     	 			 }
