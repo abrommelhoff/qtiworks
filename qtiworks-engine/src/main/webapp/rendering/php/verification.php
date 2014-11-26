@@ -39,6 +39,6 @@ if (!$getResponse) {
 		echo '</td><tr>';
 	}
 	echo '</table>';
-}
+} 
 
 ?>
