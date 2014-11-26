@@ -682,7 +682,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
                 }
                 g.drawImage(alphaImg, pos.x-(enclose.width/2), pos.y-(enclose.height/2), null);
                 */
-                g.drawImage((Image)label, pos.x, pos.y, null);
+                g.drawImage((Image)label, pos.x-(enclose.width/2), pos.y-(enclose.height/2), null);
                 //System.out.println("x: "+pos.x+", y: "+pos.y);
             }
 		}
@@ -1299,13 +1299,6 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
                     mov = movableObjects.elementAt(i);
     	    repaint();
     	}
-
-    	if (om.equals("graphic_order_interaction")) {
-    	    for (int g=0; g < hotspots.size(); g++) {
-    	        final Graphics gr = this.getGraphics();
-    	        gr.drawRect(hotspots.elementAt(g).coords[0],hotspots.elementAt(g).coords[1],hotspots.elementAt(g).coords[2],hotspots.elementAt(g).coords[3]);
-    	    }
-    	}
     }
 
     /*
@@ -1488,6 +1481,12 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
             }
 
             g.drawImage(offScreenImg, 0, 0, this);
+
+            /*if (om.equals("figure_placement_interaction")) {
+                for (int h=0; h < hotspots.size(); h++) {
+                    g.drawRect(hotspots.elementAt(h).coords[0],hotspots.elementAt(h).coords[1],hotspots.elementAt(h).coords[2],hotspots.elementAt(h).coords[3]);
+                }
+            }*/
         }
         catch(final Exception exception)
         {
