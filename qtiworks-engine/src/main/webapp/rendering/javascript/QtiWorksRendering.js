@@ -599,11 +599,13 @@ var QtiWorksRendering = (function() {
 			var res = $("input[name='previousResponses']").attr("value");
 
 			// parse values
-			var res2 = res.replace('points:', '').replace('lines:', '')
+			/*var res2 = res.replace('points:', '').replace('lines:', '')
 					.replace('linesegs:', '').replace('rays:', '').replace(
-							'angles:', '');
-			var resValues = res2.split("/");
+							'angles:', '');*/
+			var resValues = res.split("/");
 			var ptsValues = resValues[0].split(";");
+			// ptsValues is always first
+			ptsValues[0] = ptsValues[0].replace('points:', '');
 			for (var a = 0; a < ptsValues.length; a++) {
 				var pt = ptsValues[a];
 				var coord = pt.split(",");
@@ -632,7 +634,7 @@ var QtiWorksRendering = (function() {
 			if (resValues.length > 1) {
 				var index = 1;
 				for (var index = 1; index < resValues.length; index++) {
-					switch (index) {
+					/*switch (index) {
 					case 1:
 						mode = 'line';
 						break;
@@ -645,46 +647,63 @@ var QtiWorksRendering = (function() {
 					default:
 						mode = 'angle';
 						break;
+					}*/
+					if (resValues[index].indexOf("linePoints:") > -1) {
+						resValues[index] = resValues[index].replace("linePoints:","");
+						mode = 'line';
+					} else if (resValues[index].indexOf("linesegPoints:") > -1) {
+						resValues[index] = resValues[index].replace("linesegPoints:","");
+						mode = 'lineseg';
+					} else if (resValues[index].indexOf("rayPoints:") > -1) {
+						resValues[index] = resValues[index].replace("rayPoints:","");
+						mode = 'ray';
+					} else if (resValues[index].indexOf("anglePoints:") > -1) {
+						resValues[index] = resValues[index].replace("anglePoints:","");
+						mode = 'angle';
+					} else {
+						mode = 'invalid';
 					}
-					var lnsValues = resValues[index].split(";");
-					for (var b = 0; b < lnsValues.length; b++) {
-						ptArr = lnsValues[b].split("_");
-						for (var c = 0; c < ptArr.length; c++) {
-							if (c == 0) {
-								coord1 = ptArr[c];
-							} else if (c == 1) {
-								coord2 = ptArr[c];
-							} else {
-								coord3 = ptArr[c];
+					if (mode != 'invalid') {
+						var lnsValues = resValues[index].split(";");
+						for (var b = 0; b < lnsValues.length; b++) {
+							ptArr = lnsValues[b].split("_");
+							for (var c = 0; c < ptArr.length; c++) {
+								if (c == 0) {
+									coord1 = ptArr[c];
+								} else if (c == 1) {
+									coord2 = ptArr[c];
+								} else {
+									coord3 = ptArr[c];
+								}
 							}
-						}
-						var x1 = parseInt(coord1.split(",")[0]);
-						var y1 = parseInt(coord1.split(",")[1]);
-						var x2 = parseInt(coord2.split(",")[0]);
-						var y2 = parseInt(coord2.split(",")[1]);
-						var x3, y3;
-						if (mode == 'angle') {
-							x3 = parseInt(coord3.split(",")[0]);
-							y3 = parseInt(coord3.split(",")[1]);
-						}
-
-						if (!isNaN(x1) && !isNaN(y1) && !isNaN(x2)
-								&& !isNaN(y2) && mode != 'angle') {
-							var newLine = board.create('line', [ [ x1, y1 ],
-									[ x2, y2 ] ], {
-								firstArrow : mode == 'line',
-								lastArrow : mode == 'ray' || mode == 'line',
-								straightFirst : mode == 'line',
-								straightLast : mode == 'ray' || mode == 'line',
-								strokeColor : '#00ff00',
-								strokeWidth : 2
-							});
-							resPtsSelected = [];
-						} else if (mode == 'angle') {
-							var alpha = board.create('angle', [ [ x1, y1 ],
-									[ x2, y2 ], [ x3, y3 ] ], {
-								radius : 3
-							});
+							var x1 = parseInt(coord1.split(",")[0]);
+							var y1 = parseInt(coord1.split(",")[1]);
+							var x2 = parseInt(coord2.split(",")[0]);
+							var y2 = parseInt(coord2.split(",")[1]);
+							var x3, y3;
+							if (mode == 'angle') {
+								x3 = parseInt(coord3.split(",")[0]);
+								y3 = parseInt(coord3.split(",")[1]);
+							}
+	
+							if (!isNaN(x1) && !isNaN(y1) && !isNaN(x2)
+									&& !isNaN(y2) && mode != 'angle') {
+								var newLine = board.create('line', [ [ x1, y1 ],
+										[ x2, y2 ] ], {
+									firstArrow : mode == 'line',
+									lastArrow : mode == 'ray' || mode == 'line',
+									straightFirst : mode == 'line',
+									straightLast : mode == 'ray' || mode == 'line',
+									strokeColor : '#00ff00',
+									strokeWidth : 2
+								});
+								resPtsSelected = [];
+							} else if (mode == 'angle') {
+								var alpha = board.create('angle', [ [ x1, y1 ],
+										[ x2, y2 ], [ x3, y3 ] ], {
+									radius : 3
+								});
+							}
 						}
 					}
 				}
@@ -1064,11 +1083,17 @@ var QtiWorksRendering = (function() {
 					m = Infinity;
 				}
 				if (m != Infinity) {
-					var yint = y1 - (m * x1);
-	
-					linePointValues += x1.toString() + "," + y1.toString() + "_"
-							+ x2.toString() + "," + y2.toString() + ";";
-					linesValues += "y=" + m.toString() + "x+" + yint.toString() + ";";
+					if (Math.abs(m) > 20) {
+						linePointValues += x1.toString() + "," + y1.toString() + "_"
+						+ x2.toString() + "," + y2.toString() + ";";
+						linesValues += "x=" + Infinity.toString() + x1.toString() + ";";
+					} else {
+						var yint = y1 - (m * x1);
+		
+						linePointValues += x1.toString() + "," + y1.toString() + "_"
+								+ x2.toString() + "," + y2.toString() + ";";
+						linesValues += "y=" + Math.round(m).toString() + "x+" + Math.round(yint).toString() + ";";
+					}
 				} else {
 					linePointValues += x1.toString() + "," + y1.toString() + "_"
 					+ x2.toString() + "," + y2.toString() + ";";
@@ -1098,6 +1123,9 @@ var QtiWorksRendering = (function() {
 			}
 			if (linesValues == "/lines:") {
 				linesValues = "";
+			}
+			if (linePointValues == "/linePoints:") {
+				linePointValues = "";
 			}
 			if (lineParaCount > 0) {
 				lineMetaString += lineParaCount.toString()+";parallel;line";
@@ -1132,17 +1160,22 @@ var QtiWorksRendering = (function() {
 					var x2c = board.objects[lineSegmentsCreated[i]].point2.XEval();
 					var y2c = board.objects[lineSegmentsCreated[i]].point2.YEval();
 					var mc = (y2c - y1c) / (x2c - x1c);
-					if (mc == m) {
-						linesegParaCount++;
-					} else if (mc == (m * -1)) {
-						linesegPerpCount++;
-					} else {
-						// nothing special here, move along!
+					if (i != c) {
+						if (mc == m) {
+							linesegParaCount++;
+						} else if (mc == (m * -1)) {
+							linesegPerpCount++;
+						} else {
+							// nothing special here, move along!
+						}
 					}
 				}
 			}
 			if (lineSegValues == "/linesegs:") {
 				lineSegValues = "";
+			}
+			if (lineSegPointValues == "/linesegPoints:") {
+				lineSegPointValues = "";
 			}
 			if (linesegParaCount > 0) {
 				linesegMetaString += linesegParaCount.toString()+";parallel;";
@@ -1187,6 +1220,9 @@ var QtiWorksRendering = (function() {
 			}
 			if (rayValues == "/rays:") {
 				rayValues = "";
+			}
+			if (rayPointValues == "/rayPoints:") {
+				rayPointValues = "";
 			}
 			if (rayParaCount > 0) {
 				rayMetaString += rayParaCount.toString()+";parallel;";
