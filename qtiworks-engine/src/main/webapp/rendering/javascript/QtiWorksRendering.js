@@ -1086,7 +1086,7 @@ var QtiWorksRendering = (function() {
 					if (Math.abs(m) > 20) {
 						linePointValues += x1.toString() + "," + y1.toString() + "_"
 						+ x2.toString() + "," + y2.toString() + ";";
-						linesValues += "x=" + Infinity.toString() + x1.toString() + ";";
+						linesValues += "x=" + Math.round(x1).toString() + ";";
 					} else {
 						var yint = y1 - (m * x1);
 		
@@ -1097,7 +1097,7 @@ var QtiWorksRendering = (function() {
 				} else {
 					linePointValues += x1.toString() + "," + y1.toString() + "_"
 					+ x2.toString() + "," + y2.toString() + ";";
-					linesValues += "x=" + m.toString() + x1.toString() + ";";
+					linesValues += "x=" + Math.round(x1).toString() + ";";
 				}
 				
 				for (var i = 0; i < linesCreated.length; i++) {
@@ -1147,12 +1147,30 @@ var QtiWorksRendering = (function() {
 				var sx2 = board.objects[lineSegmentsCreated[c]].point2.XEval();
 				var sy2 = board.objects[lineSegmentsCreated[c]].point2.YEval();
 				// let's calculate the slope
-				var m = (sy2 - sy1) / (sx2 - sx1);
-				var b = sy1 - (m * sx1);
-				lineSegPointValues += sx1.toString() + "," + sy1.toString()
-						+ "_" + sx2.toString() + "," + sy2.toString() + ";";
-				lineSegValues += "y=" + m.toString() + "x+" + b.toString()
-						+ ";";
+				var m;
+				if (sx2 - sx1 != 0) {
+					m = (sy2 - sy1) / (sx2 - sx1);
+				} else {
+					m = Infinity;
+				}
+				
+				if (m != Infinity) {
+					if (Math.abs(m) > 20) {
+						lineSegPointValues += sx1.toString() + "," + sy1.toString() + "_"
+						+ sx2.toString() + "," + sy2.toString() + ";";
+						lineSegValues += "x=" + Infinity.toString() + sx1.toString() + ";";
+					} else {
+						var yint = sy1 - (m * sx1);
+		
+						lineSegPointValues += sx1.toString() + "," + sy1.toString() + "_"
+								+ sx2.toString() + "," + sy2.toString() + ";";
+						lineSegValues += "y=" + Math.round(m).toString() + "x+" + Math.round(yint).toString() + ";";
+					}
+				} else {
+					lineSegPointValues += sx1.toString() + "," + sy1.toString() + "_"
+					+ sx2.toString() + "," + sy2.toString() + ";";
+					lineSegValues += "x=" + m.toString() + sx1.toString() + ";";
+				}
 				
 				for (var i = 0; i < lineSegmentsCreated.length; i++) {
 					var x1c = board.objects[lineSegmentsCreated[i]].point1.XEval();
@@ -1163,7 +1181,7 @@ var QtiWorksRendering = (function() {
 					if (i != c) {
 						if (mc == m) {
 							linesegParaCount++;
-						} else if (mc == (m * -1)) {
+						} else if ((mc == (m * -1)) || (mc == Infinity && m == 0)) {
 							linesegPerpCount++;
 						} else {
 							// nothing special here, move along!
@@ -1253,12 +1271,16 @@ var QtiWorksRendering = (function() {
 			for (var f = 0; f< angleTypes.length; f++) {
 				angleTypeValues += angleTypes[f].toString() + ";";
 			}
+			
+			// this is the "potential" number of sides of any potential shapes
+			var shapeSideString = "/shapeSides:";
+			shapeSideString += lineSegmentsCreated.length;
+			
 			// we'll append the "point" value strings to the end for response
 			// re-creation.
 			inputElementQuery.get(0).value = ptsValues + linesValues
 					+ lineSegValues + rayValues + angleValues + angleTypeValues + linePointValues
-					+ lineSegPointValues + rayPointValues + lineMetaString + linesegMetaString + rayMetaString;
-			// TODO: add additional meta strings for the other geometric types.
+					+ lineSegPointValues + rayPointValues + lineMetaString + linesegMetaString + rayMetaString + shapeSideString;
 		}, remove = function(e) {
 			var i, newcoords, el;
 
