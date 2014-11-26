@@ -185,7 +185,7 @@ public class CandidateItemDeliveryService extends CandidateServiceBase {
         return candidateSession;
     }
 
-    //----------------------------------------------------
+    //---------------------------------------------------
     // Response handling
 
     public CandidateSession handleResponses(final CandidateSessionContext candidateSessionContext,

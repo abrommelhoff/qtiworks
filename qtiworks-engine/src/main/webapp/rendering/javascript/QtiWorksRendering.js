@@ -506,6 +506,8 @@ var QtiWorksRendering = (function() {
 		var raysCreated = [];
 		var lineSegmentsCreated = [];
 		var anglesCreated = [];
+		var angleMeasures = [];
+		var angleTypes = [];
 		var isSnapTo = false;
 		var maxChoices = 0;
 		var interaction = this;
@@ -597,11 +599,13 @@ var QtiWorksRendering = (function() {
 			var res = $("input[name='previousResponses']").attr("value");
 
 			// parse values
-			var res2 = res.replace('points:', '').replace('lines:', '')
+			/*var res2 = res.replace('points:', '').replace('lines:', '')
 					.replace('linesegs:', '').replace('rays:', '').replace(
-							'angles:', '');
-			var resValues = res2.split("/");
+							'angles:', '');*/
+			var resValues = res.split("/");
 			var ptsValues = resValues[0].split(";");
+			// ptsValues is always first
+			ptsValues[0] = ptsValues[0].replace('points:', '');
 			for (var a = 0; a < ptsValues.length; a++) {
 				var pt = ptsValues[a];
 				var coord = pt.split(",");
@@ -630,7 +634,7 @@ var QtiWorksRendering = (function() {
 			if (resValues.length > 1) {
 				var index = 1;
 				for (var index = 1; index < resValues.length; index++) {
-					switch (index) {
+					/*switch (index) {
 					case 1:
 						mode = 'line';
 						break;
@@ -643,46 +647,63 @@ var QtiWorksRendering = (function() {
 					default:
 						mode = 'angle';
 						break;
+					}*/
+					if (resValues[index].indexOf("linePoints:") > -1) {
+						resValues[index] = resValues[index].replace("linePoints:","");
+						mode = 'line';
+					} else if (resValues[index].indexOf("linesegPoints:") > -1) {
+						resValues[index] = resValues[index].replace("linesegPoints:","");
+						mode = 'lineseg';
+					} else if (resValues[index].indexOf("rayPoints:") > -1) {
+						resValues[index] = resValues[index].replace("rayPoints:","");
+						mode = 'ray';
+					} else if (resValues[index].indexOf("anglePoints:") > -1) {
+						resValues[index] = resValues[index].replace("anglePoints:","");
+						mode = 'angle';
+					} else {
+						mode = 'invalid';
 					}
-					var lnsValues = resValues[index].split(";");
-					for (var b = 0; b < lnsValues.length; b++) {
-						ptArr = lnsValues[b].split("_");
-						for (var c = 0; c < ptArr.length; c++) {
-							if (c == 0) {
-								coord1 = ptArr[c];
-							} else if (c == 1) {
-								coord2 = ptArr[c];
-							} else {
-								coord3 = ptArr[c];
+					if (mode != 'invalid') {
+						var lnsValues = resValues[index].split(";");
+						for (var b = 0; b < lnsValues.length; b++) {
+							ptArr = lnsValues[b].split("_");
+							for (var c = 0; c < ptArr.length; c++) {
+								if (c == 0) {
+									coord1 = ptArr[c];
+								} else if (c == 1) {
+									coord2 = ptArr[c];
+								} else {
+									coord3 = ptArr[c];
+								}
 							}
-						}
-						var x1 = parseInt(coord1.split(",")[0]);
-						var y1 = parseInt(coord1.split(",")[1]);
-						var x2 = parseInt(coord2.split(",")[0]);
-						var y2 = parseInt(coord2.split(",")[1]);
-						var x3, y3;
-						if (mode == 'angle') {
-							x3 = parseInt(coord3.split(",")[0]);
-							y3 = parseInt(coord3.split(",")[1]);
-						}
-
-						if (!isNaN(x1) && !isNaN(y1) && !isNaN(x2)
-								&& !isNaN(y2) && mode != 'angle') {
-							var newLine = board.create('line', [ [ x1, y1 ],
-									[ x2, y2 ] ], {
-								firstArrow : mode == 'line',
-								lastArrow : mode == 'ray' || mode == 'line',
-								straightFirst : mode == 'line',
-								straightLast : mode == 'ray' || mode == 'line',
-								strokeColor : '#00ff00',
-								strokeWidth : 2
-							});
-							resPtsSelected = [];
-						} else if (mode == 'angle') {
-							var alpha = board.create('angle', [ [ x1, y1 ],
-									[ x2, y2 ], [ x3, y3 ] ], {
-								radius : 3
-							});
+							var x1 = parseInt(coord1.split(",")[0]);
+							var y1 = parseInt(coord1.split(",")[1]);
+							var x2 = parseInt(coord2.split(",")[0]);
+							var y2 = parseInt(coord2.split(",")[1]);
+							var x3, y3;
+							if (mode == 'angle') {
+								x3 = parseInt(coord3.split(",")[0]);
+								y3 = parseInt(coord3.split(",")[1]);
+							}
+	
+							if (!isNaN(x1) && !isNaN(y1) && !isNaN(x2)
+									&& !isNaN(y2) && mode != 'angle') {
+								var newLine = board.create('line', [ [ x1, y1 ],
+										[ x2, y2 ] ], {
+									firstArrow : mode == 'line',
+									lastArrow : mode == 'ray' || mode == 'line',
+									straightFirst : mode == 'line',
+									straightLast : mode == 'ray' || mode == 'line',
+									strokeColor : '#00ff00',
+									strokeWidth : 2
+								});
+								resPtsSelected = [];
+							} else if (mode == 'angle') {
+								var alpha = board.create('angle', [ [ x1, y1 ],
+										[ x2, y2 ], [ x3, y3 ] ], {
+									radius : 3
+								});
+							}
 						}
 					}
 				}
@@ -866,8 +887,72 @@ var QtiWorksRendering = (function() {
 					linesCreated.push(newLine.id);
 				} else if (mode == 'ray') {
 					raysCreated.push(newLine.id);
+					// if there are two of these, get the angle
+					if (raysCreated.length >= 2) {
+						var ray1pt1x = parseInt(board.objects[raysCreated[0]].point1.XEval());
+						var ray1pt1y = parseInt(board.objects[raysCreated[0]].point1.YEval());
+						var ray1pt2x = parseInt(board.objects[raysCreated[0]].point2.XEval());
+						var ray1pt2y = parseInt(board.objects[raysCreated[0]].point2.YEval());
+						var ray2pt1x = parseInt(board.objects[raysCreated[1]].point1.XEval());
+						var ray2pt1y = parseInt(board.objects[raysCreated[1]].point1.YEval());
+						var ray2pt2x = parseInt(board.objects[raysCreated[1]].point2.XEval());
+						var ray2pt2y = parseInt(board.objects[raysCreated[1]].point2.YEval());
+						if ((ray1pt1x == ray2pt1x) && (ray1pt1y == ray2pt1y)) {
+							var theAngle = JXG.Math.Geometry.trueAngle([ray1pt2x,ray1pt2y],[ray1pt1x, ray1pt1y],[ray2pt2x,ray2pt2y]);
+							if (theAngle > 180) {
+								theAngle = 360 - theAngle;
+							}
+							angleMeasures.push(theAngle);
+							if (theAngle > 90) {
+								angleTypes.push("obtuse");
+							} else if (theAngle < 90) {
+								angleTypes.push("acute");
+							} else {
+								angleTypes.push("right");
+							}
+						}
+					}
+					
 				} else {
 					lineSegmentsCreated.push(newLine.id);
+					// if there are two of these, get the angle
+					if (lineSegmentsCreated.length >= 2) {
+						var ray1pt1x = parseInt(board.objects[lineSegmentsCreated[0]].point1.XEval());
+						var ray1pt1y = parseInt(board.objects[lineSegmentsCreated[0]].point1.YEval());
+						var ray1pt2x = parseInt(board.objects[lineSegmentsCreated[0]].point2.XEval());
+						var ray1pt2y = parseInt(board.objects[lineSegmentsCreated[0]].point2.YEval());
+						var ray2pt1x = parseInt(board.objects[lineSegmentsCreated[1]].point1.XEval());
+						var ray2pt1y = parseInt(board.objects[lineSegmentsCreated[1]].point1.YEval());
+						var ray2pt2x = parseInt(board.objects[lineSegmentsCreated[1]].point2.XEval());
+						var ray2pt2y = parseInt(board.objects[lineSegmentsCreated[1]].point2.YEval());
+						if ((ray1pt1x == ray2pt1x) && (ray1pt1y == ray2pt1y)) {
+							var theAngle = JXG.Math.Geometry.trueAngle([ray1pt2x,ray1pt2y],[ray1pt1x, ray1pt1y],[ray2pt2x,ray2pt2y]);
+							if (theAngle > 180) {
+								theAngle = 360 - theAngle;
+							}
+							angleMeasures.push(theAngle);
+							if (theAngle > 90) {
+								angleTypes.push("obtuse");
+							} else if (theAngle < 90) {
+								angleTypes.push("acute");
+							} else {
+								angleTypes.push("right");
+							}
+						} else if ((ray1pt2x == ray2pt1x) && (ray1pt2y == ray2pt1y)) {
+							var theAngle = JXG.Math.Geometry.trueAngle([ray1pt1x, ray1pt1y],[ray1pt2x,ray1pt2y],[ray2pt2x,ray2pt2y]);
+							if (theAngle > 180) {
+								theAngle = 360 - theAngle;
+							}
+							angleMeasures.push(theAngle);
+							if (theAngle > 90) {
+								angleTypes.push("obtuse");
+							} else if (theAngle < 90) {
+								angleTypes.push("acute");
+							} else {
+								angleTypes.push("right");
+							}
+						}
+					}
 				}
 				ptsSelected = [];
 				setValue();
@@ -891,17 +976,22 @@ var QtiWorksRendering = (function() {
 					             					strokeWidth : 2
 					             				});
 				var alpha;
+				var an;
 				if (((board.objects[ptsSelected[1]].YEval() < board.objects[ptsSelected[0]].YEval()) && (board.objects[ptsSelected[1]].YEval() < board.objects[ptsSelected[2]].YEval()))) {
 					if (board.objects[ptsSelected[0]].XEval() > board.objects[ptsSelected[2]].XEval()) {
 						alpha = board.create('angle', [ ptsSelected[0],
 						    							ptsSelected[1], ptsSelected[2] ], {
 						    						radius : 3
 						    					});
+						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
+								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
 					} else {
 						alpha = board.create('angle', [ ptsSelected[2],
 						    							ptsSelected[1], ptsSelected[0] ], {
 						    						radius : 3
 						    					});
+						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()],
+								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()]);
 					}
 				}
 				else if (((board.objects[ptsSelected[1]].YEval() > board.objects[ptsSelected[0]].YEval()) && (board.objects[ptsSelected[1]].YEval() > board.objects[ptsSelected[2]].YEval()))) {
@@ -910,11 +1000,15 @@ var QtiWorksRendering = (function() {
 						    							ptsSelected[1], ptsSelected[0] ], {
 						    						radius : 3
 						    					});
+						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()],
+								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()]);
 					} else {
 						alpha = board.create('angle', [ ptsSelected[0],
 						    							ptsSelected[1], ptsSelected[2] ], {
 						    						radius : 3
 						    					});
+						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
+								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
 					}
 				}
 				else if (board.objects[ptsSelected[0]].XEval() < board.objects[ptsSelected[1]].XEval()) {
@@ -923,11 +1017,15 @@ var QtiWorksRendering = (function() {
 						    							ptsSelected[1], ptsSelected[2] ], {
 						    						radius : 3
 						    					});
+						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
+								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
 					} else {
 						alpha = board.create('angle', [ ptsSelected[2],
 								ptsSelected[1], ptsSelected[0] ], {
 							radius : 3
 						});
+						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()],
+								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()]);
 					}
 				} else {
 					if (board.objects[ptsSelected[0]].YEval() > board.objects[ptsSelected[2]].YEval()) {
@@ -935,15 +1033,27 @@ var QtiWorksRendering = (function() {
 						    							ptsSelected[1], ptsSelected[0] ], {
 						    						radius : 3
 						    					});
+						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()],
+								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()]);
 					} else {
 						alpha = board.create('angle', [ ptsSelected[0],
 								ptsSelected[1], ptsSelected[2] ], {
 							radius : 3
 						});
+						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
+								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
 					}
 				}
 				// linesCreated.push(alpha.id);
 				anglesCreated.push(alpha.id);
+				angleMeasures.push(an);
+				if (an > 90) {
+					angleTypes.push("obtuse");
+				} else if (an < 90) {
+					angleTypes.push("acute");
+				} else {
+					angleTypes.push("right");
+				}
 				ptsSelected = [];
 				setValue();
 			}
@@ -960,7 +1070,7 @@ var QtiWorksRendering = (function() {
 			var linePointValues = "/linePoints:";
 			var lineParaCount = 0;
 			var linePerpCount = 0;
-			var lineMetaString = "/lines:";
+			var lineMetaString = "/lineMeta:";
 			for (var b = 0; b < linesCreated.length; b++) {
 				var x1 = board.objects[linesCreated[b]].point1.XEval();
 				var y1 = board.objects[linesCreated[b]].point1.YEval();
@@ -970,13 +1080,25 @@ var QtiWorksRendering = (function() {
 				if (x2 - x1 != 0) {
 					var m = (y2 - y1) / (x2 - x1);
 				} else {
-					m = 0;
+					m = Infinity;
 				}
-				var yint = y1 - (m * x1);
-
-				linePointValues += x1.toString() + "," + y1.toString() + "_"
+				if (m != Infinity) {
+					if (Math.abs(m) > 20) {
+						linePointValues += x1.toString() + "," + y1.toString() + "_"
 						+ x2.toString() + "," + y2.toString() + ";";
-				linesValues += "y=" + m.toString() + "x+" + yint.toString() + ";";
+						linesValues += "x=" + Infinity.toString() + x1.toString() + ";";
+					} else {
+						var yint = y1 - (m * x1);
+		
+						linePointValues += x1.toString() + "," + y1.toString() + "_"
+								+ x2.toString() + "," + y2.toString() + ";";
+						linesValues += "y=" + Math.round(m).toString() + "x+" + Math.round(yint).toString() + ";";
+					}
+				} else {
+					linePointValues += x1.toString() + "," + y1.toString() + "_"
+					+ x2.toString() + "," + y2.toString() + ";";
+					linesValues += "x=" + m.toString() + x1.toString() + ";";
+				}
 				
 				for (var i = 0; i < linesCreated.length; i++) {
 					var x1c = board.objects[linesCreated[i]].point1.XEval();
@@ -986,12 +1108,12 @@ var QtiWorksRendering = (function() {
 					if (x2c - x1c != 0) {
 						var mc = (y2c - y1c) / (x2c - x1c);
 					} else {
-						mc = 0;
+						mc = Infinity;
 					}
 					if (i != b) {
 						if (mc == m) {
 							lineParaCount++;
-						} else if (mc == (m * -1)) {
+						} else if (mc == (m * -1) || (mc == Infinity && m == 0)) {
 							linePerpCount++;
 						} else {
 							// nothing special here, move along!
@@ -999,17 +1121,26 @@ var QtiWorksRendering = (function() {
 					}
 				}
 			}
+			if (linesValues == "/lines:") {
+				linesValues = "";
+			}
+			if (linePointValues == "/linePoints:") {
+				linePointValues = "";
+			}
 			if (lineParaCount > 0) {
 				lineMetaString += lineParaCount.toString()+";parallel;line";
 			}
 			if (linePerpCount > 0) {
 				lineMetaString += linePerpCount.toString()+";perpendicular;line";
 			}
+			if (lineMetaString == "/lineMeta:") {
+				lineMetaString = "";
+			}
 			var lineSegValues = "/linesegs:";
 			var lineSegPointValues = "/linesegPoints:";
 			var linesegParaCount = 0;
 			var linesegPerpCount = 0;
-			var linesegMetaString = "/linesegs:";
+			var linesegMetaString = "/linesegMeta:";
 			for (var c = 0; c < lineSegmentsCreated.length; c++) {
 				var sx1 = board.objects[lineSegmentsCreated[c]].point1.XEval();
 				var sy1 = board.objects[lineSegmentsCreated[c]].point1.YEval();
@@ -1029,14 +1160,22 @@ var QtiWorksRendering = (function() {
 					var x2c = board.objects[lineSegmentsCreated[i]].point2.XEval();
 					var y2c = board.objects[lineSegmentsCreated[i]].point2.YEval();
 					var mc = (y2c - y1c) / (x2c - x1c);
-					if (mc == m) {
-						linesegParaCount++;
-					} else if (mc == (m * -1)) {
-						linesegPerpCount++;
-					} else {
-						// nothing special here, move along!
+					if (i != c) {
+						if (mc == m) {
+							linesegParaCount++;
+						} else if (mc == (m * -1)) {
+							linesegPerpCount++;
+						} else {
+							// nothing special here, move along!
+						}
 					}
 				}
+			}
+			if (lineSegValues == "/linesegs:") {
+				lineSegValues = "";
+			}
+			if (lineSegPointValues == "/linesegPoints:") {
+				lineSegPointValues = "";
 			}
 			if (linesegParaCount > 0) {
 				linesegMetaString += linesegParaCount.toString()+";parallel;";
@@ -1044,11 +1183,14 @@ var QtiWorksRendering = (function() {
 			if (linesegPerpCount > 0) {
 				linesegMetaString += linesegPerpCount.toString()+";perpendicular;";
 			}
+			if (linesegMetaString == "/linesegMeta:") {
+				linesegMetaString = "";
+			}
 			var rayValues = "/rays:";
 			var rayPointValues = "/rayPoints:";
 			var rayParaCount = 0;
 			var rayPerpCount = 0;
-			var rayMetaString = "/rays:";
+			var rayMetaString = "/rayMeta:";
 			for (var d = 0; d < raysCreated.length; d++) {
 				var rx1 = board.objects[raysCreated[d]].point1.XEval();
 				var ry1 = board.objects[raysCreated[d]].point1.YEval();
@@ -1076,15 +1218,24 @@ var QtiWorksRendering = (function() {
 					}
 				}
 			}
+			if (rayValues == "/rays:") {
+				rayValues = "";
+			}
+			if (rayPointValues == "/rayPoints:") {
+				rayPointValues = "";
+			}
 			if (rayParaCount > 0) {
 				rayMetaString += rayParaCount.toString()+";parallel;";
 			}
 			if (rayPerpCount > 0) {
 				rayMetaString += rayPerpCount.toString()+";perpendicular;";
 			}
-			var angleValues = "/angles:"
-			for (var e = 0; e < anglesCreated.length; e++) {
-				var ax1 = board.objects[anglesCreated[e]].point1.XEval();
+			if (rayMetaString == "/rayMeta:") {
+				rayMetaString = "";
+			}
+			var angleValues = "/angles:";
+			for (var e = 0; e < angleMeasures.length; e++) {
+				/*var ax1 = board.objects[anglesCreated[e]].point1.XEval();
 				var ay1 = board.objects[anglesCreated[e]].point1.YEval();
 				var ax2 = board.objects[anglesCreated[e]].point2.XEval();
 				var ay2 = board.objects[anglesCreated[e]].point2.YEval();
@@ -1092,13 +1243,21 @@ var QtiWorksRendering = (function() {
 				var ay3 = board.objects[anglesCreated[e]].point3.YEval();
 				angleValues += ax1.toString() + "," + ay1.toString() + "_"
 						+ ax2.toString() + "," + ay2.toString() + "_"
-						+ ax3.toString() + "," + ay3.toString() + ";";
+						+ ax3.toString() + "," + ay3.toString() + ";";*/
+				angleValues += angleMeasures[e].toString() + ";";
+			}
+			if (angleValues == "/angles:") {
+				angleValues = "";
+			}
+			var angleTypeValues = "/angleTypes:";
+			for (var f = 0; f< angleTypes.length; f++) {
+				angleTypeValues += angleTypes[f].toString() + ";";
 			}
 			// we'll append the "point" value strings to the end for response
 			// re-creation.
 			inputElementQuery.get(0).value = ptsValues + linesValues
-					+ lineSegValues + rayValues + angleValues + linePointValues
-					+ lineSegPointValues + rayPointValues + lineMetaString;
+					+ lineSegValues + rayValues + angleValues + angleTypeValues + linePointValues
+					+ lineSegPointValues + rayPointValues + lineMetaString + linesegMetaString + rayMetaString;
 			// TODO: add additional meta strings for the other geometric types.
 		}, remove = function(e) {
 			var i, newcoords, el;
