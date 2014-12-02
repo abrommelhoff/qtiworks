@@ -17,11 +17,13 @@
   	</html>
     <p/>
       <input name="qtiworks_presented_{@responseIdentifier}" type="hidden" value="1"/>
-	  <input type="radio" name="drawingMode" id="plotPoint" value="plotPoint" checked="checked"/>Plot a Point<input type="radio" name="drawingMode" id="drawline" value="drawline"/>Draw a Line<input type="radio" name="drawingMode" id="drawlineseg" value="drawlineseg"/>Draw a Line Segment<input type="radio" name="drawingMode" id="drawray" value="drawray"/>Draw a Ray<input type="radio" name="drawingMode" id="drawangle" value="drawangle"/>Draw an Angle<br/>
+	  <input type="radio" name="drawingMode" id="plotPoint" value="plotPoint" checked="checked"/>Plot a Point<input type="radio" name="drawingMode" id="drawline" value="drawline"/>Draw a Line<input type="radio" name="drawingMode" id="drawlineseg" value="drawlineseg"/>Draw a Line Segment<input type="radio" name="drawingMode" id="drawray" value="drawray"/>Draw a Ray<input type="radio" name="drawingMode" id="drawangle" value="drawangle"/>Draw an Angle<input type="radio" name="drawingMode" id="drawshape" value="drawshape"/>Draw a Shape<br/>
+	  <input type="button" id="connectPoints" value="Connect Points"/>
 	  <span id="linedirections">Click two points between which to draw a line</span>
 	  <span id="linesegdirections">Click two points between which to draw a line</span>
 	  <span id="raydirections">Click two points between which to draw a ray</span>
 	  <span id="angledirections">Click three points by which to construct an angle</span>
+	  <span id="shapedirections">Click any number points by which to construct an shape, then click Connect Points to draw the figure.</span>
 	  <xsl:for-each select="gdi:object">
 	  	<jsObject type="gridImg" name="movable_object{position()-1}" data="{qw:convert-link(@data)}" height="{@height}" width="{@width}" x="{@x}" y="{@y}"/>
       </xsl:for-each>

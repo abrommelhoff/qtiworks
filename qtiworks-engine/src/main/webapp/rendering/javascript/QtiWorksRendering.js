@@ -508,6 +508,8 @@ var QtiWorksRendering = (function() {
 		var anglesCreated = [];
 		var angleMeasures = [];
 		var angleTypes = [];
+		var shapesCreated = [];
+		var shapePointValues = "/shapePoints:";
 		var isSnapTo = false;
 		var maxChoices = 0;
 		var interaction = this;
@@ -594,6 +596,8 @@ var QtiWorksRendering = (function() {
 		$('#linesegdirections').hide();
 		$('#raydirections').hide();
 		$('#angledirections').hide();
+		$('#shapedirections').hide();
+		$('#connectPoints').hide();
 		// restore any responses
 		function getValue() {
 			var res = $("input[name='previousResponses']").attr("value");
@@ -631,6 +635,7 @@ var QtiWorksRendering = (function() {
 			var coord1;
 			var coord2 = "";
 			var coord3 = "";
+			var coord4 = "";
 			if (resValues.length > 1) {
 				var index = 1;
 				for (var index = 1; index < resValues.length; index++) {
@@ -660,7 +665,11 @@ var QtiWorksRendering = (function() {
 					} else if (resValues[index].indexOf("anglePoints:") > -1) {
 						resValues[index] = resValues[index].replace("anglePoints:","");
 						mode = 'angle';
-					} else {
+					} else if (resValues[index].indexOf("shapePoints:") > -1) {
+						resValues[index] = resValues[index].replace("shapePoints:","");
+						mode = 'shape';
+					}
+					else {
 						mode = 'invalid';
 					}
 					if (mode != 'invalid') {
@@ -672,8 +681,10 @@ var QtiWorksRendering = (function() {
 									coord1 = ptArr[c];
 								} else if (c == 1) {
 									coord2 = ptArr[c];
-								} else {
+								} else if (c == 3) {
 									coord3 = ptArr[c];
+								} else {
+									coord4 = ptArr[c];
 								}
 							}
 							var x1 = parseInt(coord1.split(",")[0]);
@@ -681,13 +692,18 @@ var QtiWorksRendering = (function() {
 							var x2 = parseInt(coord2.split(",")[0]);
 							var y2 = parseInt(coord2.split(",")[1]);
 							var x3, y3;
-							if (mode == 'angle') {
+							if ( (mode == 'angle') || (mode == 'shape') ) {
 								x3 = parseInt(coord3.split(",")[0]);
 								y3 = parseInt(coord3.split(",")[1]);
 							}
+							var x4, y4;
+							if ( coord4 != "") {
+								x4 = parseInt(coord4.split(",")[0]);
+								y4 = parseInt(coord4.split(",")[1]); 
+							}
 	
 							if (!isNaN(x1) && !isNaN(y1) && !isNaN(x2)
-									&& !isNaN(y2) && mode != 'angle') {
+									&& !isNaN(y2) && mode != 'angle' && mode != 'shape') {
 								var newLine = board.create('line', [ [ x1, y1 ],
 										[ x2, y2 ] ], {
 									firstArrow : mode == 'line',
@@ -703,6 +719,17 @@ var QtiWorksRendering = (function() {
 										[ x2, y2 ], [ x3, y3 ] ], {
 									radius : 3
 								});
+							} else if (mode == 'shape') {
+								var poly;
+								if (coord4 != "") {
+									poly = board.create('polygon', [ board.create('point',[ x1, y1 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
+									                                 board.create('point',[ x2, y2 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}), 
+									                                 board.create('point',[ x4, y4 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}), 
+									                                 board.create('point',[ x3, y3 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}) ]);
+								} else {
+									poly = board.create('polygon', [ [ x1, y1 ],
+																		[ x2, y2 ], [ x3, y3 ] ]);
+								}
 							}
 						}
 					}
@@ -728,12 +755,26 @@ var QtiWorksRendering = (function() {
 				alert('You have a strange mouse');
 			}
 		});
+		$('#connectPoints').click(function () {
+			var poly = board.create('polygon', ptsSelected);
+			for (var c = 0; c < ptsSelected.length; c++) {
+				shapePointValues += ptsSelected[c].XEval() + "," + ptsSelected[c].YEval();
+				if (c != ptsSelected.length - 1) {
+					shapePointValues += "_";
+				}
+			}
+			shapePointValues += ";";
+			shapesCreated.push(poly);
+			setValue();
+		});
 		$('#plotPoint').click(function() {
 			mode = this.checked ? 'point' : 'point';
 			$('#linesegdirections').toggle(false);
 			$("#raydirections").toggle(false);
 			$('#linedirections').toggle(false);
 			$('#angledirections').toggle(false);
+			$('#shapedirections').toggle(false);
+			$('connectPoints').toggle(false);
 		});
 		$('#drawline').click(function() {
 			$('#linedirections').toggle(this.checked);
@@ -741,6 +782,8 @@ var QtiWorksRendering = (function() {
 			$('#linesegdirections').toggle(false);
 			$("#raydirections").toggle(false);
 			$('#angledirections').toggle(false);
+			$('#shapedirections').toggle(false);
+			$('connectPoints').toggle(false);
 			ptsSelected = [];
 
 		});
@@ -750,6 +793,8 @@ var QtiWorksRendering = (function() {
 			$("#raydirections").toggle(false);
 			$('#linedirections').toggle(false);
 			$('#angledirections').toggle(false);
+			$('#shapedirections').toggle(false);
+			$('connectPoints').toggle(false);
 			ptsSelected = [];
 
 		});
@@ -759,6 +804,8 @@ var QtiWorksRendering = (function() {
 			$('#linedirections').toggle(false);
 			$('#linesegdirections').toggle(false);
 			$('#angledirections').toggle(false);
+			$('#shapedirections').toggle(false);
+			$('connectPoints').toggle(false);
 			ptsSelected = [];
 
 		});
@@ -768,6 +815,18 @@ var QtiWorksRendering = (function() {
 			$('#linedirections').toggle(false);
 			$('#linesegdirections').toggle(false);
 			$("#raydirections").toggle(false);
+			$('#shapedirections').toggle(false);
+			$('connectPoints').toggle(false);
+			ptsSelected = [];
+		});
+		$('#drawshape').click(function() {
+			$('#shapedirections').toggle(this.checked);
+			$('#connectPoints').toggle(this.checked);
+			mode = this.checked ? 'shape' : 'point';
+			$('#linedirections').toggle(false);
+			$('#linesegdirections').toggle(false);
+			$("#raydirections").toggle(false);
+			$('#angledirections').toggle(false);
 			ptsSelected = [];
 		});
 		$('#resetButton').click(function() {
@@ -873,7 +932,7 @@ var QtiWorksRendering = (function() {
 				ptsSelected.push(newPoint.id);
 				setValue();
 			}
-			if ((ptsSelected.length >= 2) && (mode != 'angle')) {
+			if ((ptsSelected.length >= 2) && (mode != 'angle') && (mode != 'shape')) {
 				var newLine = board.create('line', [ ptsSelected[0],
 						ptsSelected[1] ], {
 					firstArrow : mode == 'line',
@@ -1141,6 +1200,9 @@ var QtiWorksRendering = (function() {
 			var linesegParaCount = 0;
 			var linesegPerpCount = 0;
 			var linesegMetaString = "/linesegMeta:";
+			var shapeMetaString = "/shapeMeta:";
+			var shapeParaCount = 0;
+			var shapePerpCount = 0;
 			for (var c = 0; c < lineSegmentsCreated.length; c++) {
 				var sx1 = board.objects[lineSegmentsCreated[c]].point1.XEval();
 				var sy1 = board.objects[lineSegmentsCreated[c]].point1.YEval();
@@ -1276,12 +1338,50 @@ var QtiWorksRendering = (function() {
 			var shapeSideString = "/shapeSides:";
 			shapeSideString += lineSegmentsCreated.length;
 			
+			// get some shape data!
+			var pgCount = 0;
+			var tris = 0;
+			var quads = 0;
+			for (var g = 0; g < shapesCreated.length; g++) {
+				if (shapesCreated[g].borders.length == 3) {
+					// get triangle data
+					if (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[1].L() == shapesCreated[g].borders[2].L()) {
+						// equilateral :)
+					} else if ( (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[1].L()) || (shapesCreated[g].borders[1].L() == shapesCreated[g].borders[2].L()) || (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[2].L()) ) {
+						// isoceles :|
+					} else {
+						// scalene :(
+					}
+				} else if (shapesCreated[g].borders.length == 4) {
+					// get quadrilateral data
+					quads++;
+					var pdata = shapesCreated[g].borders[0].L();
+					if ( (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[2].L()) && (shapesCreated[g].borders[1].L() == shapesCreated[g].borders[3].L()) ) {
+						// this is (at least) a parallelogram!
+						pgCount++;
+					}
+				} else {
+					// *sing-songy voice* Insufficient day-ta!
+				}
+			}
+			var shapesString = "/shapeCount:";
+			if (shapesCreated.length > 0) {
+				shapesString += "tris="+tris.toString()+";";
+				shapesString += "quads="+quads.toString()+";";
+				shapesString += "total="+shapesCreated.length.toString();
+			} else {
+				shapesString = "";
+			}
+			var pgString = "/parallelograms:" + pgCount.toString();
+			
 			// we'll append the "point" value strings to the end for response
 			// re-creation.
 			inputElementQuery.get(0).value = ptsValues + linesValues
 					+ lineSegValues + rayValues + angleValues + angleTypeValues + linePointValues
-					+ lineSegPointValues + rayPointValues + lineMetaString + linesegMetaString + rayMetaString + shapeSideString;
+					+ lineSegPointValues + rayPointValues + lineMetaString + linesegMetaString 
+					+ rayMetaString + shapesString + pgString + shapePointValues;
 		}, remove = function(e) {
+		
 			var i, newcoords, el;
 
 			if (e[JXG.touchProperty]) {
