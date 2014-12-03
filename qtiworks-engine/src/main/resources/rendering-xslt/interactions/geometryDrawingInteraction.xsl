@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!DOCTYPE stylesheet [
+<!ENTITY nbsp  "&#160;" >
+]>
 <xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -8,7 +10,6 @@
   xmlns:gdi="http://measuredprogress.org/schema/geometrydrawing"
   xmlns="http://www.w3.org/1999/xhtml"
   exclude-result-prefixes="qti qw xs gdi">
-
   <xsl:template match="qti:customInteraction[@class='org.qtitools.geometrydrawing.GeometryDrawingInteraction']">
   	<html>
   		<head>
@@ -17,7 +18,7 @@
   	</html>
     <p/>
       <input name="qtiworks_presented_{@responseIdentifier}" type="hidden" value="1"/>
-	  <input type="radio" name="drawingMode" id="plotPoint" value="plotPoint" checked="checked"/>Plot a Point<input type="radio" name="drawingMode" id="drawline" value="drawline"/>Draw a Line<input type="radio" name="drawingMode" id="drawlineseg" value="drawlineseg"/>Draw a Line Segment<input type="radio" name="drawingMode" id="drawray" value="drawray"/>Draw a Ray<input type="radio" name="drawingMode" id="drawangle" value="drawangle"/>Draw an Angle<input type="radio" name="drawingMode" id="drawshape" value="drawshape"/>Draw a Shape<br/>
+	  <input type="radio" name="drawingMode" id="plotPoint" value="plotPoint" checked="checked"/>Plot a Point<input type="radio" name="drawingMode" id="drawline" value="drawline"/><span class="lineText">Draw a &#160;&#160;&#160;&#160;&#160;</span><input type="radio" name="drawingMode" id="drawlineseg" value="drawlineseg"/><span class="lineSegmentText">Draw a &#160;&#160;&#160;&#160;&#160;</span><input type="radio" name="drawingMode" id="drawray" value="drawray"/><span class="rayText">Draw a &#160;&#160;&#160;&#160;&#160;</span><input type="radio" name="drawingMode" id="drawangle" value="drawangle"/>Draw an Angle<input type="radio" name="drawingMode" id="drawshape" value="drawshape"/>Draw a Shape<br/>
 	  <input type="button" id="connectPoints" value="Connect Points"/>
 	  <span id="linedirections">Click two points between which to draw a line</span>
 	  <span id="linesegdirections">Click two points between which to draw a line</span>

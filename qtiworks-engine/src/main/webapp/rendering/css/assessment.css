@@ -17,6 +17,16 @@ h2 {
   font-size: 1.3em;
 }
 
+.lineText {
+	  background: url(../images/line.png) no-repeat right;
+}
+.lineSegmentText {
+	  background: url(../images/linesegment.png) no-repeat right;
+}
+.rayText {
+	  background: url(../images/ray.png) no-repeat right;
+}
+
 .JXGtext {
 	
 }

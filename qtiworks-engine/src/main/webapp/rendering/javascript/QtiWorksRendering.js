@@ -765,6 +765,7 @@ var QtiWorksRendering = (function() {
 			}
 			shapePointValues += ";";
 			shapesCreated.push(poly);
+			ptsSelected = [];
 			setValue();
 		});
 		$('#plotPoint').click(function() {
@@ -774,7 +775,7 @@ var QtiWorksRendering = (function() {
 			$('#linedirections').toggle(false);
 			$('#angledirections').toggle(false);
 			$('#shapedirections').toggle(false);
-			$('connectPoints').toggle(false);
+			$('connectPoints').hide();
 		});
 		$('#drawline').click(function() {
 			$('#linedirections').toggle(this.checked);
@@ -783,7 +784,7 @@ var QtiWorksRendering = (function() {
 			$("#raydirections").toggle(false);
 			$('#angledirections').toggle(false);
 			$('#shapedirections').toggle(false);
-			$('connectPoints').toggle(false);
+			$('connectPoints').hide();
 			ptsSelected = [];
 
 		});
@@ -794,7 +795,7 @@ var QtiWorksRendering = (function() {
 			$('#linedirections').toggle(false);
 			$('#angledirections').toggle(false);
 			$('#shapedirections').toggle(false);
-			$('connectPoints').toggle(false);
+			$('connectPoints').hide();
 			ptsSelected = [];
 
 		});
@@ -805,7 +806,7 @@ var QtiWorksRendering = (function() {
 			$('#linesegdirections').toggle(false);
 			$('#angledirections').toggle(false);
 			$('#shapedirections').toggle(false);
-			$('connectPoints').toggle(false);
+			$('connectPoints').hide();
 			ptsSelected = [];
 
 		});
@@ -816,7 +817,7 @@ var QtiWorksRendering = (function() {
 			$('#linesegdirections').toggle(false);
 			$("#raydirections").toggle(false);
 			$('#shapedirections').toggle(false);
-			$('connectPoints').toggle(false);
+			$('connectPoints').hide();
 			ptsSelected = [];
 		});
 		$('#drawshape').click(function() {
@@ -1340,18 +1341,74 @@ var QtiWorksRendering = (function() {
 			
 			// get some shape data!
 			var pgCount = 0;
+			var rhomCount = 0;
+			var equCount = 0;
+			var isoCount = 0;
+			var scaCount = 0;
+			var rightCount = 0;
 			var tris = 0;
 			var quads = 0;
+			var shapesPara = [];
 			for (var g = 0; g < shapesCreated.length; g++) {
+				// count number of parallel sides per shape. Triangles will have 0.
+				var sp = 0;
 				if (shapesCreated[g].borders.length == 3) {
 					// get triangle data
+					tris++;
+					// get type
 					if (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[1].L() == shapesCreated[g].borders[2].L()) {
 						// equilateral :)
+						equCount++;
 					} else if ( (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[1].L()) || (shapesCreated[g].borders[1].L() == shapesCreated[g].borders[2].L()) || (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[2].L()) ) {
 						// isoceles :|
+						isoCount++;
 					} else {
 						// scalene :(
+						scaCount++;
 					}
+					// more types
+					var slope0 = shapesCreated[g].borders[0].getSlope();
+					var slope1 = shapesCreated[g].borders[1].getSlope();
+					var slope2 = shapesCreated[g].borders[2].getSlope();
+					var hypotenuse_found = false;
+					var hypotenuse = -1;
+					for (var j=0; j < 3; j++) {
+						var currentSlope = shapesCreated[g].borders[j].getSlope();
+						for (var k=0; k < 3; k++) {
+							if (currentSlope == (-1 * shapesCreated[g].borders[k].getSlope()) || (currentSlope == Infinity && shapesCreated[g].borders[k].getSlope() == 0) || (currentSlope == 0 && shapesCreated[g].borders[k].getSlope() == Infinity)) {
+								// right triangle
+								rightCount++;
+								// find hypotenuse
+								if (j == 0) {
+									if (k == 1) {
+										hypotenuse = 2;
+									} else {
+										hypotenuse = 1;
+									}
+									hypotenuse_found = true;
+								} else if (j == 1) {
+									if (k == 0) {
+										hypotenuse = 2;
+									} else {
+										hypotenuse = 0;
+									}
+									hypotenuse_found = true;
+								} else { //j = 2
+									if (k == 1) {
+										hypotenuse = 0;
+									} else {
+										hypotenuse = 1;
+									}
+									hypotenuse_found = true;
+								}
+								break;
+							}
+						}
+						if (hypotenuse_found) {
+							break;
+						}
+					}
+					
 				} else if (shapesCreated[g].borders.length == 4) {
 					// get quadrilateral data
 					quads++;
@@ -1359,10 +1416,26 @@ var QtiWorksRendering = (function() {
 					if ( (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[2].L()) && (shapesCreated[g].borders[1].L() == shapesCreated[g].borders[3].L()) ) {
 						// this is (at least) a parallelogram!
 						pgCount++;
+						if ( (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[1].L()) && (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[2].L()) && (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[3].L()) ) {
+							// this is a rhombus paralelogram!
+							rhomCount++;
+						}
+					}
+					// get number of parallel sides
+					for (var m = 0; m < shapesCreated[g].borders.length; m++) {
+						for (var n = 0; n < shapesCreated[g].borders.length; n++) {
+							if (m==n) {
+								continue;
+							}
+							if (shapesCreated[g].borders[m].getSlope() == shapesCreated[g].borders[n].getSlope()) {
+								sp++;
+							}
+						}
 					}
 				} else {
 					// *sing-songy voice* Insufficient day-ta!
 				}
+				shapesPara.push(sp);
 			}
 			var shapesString = "/shapeCount:";
 			if (shapesCreated.length > 0) {
@@ -1372,7 +1445,11 @@ var QtiWorksRendering = (function() {
 			} else {
 				shapesString = "";
 			}
-			var pgString = "/parallelograms:" + pgCount.toString();
+			var triString = "/equilateral_triangles:"+equCount.toString() +"/isoceles_triangles:"+isoCount.toString()+"/scalene_triangles:"+scaCount.toString()+"/right_triangles:"+rightCount.toString();
+			var pgString = "/parallelograms:" + pgCount.toString() + ";/rhombuses:"+rhomCount.toString()+ ";/parallel_sides:";
+			for (var o = 0; o < shapesPara.length; o++) {
+				pgString += "shape"+o+"="+shapesPara[o]+";";
+			}
 			
 			// we'll append the "point" value strings to the end for response
 			// re-creation.
