@@ -27,7 +27,7 @@
           <param name="code" value="BoundedGraphicalApplet"/>
           <param name="codebase" value="{$appletCodebase}"/>
           <param name="identifier" value="{@responseIdentifier}"/>
-          <param name="baseType" value="directedPair"/>
+          <param name="baseType" value="string"/>
           <param name="operation_mode" value="figure_placement_interaction"/>
           <param name="number_of_responses" value="{count(qti:associableHotspot)}"/>
           <param name="background_image" value="{qw:convert-link($object/@data)}"/>

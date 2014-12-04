@@ -601,11 +601,7 @@ var QtiWorksRendering = (function() {
 		// restore any responses
 		function getValue() {
 			var res = $("input[name='previousResponses']").attr("value");
-
 			// parse values
-			/*var res2 = res.replace('points:', '').replace('lines:', '')
-					.replace('linesegs:', '').replace('rays:', '').replace(
-							'angles:', '');*/
 			var resValues = res.split("/");
 			var ptsValues = resValues[0].split(";");
 			// ptsValues is always first
@@ -636,6 +632,8 @@ var QtiWorksRendering = (function() {
 			var coord2 = "";
 			var coord3 = "";
 			var coord4 = "";
+			var coord5 = "";
+			var coord6 = "";
 			if (resValues.length > 1) {
 				var index = 1;
 				for (var index = 1; index < resValues.length; index++) {
@@ -675,16 +673,27 @@ var QtiWorksRendering = (function() {
 					if (mode != 'invalid') {
 						var lnsValues = resValues[index].split(";");
 						for (var b = 0; b < lnsValues.length; b++) {
+							// reset values
+							coord1 = "";
+							coord2 = "";
+							coord3 = "";
+							coord4 = "";
+							coord5 = "";
+							coord6 = "";
 							ptArr = lnsValues[b].split("_");
 							for (var c = 0; c < ptArr.length; c++) {
 								if (c == 0) {
 									coord1 = ptArr[c];
 								} else if (c == 1) {
 									coord2 = ptArr[c];
-								} else if (c == 3) {
+								} else if (c == 2) {
 									coord3 = ptArr[c];
-								} else {
+								} else if (c == 3){
 									coord4 = ptArr[c];
+								} else if (c == 4) {
+									coord5 = ptArr[c];
+								} else if (c == 5) {
+									coord6 = ptArr[c];
 								}
 							}
 							var x1 = parseInt(coord1.split(",")[0]);
@@ -700,6 +709,16 @@ var QtiWorksRendering = (function() {
 							if ( coord4 != "") {
 								x4 = parseInt(coord4.split(",")[0]);
 								y4 = parseInt(coord4.split(",")[1]); 
+							}
+							var x5, y5;
+							if ( coord5 != "") {
+								x5 = parseInt(coord5.split(",")[0]);
+								y5 = parseInt(coord5.split(",")[1]); 
+							}
+							var x6, y6;
+							if ( coord6 != "") {
+								x6 = parseInt(coord6.split(",")[0]);
+								y6 = parseInt(coord6.split(",")[1]); 
 							}
 	
 							if (!isNaN(x1) && !isNaN(y1) && !isNaN(x2)
@@ -721,14 +740,28 @@ var QtiWorksRendering = (function() {
 								});
 							} else if (mode == 'shape') {
 								var poly;
-								if (coord4 != "") {
+								if (coord6 != "") {
+									poly = board.create('polygon', [ board.create('point',[ x1, y1 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
+									                                 board.create('point',[ x2, y2 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
+									                                 board.create('point',[ x3, y3 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
+									                                 board.create('point',[ x4, y4 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
+									                                 board.create('point',[ x5, y5 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
+									                                 board.create('point',[ x6, y6 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}) ]);
+								} else if (coord5 != "") {
 									poly = board.create('polygon', [ board.create('point',[ x1, y1 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
 									                                 board.create('point',[ x2, y2 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}), 
-									                                 board.create('point',[ x4, y4 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}), 
-									                                 board.create('point',[ x3, y3 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}) ]);
+									                                 board.create('point',[ x3, y3 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
+									                                 board.create('point',[ x4, y4 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
+									                                 board.create('point',[ x5, y5 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}) ]);
+								} else if (coord4 != "") {
+									poly = board.create('polygon', [ board.create('point',[ x1, y1 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
+									                                 board.create('point',[ x2, y2 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}), 
+									                                 board.create('point',[ x3, y3 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}), 
+									                                 board.create('point',[ x4, y4 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}) ]);
 								} else {
-									poly = board.create('polygon', [ [ x1, y1 ],
-																		[ x2, y2 ], [ x3, y3 ] ]);
+									poly = board.create('polygon', [ board.create('point',[ x1, y1 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
+									                                 board.create('point',[ x2, y2 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}), 
+									                                 board.create('point',[ x3, y3 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}) ]);
 								}
 							}
 						}
@@ -775,7 +808,7 @@ var QtiWorksRendering = (function() {
 			$('#linedirections').toggle(false);
 			$('#angledirections').toggle(false);
 			$('#shapedirections').toggle(false);
-			$('connectPoints').hide();
+			$('#connectPoints').hide();
 		});
 		$('#drawline').click(function() {
 			$('#linedirections').toggle(this.checked);
@@ -784,7 +817,7 @@ var QtiWorksRendering = (function() {
 			$("#raydirections").toggle(false);
 			$('#angledirections').toggle(false);
 			$('#shapedirections').toggle(false);
-			$('connectPoints').hide();
+			$('#connectPoints').hide();
 			ptsSelected = [];
 
 		});
@@ -795,7 +828,7 @@ var QtiWorksRendering = (function() {
 			$('#linedirections').toggle(false);
 			$('#angledirections').toggle(false);
 			$('#shapedirections').toggle(false);
-			$('connectPoints').hide();
+			$('#connectPoints').hide();
 			ptsSelected = [];
 
 		});
@@ -806,7 +839,7 @@ var QtiWorksRendering = (function() {
 			$('#linesegdirections').toggle(false);
 			$('#angledirections').toggle(false);
 			$('#shapedirections').toggle(false);
-			$('connectPoints').hide();
+			$('#connectPoints').hide();
 			ptsSelected = [];
 
 		});
@@ -817,7 +850,7 @@ var QtiWorksRendering = (function() {
 			$('#linesegdirections').toggle(false);
 			$("#raydirections").toggle(false);
 			$('#shapedirections').toggle(false);
-			$('connectPoints').hide();
+			$('#connectPoints').hide();
 			ptsSelected = [];
 		});
 		$('#drawshape').click(function() {
@@ -1346,6 +1379,7 @@ var QtiWorksRendering = (function() {
 			var isoCount = 0;
 			var scaCount = 0;
 			var rightCount = 0;
+			var rightAngleTop = "";
 			var tris = 0;
 			var quads = 0;
 			var shapesPara = [];
@@ -1369,14 +1403,12 @@ var QtiWorksRendering = (function() {
 						scaCount++;
 					}
 					// more types
-					var slope0 = shapesCreated[g].borders[0].getSlope();
-					var slope1 = shapesCreated[g].borders[1].getSlope();
-					var slope2 = shapesCreated[g].borders[2].getSlope();
 					var hypotenuse_found = false;
 					var hypotenuse = -1;
 					for (var j=0; j < 3; j++) {
 						var currentSlope = shapesCreated[g].borders[j].getSlope();
 						for (var k=0; k < 3; k++) {
+							if (j == k) continue;
 							if (currentSlope == (-1 * shapesCreated[g].borders[k].getSlope()) || (currentSlope == Infinity && shapesCreated[g].borders[k].getSlope() == 0) || (currentSlope == 0 && shapesCreated[g].borders[k].getSlope() == Infinity)) {
 								// right triangle
 								rightCount++;
@@ -1408,6 +1440,39 @@ var QtiWorksRendering = (function() {
 						}
 						if (hypotenuse_found) {
 							break;
+						}
+					}
+					if (hypotenuse_found) {
+						var b1x1, b1y1, b1x2, b1y2;
+						var b2x1, b2y1, b2x2, b2y2;
+						for (var r=0; r < 3; r++) {
+							if (r == hypotenuse) continue;
+							else {
+								if (b1x1 == null) {
+									b1x1 = shapesCreated[g].borders[r].point1.XEval();
+									b1y1 = shapesCreated[g].borders[r].point1.YEval();
+									b1x2 = shapesCreated[g].borders[r].point2.XEval();
+									b1y2 = shapesCreated[g].borders[r].point2.YEval();
+								} else {
+									b2x1 = shapesCreated[g].borders[r].point1.XEval();
+									b2y1 = shapesCreated[g].borders[r].point1.YEval();
+									b2x2 = shapesCreated[g].borders[r].point2.XEval();
+									b2y2 = shapesCreated[g].borders[r].point2.YEval();
+								}
+							}
+						}
+						var hypX, hypY;
+						if ( (b1x1 == b2x1 && b1y1 == b2y1) || (b1x1 == b2x2 && b1y1 == b2y2) ) {
+							hypX = b1x1;
+							hypY = b1y1;
+						} else if ( (b2x1 == b1x1 && b2y1 == b1y1) || (b2x1 == b1x2 && b2y1 == b1y2) ) {
+							hypX = b2x1;
+							hypY = b2y1;
+						}
+						if (hypY >= shapesCreated[g].borders[hypotenuse].point1.YEval() && hypY >= shapesCreated[g].borders[hypotenuse].point2.YEval()) {
+							rightAngleTop += "shape"+g.toString()+"=rightAngleTop";
+						} else {
+							rightAngleTop += "shape"+g.toString()+"=rightAngleBottom";
 						}
 					}
 					
@@ -1482,7 +1547,7 @@ var QtiWorksRendering = (function() {
 			inputElementQuery.get(0).value = ptsValues + linesValues
 					+ lineSegValues + rayValues + angleValues + angleTypeValues + linePointValues
 					+ lineSegPointValues + rayPointValues + lineMetaString + linesegMetaString 
-					+ rayMetaString + shapesString + pgString + shapePointValues;
+					+ rayMetaString + shapesString + pgString + shapePointValues + rightAngleTop;
 		}, remove = function(e) {
 		
 			var i, newcoords, el;
