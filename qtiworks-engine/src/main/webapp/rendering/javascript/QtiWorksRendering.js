@@ -1349,9 +1349,11 @@ var QtiWorksRendering = (function() {
 			var tris = 0;
 			var quads = 0;
 			var shapesPara = [];
+			var shapesPerp = [];
 			for (var g = 0; g < shapesCreated.length; g++) {
 				// count number of parallel sides per shape. Triangles will have 0.
 				var sp = 0;
+				var shperp = 0;
 				if (shapesCreated[g].borders.length == 3) {
 					// get triangle data
 					tris++;
@@ -1429,6 +1431,8 @@ var QtiWorksRendering = (function() {
 							}
 							if (shapesCreated[g].borders[m].getSlope() == shapesCreated[g].borders[n].getSlope()) {
 								sp++;
+							} else if ( (shapesCreated[g].borders[m].getSlope() == Infinity) && (shapesCreated[g].borders[n].getSlope() == 0) ) {
+								shperp++;
 							}
 						}
 					}
@@ -1436,6 +1440,7 @@ var QtiWorksRendering = (function() {
 					// *sing-songy voice* Insufficient day-ta!
 				}
 				shapesPara.push(sp);
+				shapesPerp.push(shperp);
 			}
 			var shapesString = "/shapeCount:";
 			if (shapesCreated.length > 0) {
@@ -1449,6 +1454,27 @@ var QtiWorksRendering = (function() {
 			var pgString = "/parallelograms:" + pgCount.toString() + ";/rhombuses:"+rhomCount.toString()+ ";/parallel_sides:";
 			for (var o = 0; o < shapesPara.length; o++) {
 				pgString += "shape"+o+"="+shapesPara[o]+";";
+			}
+			pgString += "/perpendicular_sides:";
+			for (var p = 0; p < shapesPerp.length; p++) {
+				pgString += "shape"+p+"="+shapesPerp[p]+";";
+			}
+			
+			// lastly, let's check the areas to make sure they aren't the same shape!!
+			var same = true;
+			if (shapesCreated.length > 1) {
+				for (var q=1; q < shapesCreated.length; q++) {
+					if (shapesCreated[q].Area() != shapesCreated[q-1].Area()) {
+						same = false;
+					}
+				}
+			} else {
+				same = false;
+			}
+			if (same) {
+				pgString += "/misc:shapes are same;";
+			} else {
+				pgString += "/misc:shapes are different;";
 			}
 			
 			// we'll append the "point" value strings to the end for response
