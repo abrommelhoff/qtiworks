@@ -47,7 +47,7 @@ public final class FigurePlacementInteraction extends BlockInteraction implement
     @Override
     public void validateThis(final ValidationContext context, final ResponseDeclaration responseDeclaration) {
         if (responseDeclaration!=null) {
-            context.checkSignature(this, responseDeclaration, Signature.SINGLE_FILE);
+            context.checkSignature(this, responseDeclaration, Signature.MULTIPLE_STRING);
         }
 
         final Object object = getObject();

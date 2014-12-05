@@ -609,8 +609,8 @@ var QtiWorksRendering = (function() {
 			for (var a = 0; a < ptsValues.length; a++) {
 				var pt = ptsValues[a];
 				var coord = pt.split(",");
-				var x = parseInt(coord[0]);
-				var y = parseInt(coord[1]);
+				var x = parseFloat(coord[0]);
+				var y = parseFloat(coord[1]);
 				var newPoint = board.create('point', [ x, y ], {
 					snapToGrid : isSnapTo,
 					withLabel : false,
@@ -696,29 +696,29 @@ var QtiWorksRendering = (function() {
 									coord6 = ptArr[c];
 								}
 							}
-							var x1 = parseInt(coord1.split(",")[0]);
-							var y1 = parseInt(coord1.split(",")[1]);
-							var x2 = parseInt(coord2.split(",")[0]);
-							var y2 = parseInt(coord2.split(",")[1]);
+							var x1 = parseFloat(coord1.split(",")[0]);
+							var y1 = parseFloat(coord1.split(",")[1]);
+							var x2 = parseFloat(coord2.split(",")[0]);
+							var y2 = parseFloat(coord2.split(",")[1]);
 							var x3, y3;
 							if ( (mode == 'angle') || (mode == 'shape') ) {
-								x3 = parseInt(coord3.split(",")[0]);
-								y3 = parseInt(coord3.split(",")[1]);
+								x3 = parseFloat(coord3.split(",")[0]);
+								y3 = parseFloat(coord3.split(",")[1]);
 							}
 							var x4, y4;
 							if ( coord4 != "") {
-								x4 = parseInt(coord4.split(",")[0]);
-								y4 = parseInt(coord4.split(",")[1]); 
+								x4 = parseFloat(coord4.split(",")[0]);
+								y4 = parseFloat(coord4.split(",")[1]); 
 							}
 							var x5, y5;
 							if ( coord5 != "") {
-								x5 = parseInt(coord5.split(",")[0]);
-								y5 = parseInt(coord5.split(",")[1]); 
+								x5 = parseFloat(coord5.split(",")[0]);
+								y5 = parseFloat(coord5.split(",")[1]); 
 							}
 							var x6, y6;
 							if ( coord6 != "") {
-								x6 = parseInt(coord6.split(",")[0]);
-								y6 = parseInt(coord6.split(",")[1]); 
+								x6 = parseFloat(coord6.split(",")[0]);
+								y6 = parseFloat(coord6.split(",")[1]); 
 							}
 	
 							if (!isNaN(x1) && !isNaN(y1) && !isNaN(x2)
