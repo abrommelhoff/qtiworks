@@ -1547,7 +1547,7 @@ var QtiWorksRendering = (function() {
 			inputElementQuery.get(0).value = ptsValues + linesValues
 					+ lineSegValues + rayValues + angleValues + angleTypeValues + linePointValues
 					+ lineSegPointValues + rayPointValues + lineMetaString + linesegMetaString 
-					+ rayMetaString + shapesString + pgString + shapePointValues + rightAngleTop;
+					+ rayMetaString + shapesString + triString + pgString + shapePointValues + rightAngleTop;
 		}, remove = function(e) {
 		
 			var i, newcoords, el;
