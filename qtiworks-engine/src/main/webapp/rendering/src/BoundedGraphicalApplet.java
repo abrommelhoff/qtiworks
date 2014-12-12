@@ -872,7 +872,15 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 		} else if (om.equals("figure_placement_interaction")) {
 		    while (st.hasMoreTokens()) {
 		        final String[] codepair = st.nextToken().split(":");
-		        final String[] coords = codepair[1].split(" ");
+		        final String[] coords;
+		        if (codepair.length > 1) {
+		            coords = codepair[1].split("-");
+		            if (coords.length > 1) {
+		                System.out.println("Code pair is: "+coords[0]+", "+coords[1]);
+		            }
+		        } else {
+		            continue;
+		        }
 		        MovableObject movObj = null;
 		        for(int i=0; i < movableObjects.size(); i++)
                 {
@@ -882,7 +890,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
                         break;
                     }
                 }
-		        if (movObj != null) {
+		        if (movObj != null && coords.length > 1) {
 		            movObj.setPos(new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1])));
 		        }
 		    }
@@ -952,6 +960,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
                     //if (hotspots.elementAt(q).obj.contains(movableObjects.elementAt(i).obj.getBounds2D())) {
                     if (hsRect.contains(mvRect)) {
                         values.add(movableObjects.elementAt(i).getKeyCode()+":"+hotspots.elementAt(q).getKeyCode());
+                        values.add(movableObjects.elementAt(i).getKeyCode()+":"+mvRect.x+"-"+mvRect.y);
                     }
                 }
                 //values.add(movableObjects.elementAt(i).getKeyCode()+":"+movableObjects.elementAt(i).pos.x+", "+movableObjects.elementAt(i).pos.y);
@@ -1114,7 +1123,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 	    		    if (twoRows) {
 	    		        bottom = this.getHeight() - (maxHeight*2);
 	    		    } else {
-	    		        bottom = this.getHeight() - maxHeight;
+	    		        bottom = this.getHeight() - (maxHeight + 50);
 	    		    }
 	    			movableObjects = new Vector<MovableObject>();
 		    		for(int i=0; i<movCount; i++)
@@ -1131,6 +1140,8 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 		    			    heightOffset = maxHeight * 2;
 		    			} else {
 		    			    heightOffset = 50;
+		    			    //heightOffset = maxHeight + 10;
+		    			    //heightOffset = maxHeight;
 		    			}
 		    			final Point p = new Point((space/2)+(space*j),this.getHeight()-heightOffset);
 		    			mo.setStartPos(p);

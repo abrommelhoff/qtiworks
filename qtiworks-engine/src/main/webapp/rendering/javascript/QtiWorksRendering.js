@@ -499,7 +499,7 @@ var QtiWorksRendering = (function() {
 		this.responseIdentifier = responseIdentifier;
 		var board;
 		var grid;
-		var mode = "point"; // point, line, or ray
+		var mode = "none"; // none, point, line, ray, angle, or shape
 		var ptsSelected = [];
 		var ptsCreated = [];
 		var linesCreated = [];
@@ -736,7 +736,7 @@ var QtiWorksRendering = (function() {
 							} else if (mode == 'angle') {
 								var alpha = board.create('angle', [ [ x1, y1 ],
 										[ x2, y2 ], [ x3, y3 ] ], {
-									radius : 3
+									radius : 3, withLabel : false
 								});
 							} else if (mode == 'shape') {
 								var poly;
@@ -772,6 +772,9 @@ var QtiWorksRendering = (function() {
 		;
 		getValue();
 		$('#jxgbox').mousedown(function(e) {
+			if (mode == "none") {
+				return;
+			}
 			switch (e.which) {
 			case 1:
 				if (mode != "point") {
@@ -787,6 +790,12 @@ var QtiWorksRendering = (function() {
 			default:
 				alert('You have a strange mouse');
 			}
+		});
+		$('#jxgbox').mouseup(function(e) {
+			if (mode == "none") {
+				return;
+			}
+			setValue();
 		});
 		$('#connectPoints').click(function () {
 			var poly = board.create('polygon', ptsSelected);
@@ -1074,14 +1083,14 @@ var QtiWorksRendering = (function() {
 					if (board.objects[ptsSelected[0]].XEval() > board.objects[ptsSelected[2]].XEval()) {
 						alpha = board.create('angle', [ ptsSelected[0],
 						    							ptsSelected[1], ptsSelected[2] ], {
-						    						radius : 3
+						    						radius : 3, withLabel : false
 						    					});
 						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
 								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
 					} else {
 						alpha = board.create('angle', [ ptsSelected[2],
 						    							ptsSelected[1], ptsSelected[0] ], {
-						    						radius : 3
+						    						radius : 3, withLabel : false
 						    					});
 						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()],
 								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()]);
@@ -1091,14 +1100,14 @@ var QtiWorksRendering = (function() {
 					if (board.objects[ptsSelected[0]].XEval() > board.objects[ptsSelected[2]].XEval()) {
 						alpha = board.create('angle', [ ptsSelected[2],
 						    							ptsSelected[1], ptsSelected[0] ], {
-						    						radius : 3
+						    						radius : 3, withLabel : false
 						    					});
 						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()],
 								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()]);
 					} else {
 						alpha = board.create('angle', [ ptsSelected[0],
 						    							ptsSelected[1], ptsSelected[2] ], {
-						    						radius : 3
+						    						radius : 3, withLabel : false
 						    					});
 						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
 								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
@@ -1108,14 +1117,14 @@ var QtiWorksRendering = (function() {
 					if (board.objects[ptsSelected[0]].YEval() > board.objects[ptsSelected[2]].YEval()) {
 						alpha = board.create('angle', [ ptsSelected[0],
 						    							ptsSelected[1], ptsSelected[2] ], {
-						    						radius : 3
+						    						radius : 3, withLabel : false
 						    					});
 						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
 								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
 					} else {
 						alpha = board.create('angle', [ ptsSelected[2],
 								ptsSelected[1], ptsSelected[0] ], {
-							radius : 3
+							radius : 3, withLabel : false
 						});
 						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()],
 								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()]);
@@ -1124,14 +1133,14 @@ var QtiWorksRendering = (function() {
 					if (board.objects[ptsSelected[0]].YEval() > board.objects[ptsSelected[2]].YEval()) {
 						alpha = board.create('angle', [ ptsSelected[2],
 						    							ptsSelected[1], ptsSelected[0] ], {
-						    						radius : 3
+						    						radius : 3, withLabel : false
 						    					});
 						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()],
 								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()]);
 					} else {
 						alpha = board.create('angle', [ ptsSelected[0],
 								ptsSelected[1], ptsSelected[2] ], {
-							radius : 3
+							radius : 3, withLabel : false
 						});
 						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
 								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);

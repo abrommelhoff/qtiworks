@@ -43,7 +43,6 @@ import uk.ac.ed.ph.qtiworks.domain.entities.ItemDeliverySettings;
 import uk.ac.ed.ph.qtiworks.domain.entities.LtiContext;
 import uk.ac.ed.ph.qtiworks.domain.entities.TestDeliverySettings;
 import uk.ac.ed.ph.qtiworks.domain.entities.User;
-import uk.ac.ed.ph.qtiworks.domain.entities.UserRole;
 import uk.ac.ed.ph.qtiworks.services.dao.AssessmentDao;
 import uk.ac.ed.ph.qtiworks.services.dao.AssessmentPackageDao;
 import uk.ac.ed.ph.qtiworks.services.dao.CandidateSessionDao;
@@ -316,7 +315,7 @@ public class AssessmentDataService {
                 final ItemDeliverySettings itemDeliverySettings = new ItemDeliverySettings();
                 mergeItemDeliverySettings(template, itemDeliverySettings);
                 itemDeliverySettings.setTitle("Default item delivery settings");
-                if (assessmentRunner.getUserRole()==UserRole.INSTRUCTOR) {
+                /*if (assessmentRunner.getUserRole()==UserRole.INSTRUCTOR) {
                     itemDeliverySettings.setPrompt("This assessment item is being delivered using a set of. default 'delivery settings'."
                             + " You probably want to create and use your own settings here.");
                 }
@@ -324,7 +323,8 @@ public class AssessmentDataService {
                     itemDeliverySettings.setPrompt("This assessment item is being delivered using a set of default 'delivery settings'."
                             + " You can create and use your settings when logged into QTIWorks"
                             + " via its LTI instructor connector or with an explicit QTIWorks system account.");
-                }
+                }*/
+                itemDeliverySettings.setPrompt("");
                 return itemDeliverySettings;
             }
 
