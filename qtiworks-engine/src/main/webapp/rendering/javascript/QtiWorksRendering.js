@@ -1356,6 +1356,8 @@ var QtiWorksRendering = (function() {
 			if (rayMetaString == "/rayMeta:") {
 				rayMetaString = "";
 			}
+			var totalLineCountString = "/totalLineCount:";
+			totalLineCountString += (linesCreated.length + lineSegmentsCreated.length + raysCreated.length).toString() + ";";
 			var angleValues = "/angles:";
 			for (var e = 0; e < angleMeasures.length; e++) {
 				/*var ax1 = board.objects[anglesCreated[e]].point1.XEval();
@@ -1556,7 +1558,7 @@ var QtiWorksRendering = (function() {
 			inputElementQuery.get(0).value = ptsValues + linesValues
 					+ lineSegValues + rayValues + angleValues + angleTypeValues + linePointValues
 					+ lineSegPointValues + rayPointValues + lineMetaString + linesegMetaString 
-					+ rayMetaString + shapesString + triString + pgString + shapePointValues + rightAngleTop;
+					+ rayMetaString + totalLineCountString + shapesString + triString + pgString + shapePointValues + rightAngleTop;
 		}, remove = function(e) {
 		
 			var i, newcoords, el;
