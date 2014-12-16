@@ -637,20 +637,6 @@ var QtiWorksRendering = (function() {
 			if (resValues.length > 1) {
 				var index = 1;
 				for (var index = 1; index < resValues.length; index++) {
-					/*switch (index) {
-					case 1:
-						mode = 'line';
-						break;
-					case 2:
-						mode = 'lineseg';
-						break;
-					case 3:
-						mode = 'ray';
-						break;
-					default:
-						mode = 'angle';
-						break;
-					}*/
 					if (resValues[index].indexOf("linePoints:") > -1) {
 						resValues[index] = resValues[index].replace("linePoints:","");
 						mode = 'line';
@@ -734,8 +720,26 @@ var QtiWorksRendering = (function() {
 								});
 								resPtsSelected = [];
 							} else if (mode == 'angle') {
-								var alpha = board.create('angle', [ [ x1, y1 ],
-										[ x2, y2 ], [ x3, y3 ] ], {
+								var angleRay1 = board.create('line', [ [x1,y1],
+									             						[x3,y3] ], {
+									             					firstArrow : false,
+									             					lastArrow : true,
+									             					straightFirst : false,
+									             					straightLast : true,
+									             					strokeColor : '#00ff00',
+									             					strokeWidth : 2
+									             				});
+								var angleRay2 = board.create('line', [[x1,y1],
+										             						[x2,y2] ], {
+										             				firstArrow : false,
+										             				lastArrow : true,
+										             				straightFirst : false,
+										             				straightLast : true,
+										             				strokeColor : '#00ff00',
+										             				strokeWidth : 2
+										             			});
+								var alpha = board.create('angle', [ [ x2, y2 ],
+										[ x1, y1 ], [ x3, y3 ] ], {
 									radius : 3, withLabel : false
 								});
 							} else if (mode == 'shape') {
@@ -799,13 +803,6 @@ var QtiWorksRendering = (function() {
 		});
 		$('#connectPoints').click(function () {
 			var poly = board.create('polygon', ptsSelected);
-			for (var c = 0; c < ptsSelected.length; c++) {
-				shapePointValues += ptsSelected[c].XEval() + "," + ptsSelected[c].YEval();
-				if (c != ptsSelected.length - 1) {
-					shapePointValues += "_";
-				}
-			}
-			shapePointValues += ";";
 			shapesCreated.push(poly);
 			ptsSelected = [];
 			setValue();
@@ -1359,20 +1356,24 @@ var QtiWorksRendering = (function() {
 			var totalLineCountString = "/totalLineCount:";
 			totalLineCountString += (linesCreated.length + lineSegmentsCreated.length + raysCreated.length).toString() + ";";
 			var angleValues = "/angles:";
+			var anglePointValues = "/anglePoints:";
 			for (var e = 0; e < angleMeasures.length; e++) {
-				/*var ax1 = board.objects[anglesCreated[e]].point1.XEval();
+				var ax1 = board.objects[anglesCreated[e]].point1.XEval();
 				var ay1 = board.objects[anglesCreated[e]].point1.YEval();
 				var ax2 = board.objects[anglesCreated[e]].point2.XEval();
 				var ay2 = board.objects[anglesCreated[e]].point2.YEval();
 				var ax3 = board.objects[anglesCreated[e]].point3.XEval();
 				var ay3 = board.objects[anglesCreated[e]].point3.YEval();
-				angleValues += ax1.toString() + "," + ay1.toString() + "_"
+				anglePointValues += ax1.toString() + "," + ay1.toString() + "_"
 						+ ax2.toString() + "," + ay2.toString() + "_"
-						+ ax3.toString() + "," + ay3.toString() + ";";*/
+						+ ax3.toString() + "," + ay3.toString() + ";";
 				angleValues += angleMeasures[e].toString() + ";";
 			}
 			if (angleValues == "/angles:") {
 				angleValues = "";
+			}
+			if (anglePointValues == "/anglePoints:") {
+				anglePointValues = "";
 			}
 			var angleTypeValues = "/angleTypes:";
 			for (var f = 0; f< angleTypes.length; f++) {
@@ -1382,6 +1383,18 @@ var QtiWorksRendering = (function() {
 			// this is the "potential" number of sides of any potential shapes
 			var shapeSideString = "/shapeSides:";
 			shapeSideString += lineSegmentsCreated.length;
+			
+			// get shape points
+			shapePointValues = "/shapePoints:";
+			for (var y = 0; y < shapesCreated.length; y++) {
+				for (var c = 0; c < shapesCreated[y].vertices.length; c++) {
+					shapePointValues += shapesCreated[y].vertices[c].XEval() + "," + shapesCreated[y].vertices[c].YEval();
+					if (c != shapesCreated[y].vertices.length - 1) {
+						shapePointValues += "_";
+					}
+				}
+				shapePointValues += ";";
+			}
 			
 			// get some shape data!
 			var pgCount = 0;
@@ -1557,7 +1570,7 @@ var QtiWorksRendering = (function() {
 			// re-creation.
 			inputElementQuery.get(0).value = ptsValues + linesValues
 					+ lineSegValues + rayValues + angleValues + angleTypeValues + linePointValues
-					+ lineSegPointValues + rayPointValues + lineMetaString + linesegMetaString 
+					+ lineSegPointValues + rayPointValues + anglePointValues + lineMetaString + linesegMetaString 
 					+ rayMetaString + totalLineCountString + shapesString + triString + pgString + shapePointValues + rightAngleTop;
 		}, remove = function(e) {
 		
