@@ -202,6 +202,7 @@ public final class ItemSessionController extends ItemProcessingController implem
         if (interaction.getShuffle()) {
             final List<List<C>> choiceLists = interaction.computeShuffleableChoices();
             final List<Identifier> choiceIdentifiers = new ArrayList<Identifier>();
+            boolean first = true;
             for (final List<C> choiceList : choiceLists) {
                 final List<Identifier> shuffleableChoiceIdentifiers = new ArrayList<Identifier>();
 
@@ -214,7 +215,10 @@ public final class ItemSessionController extends ItemProcessingController implem
                 }
 
                 /* Perform shuffle */
-                Collections.shuffle(shuffleableChoiceIdentifiers);
+                if (first) {
+                	Collections.shuffle(shuffleableChoiceIdentifiers);
+                }
+                first = false;
 
                 /* Then merge fixed identifiers back in */
                 for (int i = 0, sortedIndex = 0; i < choiceList.size(); i++) {
