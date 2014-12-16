@@ -24,4 +24,15 @@ public final class GeometryDrawingConstants {
 
     public static final String ATTR_YSCALESYMBOL_NAME = "yScaleSymbol";
 
+    public static final String ATTR_SHOWPLOTPOINTS_NAME = "showPlotPoints";
+
+    public static final String ATTR_SHOWDRAWLINE_NAME = "showDrawLine";
+
+    public static final String ATTR_SHOWDRAWLINESEGMENT_NAME = "showDrawLineSegment";
+
+    public static final String ATTR_SHOWDRAWRAY_NAME = "showDrawRay";
+
+    public static final String ATTR_SHOWDRAWANGLE_NAME = "showDrawAngle";
+
+    public static final String ATTR_SHOWDRAWSHAPE_NAME = "showDrawShape";
 }

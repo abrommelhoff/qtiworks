@@ -925,7 +925,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 			for(int i=0; i< hotspots.size(); i++)
 				if(hotspots.elementAt(i).isHighlighted())
 				{
-					values.add(hotspots.elementAt(i).getKeyCode());
+                    values.add(hotspots.elementAt(i).getKeyCode());
 				}
 		}else if(om.equals("graphic_associate_interaction"))
 		{
@@ -948,6 +948,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 			}
 		}else if(om.equals("figure_placement_interaction"))
         {
+		    Boolean found = false;
             for(int i = 0; i < movableObjects.size(); i++)
             {
                 //System.out.println("The point is: " + movableObjects.elementAt(i).pos.x + ", " + movableObjects.elementAt(i).pos.y);
@@ -961,7 +962,13 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
                     if (hsRect.contains(mvRect)) {
                         values.add(movableObjects.elementAt(i).getKeyCode()+":"+hotspots.elementAt(q).getKeyCode());
                         values.add(movableObjects.elementAt(i).getKeyCode()+":"+mvRect.x+"-"+mvRect.y);
+                        found = true;
                     }
+                }
+                if (!found) {
+                    values.add(movableObjects.elementAt(i).getKeyCode() +":"+movableObjects.elementAt(i).pos.x+"-"+movableObjects.elementAt(i).pos.y);
+                } else {
+                    found = false;
                 }
                 //values.add(movableObjects.elementAt(i).getKeyCode()+":"+movableObjects.elementAt(i).pos.x+", "+movableObjects.elementAt(i).pos.y);
             }

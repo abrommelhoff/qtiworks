@@ -37,6 +37,12 @@ public final class GeometryDrawingInteraction extends CustomInteraction<Geometry
         getAttributes().add(new BooleanAttribute(this, GeometryDrawingConstants.ATTR_SNAPTO_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, true, false));
         getAttributes().add(new IntegerAttribute(this, GeometryDrawingConstants.ATTR_MAXCHOICES_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, true));
         getAttributes().add(new StringAttribute(this, GeometryDrawingConstants.ATTR_YSCALESYMBOL_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, false));
+        getAttributes().add(new BooleanAttribute(this, GeometryDrawingConstants.ATTR_SHOWPLOTPOINTS_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, true, false));
+        getAttributes().add(new BooleanAttribute(this, GeometryDrawingConstants.ATTR_SHOWDRAWLINE_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, true, false));
+        getAttributes().add(new BooleanAttribute(this, GeometryDrawingConstants.ATTR_SHOWDRAWLINESEGMENT_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, true, false));
+        getAttributes().add(new BooleanAttribute(this, GeometryDrawingConstants.ATTR_SHOWDRAWRAY_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, true, false));
+        getAttributes().add(new BooleanAttribute(this, GeometryDrawingConstants.ATTR_SHOWDRAWANGLE_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, true, false));
+        getAttributes().add(new BooleanAttribute(this, GeometryDrawingConstants.ATTR_SHOWDRAWSHAPE_NAME, GeometryDrawingConstants.GEOMETRYDRAWING_NAMESPACE_URI, true, false));
         getNodeGroups().add(new BlockGroup(this));
         getNodeGroups().add(new ObjectGroup(this, false));
     }
