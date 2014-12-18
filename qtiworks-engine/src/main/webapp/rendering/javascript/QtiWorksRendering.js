@@ -1084,8 +1084,8 @@ var QtiWorksRendering = (function() {
 					alpha = board.create('angle', [ ptsSelected[2], ptsSelected[1], ptsSelected[0] ], {
 					    						radius : 3, withLabel : false
 					    					});
-					an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
-							[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
+					an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[1]].YEval()],
+							[board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
 				} else {
 					alpha = board.create('angle', [ ptsSelected[0], ptsSelected[1], ptsSelected[2] ], {
 					    						radius : 3, withLabel : false
@@ -1285,6 +1285,34 @@ var QtiWorksRendering = (function() {
 					}
 				}
 			}
+			altAngleMeasures = [];
+			angleTypes = [];
+			if (raysCreated.length >= 2) {
+				for (var w = 0; w < raysCreated.length - 1; w++) {
+					var ray1pt1x = parseInt(board.objects[raysCreated[w]].point1.XEval());
+					var ray1pt1y = parseInt(board.objects[raysCreated[w]].point1.YEval());
+					var ray1pt2x = parseInt(board.objects[raysCreated[w]].point2.XEval());
+					var ray1pt2y = parseInt(board.objects[raysCreated[w]].point2.YEval());
+					var ray2pt1x = parseInt(board.objects[raysCreated[w+1]].point1.XEval());
+					var ray2pt1y = parseInt(board.objects[raysCreated[w+1]].point1.YEval());
+					var ray2pt2x = parseInt(board.objects[raysCreated[w+1]].point2.XEval());
+					var ray2pt2y = parseInt(board.objects[raysCreated[w+1]].point2.YEval());
+					if ((ray1pt1x == ray2pt1x) && (ray1pt1y == ray2pt1y)) {
+						var theAngle = JXG.Math.Geometry.trueAngle([ray1pt2x,ray1pt2y],[ray1pt1x, ray1pt1y],[ray2pt2x,ray2pt2y]);
+						if (theAngle > 180) {
+							theAngle = 360 - theAngle;
+						}
+						altAngleMeasures.push(theAngle);
+						if (theAngle > 90) {
+							angleTypes.push("obtuse");
+						} else if (theAngle < 90) {
+							angleTypes.push("acute");
+						} else {
+							angleTypes.push("right");
+						}
+					}
+				}
+			}
 			if (rayValues == "/rays:") {
 				rayValues = "";
 			}
@@ -1314,10 +1342,19 @@ var QtiWorksRendering = (function() {
 				anglePointValues += ax1.toString() + "," + ay1.toString() + "_"
 						+ ax2.toString() + "," + ay2.toString() + "_"
 						+ ax3.toString() + "," + ay3.toString() + ";";
-				angleValues += angleMeasures[e].toString() + ";";
+				// recalculate sizes
+				var newAngle = JXG.Math.Geometry.trueAngle([ax2,ay2],[ax1, ay1],[ax3,ay3]);
+				angleValues += newAngle.toString() + ";";
+				if (newAngle > 90) {
+					angleTypes.push("obtuse");
+				} else if (newAngle < 90) {
+					angleTypes.push("acute");
+				} else {
+					angleTypes.push("right");
+				}
 			}
 			for (var v = 0; v < altAngleMeasures.length; v++) {
-				angleValues += altAngleMeasures[e].toString() + ";";
+				angleValues += altAngleMeasures[v].toString() + ";";
 			}
 			if (angleValues == "/angles:") {
 				angleValues = "";
