@@ -507,6 +507,7 @@ var QtiWorksRendering = (function() {
 		var lineSegmentsCreated = [];
 		var anglesCreated = [];
 		var angleMeasures = [];
+		var altAngleMeasures = []; // used for when two rays or line segments create an angle, but not a JSXGraph angle
 		var angleTypes = [];
 		var shapesCreated = [];
 		var shapePointValues = "/shapePoints:";
@@ -740,7 +741,7 @@ var QtiWorksRendering = (function() {
 										             			});
 								var alpha = board.create('angle', [ [ x2, y2 ],
 										[ x1, y1 ], [ x3, y3 ] ], {
-									radius : 3, withLabel : false
+									radius : 3, withLabel : false, showInfobox:false
 								});
 							} else if (mode == 'shape') {
 								var poly;
@@ -1001,7 +1002,7 @@ var QtiWorksRendering = (function() {
 							if (theAngle > 180) {
 								theAngle = 360 - theAngle;
 							}
-							angleMeasures.push(theAngle);
+							altAngleMeasures.push(theAngle);
 							if (theAngle > 90) {
 								angleTypes.push("obtuse");
 							} else if (theAngle < 90) {
@@ -1029,7 +1030,7 @@ var QtiWorksRendering = (function() {
 							if (theAngle > 180) {
 								theAngle = 360 - theAngle;
 							}
-							angleMeasures.push(theAngle);
+							altAngleMeasures.push(theAngle);
 							if (theAngle > 90) {
 								angleTypes.push("obtuse");
 							} else if (theAngle < 90) {
@@ -1042,7 +1043,7 @@ var QtiWorksRendering = (function() {
 							if (theAngle > 180) {
 								theAngle = 360 - theAngle;
 							}
-							angleMeasures.push(theAngle);
+							altAngleMeasures.push(theAngle);
 							if (theAngle > 90) {
 								angleTypes.push("obtuse");
 							} else if (theAngle < 90) {
@@ -1075,74 +1076,22 @@ var QtiWorksRendering = (function() {
 					             					strokeWidth : 2
 					             				});
 				var alpha;
-				var an;
-				if (((board.objects[ptsSelected[1]].YEval() < board.objects[ptsSelected[0]].YEval()) && (board.objects[ptsSelected[1]].YEval() < board.objects[ptsSelected[2]].YEval()))) {
-					if (board.objects[ptsSelected[0]].XEval() > board.objects[ptsSelected[2]].XEval()) {
-						alpha = board.create('angle', [ ptsSelected[0],
-						    							ptsSelected[1], ptsSelected[2] ], {
-						    						radius : 3, withLabel : false
-						    					});
-						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
-								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
-					} else {
-						alpha = board.create('angle', [ ptsSelected[2],
-						    							ptsSelected[1], ptsSelected[0] ], {
-						    						radius : 3, withLabel : false
-						    					});
-						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()],
-								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()]);
-					}
-				}
-				else if (((board.objects[ptsSelected[1]].YEval() > board.objects[ptsSelected[0]].YEval()) && (board.objects[ptsSelected[1]].YEval() > board.objects[ptsSelected[2]].YEval()))) {
-					if (board.objects[ptsSelected[0]].XEval() > board.objects[ptsSelected[2]].XEval()) {
-						alpha = board.create('angle', [ ptsSelected[2],
-						    							ptsSelected[1], ptsSelected[0] ], {
-						    						radius : 3, withLabel : false
-						    					});
-						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()],
-								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()]);
-					} else {
-						alpha = board.create('angle', [ ptsSelected[0],
-						    							ptsSelected[1], ptsSelected[2] ], {
-						    						radius : 3, withLabel : false
-						    					});
-						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
-								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
-					}
-				}
-				else if (board.objects[ptsSelected[0]].XEval() < board.objects[ptsSelected[1]].XEval()) {
-					if (board.objects[ptsSelected[0]].YEval() > board.objects[ptsSelected[2]].YEval()) {
-						alpha = board.create('angle', [ ptsSelected[0],
-						    							ptsSelected[1], ptsSelected[2] ], {
-						    						radius : 3, withLabel : false
-						    					});
-						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
-								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
-					} else {
-						alpha = board.create('angle', [ ptsSelected[2],
-								ptsSelected[1], ptsSelected[0] ], {
-							radius : 3, withLabel : false
-						});
-						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()],
-								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()]);
-					}
+				var an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
+						[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
+				
+				// if it's a reflex angle, don't draw it! Try the points in reverse order
+				if (an > 180) {
+					alpha = board.create('angle', [ ptsSelected[2], ptsSelected[1], ptsSelected[0] ], {
+					    						radius : 3, withLabel : false
+					    					});
+					an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
+							[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
 				} else {
-					if (board.objects[ptsSelected[0]].YEval() > board.objects[ptsSelected[2]].YEval()) {
-						alpha = board.create('angle', [ ptsSelected[2],
-						    							ptsSelected[1], ptsSelected[0] ], {
-						    						radius : 3, withLabel : false
-						    					});
-						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()],
-								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()]);
-					} else {
-						alpha = board.create('angle', [ ptsSelected[0],
-								ptsSelected[1], ptsSelected[2] ], {
-							radius : 3, withLabel : false
-						});
-						an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
-								[board.objects[ptsSelected[1]].XEval(), board.objects[ptsSelected[1]].YEval()], [board.objects[ptsSelected[2]].XEval(), board.objects[ptsSelected[2]].YEval()]);
-					}
+					alpha = board.create('angle', [ ptsSelected[0], ptsSelected[1], ptsSelected[2] ], {
+					    						radius : 3, withLabel : false
+					    					}); 
 				}
+				
 				// linesCreated.push(alpha.id);
 				anglesCreated.push(alpha.id);
 				angleMeasures.push(an);
@@ -1156,8 +1105,6 @@ var QtiWorksRendering = (function() {
 				ptsSelected = [];
 				setValue();
 			}
-		}, getAngle = function(p1,p2,p3) {
-			
 		}, setValue = function() {
 			var ptsValues = "points:";
 			for (var a = 0; a < ptsCreated.length; a++) {
@@ -1368,6 +1315,9 @@ var QtiWorksRendering = (function() {
 						+ ax2.toString() + "," + ay2.toString() + "_"
 						+ ax3.toString() + "," + ay3.toString() + ";";
 				angleValues += angleMeasures[e].toString() + ";";
+			}
+			for (var v = 0; v < altAngleMeasures.length; v++) {
+				angleValues += altAngleMeasures[e].toString() + ";";
 			}
 			if (angleValues == "/angles:") {
 				angleValues = "";
