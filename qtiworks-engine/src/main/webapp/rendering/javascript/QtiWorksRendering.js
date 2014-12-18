@@ -1003,12 +1003,14 @@ var QtiWorksRendering = (function() {
 								theAngle = 360 - theAngle;
 							}
 							altAngleMeasures.push(theAngle);
-							if (theAngle > 90) {
+							if (theAngle > 90 && theAngle < 180) {
 								angleTypes.push("obtuse");
 							} else if (theAngle < 90) {
 								angleTypes.push("acute");
-							} else {
+							} else if (theAngle == 90) {
 								angleTypes.push("right");
+							} else {
+								angleTypes.push("reflex");
 							}
 						}
 					}
@@ -1031,12 +1033,14 @@ var QtiWorksRendering = (function() {
 								theAngle = 360 - theAngle;
 							}
 							altAngleMeasures.push(theAngle);
-							if (theAngle > 90) {
+							if (theAngle > 90 && theAngle < 180) {
 								angleTypes.push("obtuse");
 							} else if (theAngle < 90) {
 								angleTypes.push("acute");
-							} else {
+							} else if (theAngle == 90) {
 								angleTypes.push("right");
+							} else {
+								angleTypes.push("reflex");
 							}
 						} else if ((ray1pt2x == ray2pt1x) && (ray1pt2y == ray2pt1y)) {
 							var theAngle = JXG.Math.Geometry.trueAngle([ray1pt1x, ray1pt1y],[ray1pt2x,ray1pt2y],[ray2pt2x,ray2pt2y]);
@@ -1044,12 +1048,14 @@ var QtiWorksRendering = (function() {
 								theAngle = 360 - theAngle;
 							}
 							altAngleMeasures.push(theAngle);
-							if (theAngle > 90) {
+							if (theAngle > 90 && theAngle < 180) {
 								angleTypes.push("obtuse");
 							} else if (theAngle < 90) {
 								angleTypes.push("acute");
-							} else {
+							} else if (theAngle == 90) {
 								angleTypes.push("right");
+							} else {
+								angleTypes.push("reflex");
 							}
 						}
 					}
@@ -1095,12 +1101,14 @@ var QtiWorksRendering = (function() {
 				// linesCreated.push(alpha.id);
 				anglesCreated.push(alpha.id);
 				angleMeasures.push(an);
-				if (an > 90) {
+				if (an > 90 && an < 180) {
 					angleTypes.push("obtuse");
 				} else if (an < 90) {
 					angleTypes.push("acute");
-				} else {
+				} else if (an == 90) {
 					angleTypes.push("right");
+				} else {
+					angleTypes.push("reflex");
 				}
 				ptsSelected = [];
 				setValue();
@@ -1303,12 +1311,14 @@ var QtiWorksRendering = (function() {
 							theAngle = 360 - theAngle;
 						}
 						altAngleMeasures.push(theAngle);
-						if (theAngle > 90) {
+						if (theAngle > 90 && theAngle < 180) {
 							angleTypes.push("obtuse");
 						} else if (theAngle < 90) {
 							angleTypes.push("acute");
-						} else {
+						} else if (theAngle == 90) {
 							angleTypes.push("right");
+						} else {
+							angleTypes.push("reflex");
 						}
 					}
 				}
@@ -1345,12 +1355,14 @@ var QtiWorksRendering = (function() {
 				// recalculate sizes
 				var newAngle = JXG.Math.Geometry.trueAngle([ax2,ay2],[ax1, ay1],[ax3,ay3]);
 				angleValues += newAngle.toString() + ";";
-				if (newAngle > 90) {
+				if (newAngle > 90 && newAngle < 180) {
 					angleTypes.push("obtuse");
 				} else if (newAngle < 90) {
 					angleTypes.push("acute");
-				} else {
+				} else if (newAngle == 90) {
 					angleTypes.push("right");
+				} else {
+					angleTypes.push("reflex")
 				}
 			}
 			for (var v = 0; v < altAngleMeasures.length; v++) {
