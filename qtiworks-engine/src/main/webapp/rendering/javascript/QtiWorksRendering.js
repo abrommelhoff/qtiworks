@@ -1191,6 +1191,7 @@ var QtiWorksRendering = (function() {
 				lineMetaString = "";
 			}
 			var lineSegValues = "/linesegs:";
+			var lineSegExactValues = "/exactlinesegs:";
 			var lineSegPointValues = "/linesegPoints:";
 			var linesegParaCount = 0;
 			var linesegPerpCount = 0;
@@ -1215,17 +1216,20 @@ var QtiWorksRendering = (function() {
 						lineSegPointValues += sx1.toString() + "," + sy1.toString() + "_"
 						+ sx2.toString() + "," + sy2.toString() + ";";
 						lineSegValues += "x=" + Math.round(sx1).toString() + ";";
+						lineSegExactValues += "x=" + sx1.toString() + ";";
 					} else {
 						var yint = sy1 - (m * sx1);
 		
 						lineSegPointValues += sx1.toString() + "," + sy1.toString() + "_"
 								+ sx2.toString() + "," + sy2.toString() + ";";
 						lineSegValues += "y=" + Math.round(m).toString() + "x+" + Math.round(yint).toString() + ";";
+						lineSegExactValues += "y=" + m.toString() + "x+" + yint.toString() + ";"; 
 					}
 				} else {
 					lineSegPointValues += sx1.toString() + "," + sy1.toString() + "_"
 					+ sx2.toString() + "," + sy2.toString() + ";";
 					lineSegValues += "x=" + Math.round(sx1).toString() + ";";
+					lineSegExactValues += "x=" + sx1.toString() + ";";
 				}
 				
 				for (var i = 0; i < lineSegmentsCreated.length; i++) {
@@ -1253,6 +1257,9 @@ var QtiWorksRendering = (function() {
 			if (lineSegValues == "/linesegs:") {
 				lineSegValues = "";
 			}
+			if (lineSegExactValues == "/exactlinesegs:") {
+				lineSegExactValues = "";
+			}
 			if (lineSegPointValues == "/linesegPoints:") {
 				lineSegPointValues = "";
 			}
@@ -1266,6 +1273,7 @@ var QtiWorksRendering = (function() {
 				linesegMetaString = "";
 			}
 			var rayValues = "/rays:";
+			var rayExactValues = "/exactrays:";
 			var rayPointValues = "/rayPoints:";
 			var rayParaCount = 0;
 			var rayPerpCount = 0;
@@ -1287,17 +1295,20 @@ var QtiWorksRendering = (function() {
 						rayPointValues += sx1.toString() + "," + sy1.toString() + "_"
 						+ sx2.toString() + "," + sy2.toString() + ";";
 						rayValues += "x=" + Math.round(sx1).toString() + ";";
+						rayExactValues += "x=" + sx1.toString() + ";";
 					} else {
 						var yint = sy1 - (m * sx1);
 		
 						rayPointValues += sx1.toString() + "," + sy1.toString() + "_"
 								+ sx2.toString() + "," + sy2.toString() + ";";
 						rayValues += "y=" + Math.round(m).toString() + "x+" + Math.round(yint).toString() + ";";
+						rayExactValues += "y=" + m.toString() + "x+" + yint.toString() + ";";
 					}
 				} else {
 					rayPointValues += sx1.toString() + "," + sy1.toString() + "_"
 					+ sx2.toString() + "," + sy2.toString() + ";";
 					rayValues += "x=" + Math.round(sx1).toString() + ";";
+					rayExactValues += "x=" + sx1.toString() + ";";
 				}
 				
 				for (var i = 0; i < raysCreated.length; i++) {
@@ -1354,6 +1365,9 @@ var QtiWorksRendering = (function() {
 			}
 			if (rayValues == "/rays:") {
 				rayValues = "";
+			}
+			if (rayExactValues == "/exactrays:") {
+				rayExactValues = "";
 			}
 			if (rayPointValues == "/rayPoints:") {
 				rayPointValues = "";
@@ -1598,7 +1612,7 @@ var QtiWorksRendering = (function() {
 			// re-creation.
 			inputElementQuery.get(0).value = ptsValues + linesValues
 					+ lineSegValues + rayValues + angleValues + angleTypeValues + linePointValues
-					+ lineSegPointValues + rayPointValues + anglePointValues + lineMetaString + linesegMetaString 
+					+ lineSegPointValues + lineSegExactValues + rayPointValues + rayExactValues + anglePointValues + lineMetaString + linesegMetaString 
 					+ rayMetaString + totalLineCountString + shapesString + triString + pgString + shapePointValues + rightAngleTop;
 		}, remove = function(e) {
 		
