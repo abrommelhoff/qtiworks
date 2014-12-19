@@ -1210,12 +1210,11 @@ var QtiWorksRendering = (function() {
 				} else {
 					m = Infinity;
 				}
-				
 				if (m != Infinity) {
 					if (Math.abs(m) > 20) {
 						lineSegPointValues += sx1.toString() + "," + sy1.toString() + "_"
 						+ sx2.toString() + "," + sy2.toString() + ";";
-						lineSegValues += "x=" + Infinity.toString() + sx1.toString() + ";";
+						lineSegValues += "x=" + Math.round(sx1).toString() + ";";
 					} else {
 						var yint = sy1 - (m * sx1);
 		
@@ -1226,7 +1225,7 @@ var QtiWorksRendering = (function() {
 				} else {
 					lineSegPointValues += sx1.toString() + "," + sy1.toString() + "_"
 					+ sx2.toString() + "," + sy2.toString() + ";";
-					lineSegValues += "x=" + m.toString() + sx1.toString() + ";";
+					lineSegValues += "x=" + Math.round(sx1).toString() + ";";
 				}
 				
 				for (var i = 0; i < lineSegmentsCreated.length; i++) {
@@ -1235,10 +1234,15 @@ var QtiWorksRendering = (function() {
 					var x2c = board.objects[lineSegmentsCreated[i]].point2.XEval();
 					var y2c = board.objects[lineSegmentsCreated[i]].point2.YEval();
 					var mc = (y2c - y1c) / (x2c - x1c);
+					if (x2c - x1c != 0) {
+						mc = (y2c - y1c) / (x2c - x1c);
+					} else {
+						mc = Infinity;
+					}
 					if (i != c) {
 						if (mc == m) {
 							linesegParaCount++;
-						} else if ((mc == (m * -1)) || (mc == Infinity && m == 0)) {
+						} else if (mc == (m * -1) || (mc == Infinity && m == 0)) {
 							linesegPerpCount++;
 						} else {
 							// nothing special here, move along!
@@ -1284,12 +1288,19 @@ var QtiWorksRendering = (function() {
 					var x2c = board.objects[raysCreated[i]].point2.XEval();
 					var y2c = board.objects[raysCreated[i]].point2.YEval();
 					var mc = (y2c - y1c) / (x2c - x1c);
-					if (mc == m) {
-						rayParaCount++;
-					} else if (mc == (m * -1)) {
-						rayPerpCount++;
+					if (x2c - x1c != 0) {
+						mc = (y2c - y1c) / (x2c - x1c);
 					} else {
-						// nothing special here, move along!
+						mc = Infinity;
+					}
+					if (i != c) {
+						if (mc == m) {
+							rayParaCount++;
+						} else if (mc == (m * -1) || (mc == Infinity && m == 0)) {
+							rayPerpCount++;
+						} else {
+							// nothing special here, move along!
+						}
 					}
 				}
 			}
