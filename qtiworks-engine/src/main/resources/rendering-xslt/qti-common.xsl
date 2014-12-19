@@ -506,10 +506,10 @@ rendering.
       <xsl:when test="not(empty(@unboundResponseIdentifiers) and empty(@invalidResponseIdentifiers))">
         <span class="itemStatus invalid">Needs Attention</span>
       </xsl:when>
-      <xsl:when test="@responded='true' or exists(qw:uncommittedResponseValue)">
+      <xsl:when test="(@responded='true' or exists(qw:uncommittedResponseValue)) and $advanceTestItemAllowed">
         <span class="itemStatus answered">Answered</span>
       </xsl:when>
-      <xsl:when test="@entryTime!=''">
+      <xsl:when test="@entryTime!='' or not($advanceTestItemAllowed)">
         <span class="itemStatus notAnswered">Not Answered</span>
       </xsl:when>
       <xsl:otherwise>

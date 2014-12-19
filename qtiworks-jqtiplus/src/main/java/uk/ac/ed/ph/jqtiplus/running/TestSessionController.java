@@ -948,7 +948,15 @@ public final class TestSessionController extends TestProcessingController {
         if (currentTestPart.getSubmissionMode()==SubmissionMode.INDIVIDUAL) {
             final ItemSessionState itemSessionState = expectItemRefState(currentItemKey);
             final EffectiveItemSessionControl effectiveItemSessionControl = testProcessingMap.resolveEffectiveItemSessionControl(expectItemRefNode(currentItemKey));
-            if (!itemSessionState.isResponded() && !effectiveItemSessionControl.isAllowSkipping()) {
+            boolean responded = false;
+            final Map<Identifier,Value> responseValues = itemSessionState.getResponseValues();
+            for (final Identifier thisIdentifier : responseValues.keySet()) {
+            	final Value thisValue = itemSessionState.getResponseValue(thisIdentifier);
+            	if (thisValue != NullValue.INSTANCE) {
+            		responded = true;
+            	}
+            }
+            if ((!itemSessionState.isResponded() || !responded) && !effectiveItemSessionControl.isAllowSkipping()) {
                 /* Not responded, and allowSkipping=false */
                 logger.debug("Item {} has not been responded and allowSkipping=false, so ending item is forbidden", currentItemKey);
                 return false;
