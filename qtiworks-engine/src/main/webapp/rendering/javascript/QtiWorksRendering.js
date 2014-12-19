@@ -1270,17 +1270,35 @@ var QtiWorksRendering = (function() {
 			var rayParaCount = 0;
 			var rayPerpCount = 0;
 			var rayMetaString = "/rayMeta:";
-			for (var d = 0; d < raysCreated.length; d++) {
-				var rx1 = board.objects[raysCreated[d]].point1.XEval();
-				var ry1 = board.objects[raysCreated[d]].point1.YEval();
-				var rx2 = board.objects[raysCreated[d]].point2.XEval();
-				var ry2 = board.objects[raysCreated[d]].point2.YEval();
+			for (var c = 0; c < raysCreated.length; c++) {
+				var sx1 = board.objects[raysCreated[c]].point1.XEval();
+				var sy1 = board.objects[raysCreated[c]].point1.YEval();
+				var sx2 = board.objects[raysCreated[c]].point2.XEval();
+				var sy2 = board.objects[raysCreated[c]].point2.YEval();
 				// let's calculate the slope
-				var m = (ry2 - ry1) / (rx2 - rx1);
-				var b = ry1 - (m * rx1);
-				rayPointValues += rx1.toString() + "," + ry1.toString() + "_"
-						+ rx2.toString() + "," + ry2.toString() + ";";
-				rayValues += "y=" + m.toString() + "x+" + b.toString() + ";";
+				var m;
+				if (sx2 - sx1 != 0) {
+					m = (sy2 - sy1) / (sx2 - sx1);
+				} else {
+					m = Infinity;
+				}
+				if (m != Infinity) {
+					if (Math.abs(m) > 20) {
+						rayPointValues += sx1.toString() + "," + sy1.toString() + "_"
+						+ sx2.toString() + "," + sy2.toString() + ";";
+						rayValues += "x=" + Math.round(sx1).toString() + ";";
+					} else {
+						var yint = sy1 - (m * sx1);
+		
+						rayPointValues += sx1.toString() + "," + sy1.toString() + "_"
+								+ sx2.toString() + "," + sy2.toString() + ";";
+						rayValues += "y=" + Math.round(m).toString() + "x+" + Math.round(yint).toString() + ";";
+					}
+				} else {
+					rayPointValues += sx1.toString() + "," + sy1.toString() + "_"
+					+ sx2.toString() + "," + sy2.toString() + ";";
+					rayValues += "x=" + Math.round(sx1).toString() + ";";
+				}
 				
 				for (var i = 0; i < raysCreated.length; i++) {
 					var x1c = board.objects[raysCreated[i]].point1.XEval();
