@@ -85,6 +85,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -955,6 +956,16 @@ public final class TestSessionController extends TestProcessingController {
             	if (thisValue != NullValue.INSTANCE) {
             		responded = true;
             	}
+            }
+            final Set<Identifier> badResponseIdentifiers = itemSessionState.getUnboundResponseIdentifiers();
+            final boolean allResponsesBound = badResponseIdentifiers.isEmpty();
+            if (allResponsesBound) {
+                final Set<Identifier> invalidResponseIdentifiers = itemSessionState.getInvalidResponseIdentifiers();
+                final boolean allResponsesValid = invalidResponseIdentifiers.isEmpty();
+                if (!allResponsesValid) {
+                    /* Some responses not valid, so note these down */
+                    responded = false;
+                }
             }
             if ((!itemSessionState.isResponded() || !responded) && !effectiveItemSessionControl.isAllowSkipping()) {
                 /* Not responded, and allowSkipping=false */
