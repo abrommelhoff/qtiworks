@@ -86,7 +86,7 @@ Renders a standalone assessmentItem
         <!-- Item title -->
         <h1 class="itemTitle">
           <xsl:apply-templates select="$itemSessionState" mode="item-status"/>
-          <xsl:value-of select="@title"/>
+          <!-- <xsl:value-of select="@title"/> -->
         </h1>
 
         <!-- Delivery prompt -->
