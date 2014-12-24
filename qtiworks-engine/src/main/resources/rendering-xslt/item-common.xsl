@@ -250,7 +250,7 @@ rendering.
   <xsl:template name="qw:generic-bad-response-message">
     <div class="badResponse">
       Please provide a response for each item.
-    </div>
+    </div> 
   </xsl:template>
 
   <!-- ************************************************************ -->
