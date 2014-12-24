@@ -249,7 +249,7 @@ rendering.
 
   <xsl:template name="qw:generic-bad-response-message">
     <div class="badResponse">
-      Please complete this interaction as directed.
+      Please provide a response for each item.
     </div>
   </xsl:template>
 
