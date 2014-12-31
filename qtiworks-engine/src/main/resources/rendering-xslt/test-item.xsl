@@ -330,11 +330,11 @@ NB: This is used both while being presented, and during review.
           </xsl:when>
         </xsl:choose>
 
-        <!-- <xsl:if test="$isItemSessionOpen">-->
+        <xsl:if test="$isItemSessionOpen">
           <div class="testItemControl">
             <input id="submit_button" name="submit" type="submit" value="{$submitButtonText}"/>
           </div>
-        <!-- </xsl:if> -->
+        </xsl:if>
       </form>
     </div>
   </xsl:template>
