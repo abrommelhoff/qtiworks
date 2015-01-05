@@ -249,7 +249,7 @@ rendering.
 
   <xsl:template name="qw:generic-bad-response-message">
     <div class="badResponse">
-      Please provide a response for each item.
+      Please make a selection for each row.
     </div> 
   </xsl:template>
 
