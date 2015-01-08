@@ -38,7 +38,7 @@ Renders the navigation for the current testPart
       <body class="qtiworks assessmentTest testPartNavigation">
         <xsl:call-template name="maybeAddAuthoringLink"/>
 
-        <h1><xsl:value-of select="$testOrTestPart"/> Question Menu</h1>
+        <h1>T<xsl:value-of select="$testOrTestPart"/> Question Menu</h1>
         <xsl:apply-templates select="$currentTestPartNode" mode="testPart-navigation"/>
 
         <!-- Test session control -->
@@ -52,7 +52,7 @@ Renders the navigation for the current testPart
       <li>
         <form action="{$webappContextPath}{$endTestPartUrl}" method="post"
           onsubmit="return confirm('{$endTestPartAlertMessage}')">
-          <input type="submit" value="End {$testOrTestPart}">
+          <input type="submit" value="End T{$testOrTestPart}">
             <xsl:if test="not($endTestPartAllowed)">
               <xsl:attribute name="disabled" select="'disabled'"/>
             </xsl:if>
