@@ -17,25 +17,27 @@
   		</head>
   	</html>
     <p/>
-      <input name="qtiworks_presented_{@responseIdentifier}" type="hidden" value="1"/>
-      <xsl:if test="@gdi:showPlotPoints='true' or not(@gdi:showPlotPoints)">
-      	<input type="radio" name="drawingMode" id="plotPoint" value="plotPoint"/>Plot a Point
-      </xsl:if>
-      <xsl:if test="@gdi:showDrawLine='true' or not(@gdi:showDrawLine)">
-      	<input type="radio" name="drawingMode" id="drawline" value="drawline"/><span class="lineText">Draw a &#160;&#160;&#160;&#160;&#160;</span>&#160;&#160;&#160;&#160;
-      </xsl:if>
-      <xsl:if test="@gdi:showDrawLineSegment='true' or not(@gdi:showDrawLineSegment)">
-	  	<input type="radio" name="drawingMode" id="drawlineseg" value="drawlineseg"/><span class="lineSegmentText">Draw a &#160;&#160;&#160;&#160;&#160;</span>&#160;&#160;&#160;&#160;
-	  </xsl:if>
-	  <xsl:if test="@gdi:showDrawRay='true' or not(@gdi:showDrawRay)">
-	  	<input type="radio" name="drawingMode" id="drawray" value="drawray"/><span class="rayText">Draw a &#160;&#160;&#160;&#160;&#160;</span>&#160;&#160;&#160;&#160;
-	  </xsl:if>
-	  <xsl:if test="@gdi:showDrawAngle='true' or not(@gdi:showDrawAngle)">
-	  	<input type="radio" name="drawingMode" id="drawangle" value="drawangle"/>Draw an Angle
-	  </xsl:if>
-	  <xsl:if test="@gdi:showDrawShape='true' or not(@gdi:showDrawShape)">
-	  	<input type="radio" name="drawingMode" id="drawshape" value="drawshape"/>Draw a Shape<br/>
-	  </xsl:if>
+      <div id="controlsDiv">
+	      <input name="qtiworks_presented_{@responseIdentifier}" type="hidden" value="1"/>
+	      <xsl:if test="@gdi:showPlotPoints='true' or not(@gdi:showPlotPoints)">
+	      	<input type="radio" name="drawingMode" id="plotPoint" value="plotPoint"/>Plot a Point
+	      </xsl:if>
+	      <xsl:if test="@gdi:showDrawLine='true' or not(@gdi:showDrawLine)">
+	      	<input type="radio" name="drawingMode" id="drawline" value="drawline"/><span class="lineText">Draw a &#160;&#160;&#160;&#160;&#160;</span>&#160;&#160;&#160;&#160;
+	      </xsl:if>
+	      <xsl:if test="@gdi:showDrawLineSegment='true' or not(@gdi:showDrawLineSegment)">
+		  	<input type="radio" name="drawingMode" id="drawlineseg" value="drawlineseg"/><span class="lineSegmentText">Draw a &#160;&#160;&#160;&#160;&#160;</span>&#160;&#160;&#160;&#160;
+		  </xsl:if>
+		  <xsl:if test="@gdi:showDrawRay='true' or not(@gdi:showDrawRay)">
+		  	<input type="radio" name="drawingMode" id="drawray" value="drawray"/><span class="rayText">Draw a &#160;&#160;&#160;&#160;&#160;</span>&#160;&#160;&#160;&#160;
+		  </xsl:if>
+		  <xsl:if test="@gdi:showDrawAngle='true' or not(@gdi:showDrawAngle)">
+		  	<input type="radio" name="drawingMode" id="drawangle" value="drawangle"/>Draw an Angle
+		  </xsl:if>
+		  <xsl:if test="@gdi:showDrawShape='true' or not(@gdi:showDrawShape)">
+		  	<input type="radio" name="drawingMode" id="drawshape" value="drawshape"/>Draw a Shape<br/>
+		  </xsl:if>
+	  </div>
 	  <input type="button" id="connectPoints" value="Connect Points"/>
 	  <span id="linedirections">Click two points between which to draw a line</span>
 	  <span id="linesegdirections">Click two points between which to draw a line</span>
