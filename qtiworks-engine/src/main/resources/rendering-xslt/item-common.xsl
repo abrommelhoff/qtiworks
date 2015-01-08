@@ -249,8 +249,8 @@ rendering.
 
   <xsl:template name="qw:generic-bad-response-message">
     <div class="badResponse">
-      Please complete this interaction as directed.
-    </div>
+      Please make a selection for each row.
+    </div> 
   </xsl:template>
 
   <!-- ************************************************************ -->

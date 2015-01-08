@@ -58,13 +58,13 @@ Base templates used in test rendering
   <!-- ************************************************************ -->
 
   <xsl:variable name="testOrTestPart" as="xs:string"
-    select="if ($hasMultipleTestParts) then 'Test Part' else 'Test'"/>
+    select="if ($hasMultipleTestParts) then 'est part' else 'est'"/>
 
   <xsl:variable name="endTestPartAlertMessage" as="xs:string"
-    select="concat('Are you sure? This will commit your answers for this ', $testOrTestPart, '.')"/>
+    select="concat('Are you sure? This will commit your answers for this T', $testOrTestPart, '.')"/>
 
   <xsl:variable name="exitTestPartAlertMessage" as="xs:string"
-    select="concat('Are you sure? This will leave this ', $testOrTestPart, ' and you can''t go back in.')"/>
+    select="concat('Are you sure? This will leave this T', $testOrTestPart, ' and you can''t go back in.')"/>
 
   <xsl:variable name="exitTestAlertMessage" as="xs:string"
     select="'Are you sure? This will leave ths Test and you can''t go back in.'"/>

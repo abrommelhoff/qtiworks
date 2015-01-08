@@ -161,7 +161,7 @@ NB: This is used both while being presented, and during review.
         <li>
           <form action="{$webappContextPath}{$endTestPartUrl}" method="post"
             onsubmit="return confirm({qw:to-javascript-string($endTestPartAlertMessage)})">
-            <input type="submit" value="End {$testOrTestPart}"/>
+            <input type="submit" value="End T{$testOrTestPart}"/>
           </form>
         </li>
       </xsl:if>
@@ -330,11 +330,11 @@ NB: This is used both while being presented, and during review.
           </xsl:when>
         </xsl:choose>
 
-        <!-- <xsl:if test="$isItemSessionOpen">-->
+        <xsl:if test="$isItemSessionOpen">
           <div class="testItemControl">
             <input id="submit_button" name="submit" type="submit" value="{$submitButtonText}"/>
           </div>
-        <!-- </xsl:if> -->
+        </xsl:if>
       </form>
     </div>
   </xsl:template>

@@ -525,10 +525,10 @@ public final class TestSessionController extends TestProcessingController {
         }
 
         /* If linear navigation, select the first item (if possible) */
-        if (nextTestPart.getNavigationMode()==NavigationMode.LINEAR) {
+        //if (nextTestPart.getNavigationMode()==NavigationMode.LINEAR) {
             logger.debug("Auto-selecting first item in testPart as we are in LINEAR mode");
             enterNextEnterableItemOrEndTestPart(nextAvailableTestPartNode, timestamp);
-        }
+        //}
 
         return nextAvailableTestPartNode;
     }
@@ -1405,7 +1405,7 @@ public final class TestSessionController extends TestProcessingController {
     private TestPart assertLinearTestPart(final TestPlanNode currentTestPartNode) {
         final TestPart currentTestPart = expectTestPart(currentTestPartNode);
         if (currentTestPart.getNavigationMode()!=NavigationMode.LINEAR) {
-            throw new QtiCandidateStateException("Expected this testPart to have LINEAR navigationMode");
+            //throw new QtiCandidateStateException("Expected this testPart to have LINEAR navigationMode");
         }
         return currentTestPart;
     }

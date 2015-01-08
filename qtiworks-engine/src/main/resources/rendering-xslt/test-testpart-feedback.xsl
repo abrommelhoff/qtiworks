@@ -38,7 +38,7 @@ Renders the test(Part) feedback
       <body class="qtiworks assessmentTest testFeedback">
         <xsl:call-template name="maybeAddAuthoringLink"/>
 
-        <h1><xsl:value-of select="$testOrTestPart"/> Complete</h1>
+        <h1>T<xsl:value-of select="$testOrTestPart"/> Complete</h1>
 
         <!-- Show 'atEnd' testPart feedback -->
         <xsl:apply-templates select="$currentTestPart/qti:testFeedback[@access='atEnd']"/>
@@ -62,7 +62,7 @@ Renders the test(Part) feedback
       <li>
         <form action="{$webappContextPath}{$advanceTestPartUrl}" method="post"
           onsubmit="return confirm({qw:to-javascript-string($exitTestPartAlertMessage)})">
-          <input type="submit" value="Exit {$testOrTestPart}"/>
+          <input type="submit" value="Exit T{$testOrTestPart}"/>
         </form>
       </li>
     </ul>

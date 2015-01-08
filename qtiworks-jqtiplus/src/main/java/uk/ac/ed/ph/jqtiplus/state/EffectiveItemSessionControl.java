@@ -73,7 +73,7 @@ public final class EffectiveItemSessionControl implements Serializable {
             final boolean showSolution, final boolean allowComment, final boolean allowSkipping, final boolean validateResponses) {
         this.maxAttempts = maxAttempts;
         this.showFeedback = showFeedback;
-        this.allowReview = allowReview;
+        this.allowReview = false;
         this.showSolution = showSolution;
         this.allowComment = allowComment;
         this.allowSkipping = allowSkipping;

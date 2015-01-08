@@ -592,9 +592,9 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
     public CandidateSession reviewItem(final CandidateSessionContext candidateSessionContext, final TestPlanNodeKey itemKey)
             throws CandidateException {
         Assert.notNull(candidateSessionContext, "candidateSessionContext");
+        Assert.notNull(itemKey, "itemKey");
         assertSessionType(candidateSessionContext, AssessmentObjectType.ASSESSMENT_TEST);
         final CandidateSession candidateSession = candidateSessionContext.getCandidateSession();
-        assertSessionNotTerminated(candidateSession);
 
         /* Get current JQTI state and create JQTI controller */
         final NotificationRecorder notificationRecorder = new NotificationRecorder(NotificationLevel.INFO);
@@ -602,13 +602,16 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
         final TestSessionController testSessionController = candidateDataService.createTestSessionController(mostRecentEvent, notificationRecorder);
         final TestSessionState testSessionState = testSessionController.getTestSessionState();
 
+        /* Make sure caller may do this */
+        assertSessionNotTerminated(candidateSession);
         try {
-            /* Perform action */
-            final Date requestTimestamp = requestTimestampContext.getCurrentRequestTimestamp();
-            testSessionController.selectItemNonlinear(requestTimestamp, itemKey);
+            if (!testSessionController.mayReviewItem(itemKey)) {
+                candidateAuditLogger.logAndThrowCandidateException(candidateSession, CandidateExceptionReason.CANNOT_REVIEW_TEST_ITEM);
+                return null;
+            }
         }
         catch (final QtiCandidateStateException e) {
-            candidateAuditLogger.logAndThrowCandidateException(candidateSession, CandidateExceptionReason.CANNOT_SELECT_NONLINEAR_TEST_ITEM);
+            candidateAuditLogger.logAndThrowCandidateException(candidateSession, CandidateExceptionReason.CANNOT_REVIEW_TEST_ITEM);
             return null;
         }
         catch (final RuntimeException e) {
@@ -620,7 +623,7 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
 
         /* Record and log event */
         final CandidateEvent candidateTestEvent = candidateDataService.recordCandidateTestEvent(candidateSession,
-                CandidateTestEventType.SELECT_ITEM, null, itemKey, testSessionState, notificationRecorder);
+                CandidateTestEventType.REVIEW_ITEM, null, itemKey, testSessionState, notificationRecorder);
         candidateAuditLogger.logCandidateEvent(candidateTestEvent);
 
         return candidateSession;

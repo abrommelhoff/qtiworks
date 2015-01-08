@@ -65,9 +65,9 @@
       </xsl:if>
       <td class="control">
         <input name="qtiworks_response_{../@responseIdentifier}" value="{@identifier}" type="{if (../@maxChoices=1) then 'radio' else 'checkbox'}">
-          <!-- <xsl:if test="$isItemSessionEnded">
+          <xsl:if test="$isItemSessionEnded">
             <xsl:attribute name="disabled">disabled</xsl:attribute>
-          </xsl:if> -->
+          </xsl:if>
           <xsl:if test="qw:value-contains(qw:get-response-value(/, ../@responseIdentifier), @identifier)">
             <xsl:attribute name="checked">checked</xsl:attribute>
           </xsl:if>
