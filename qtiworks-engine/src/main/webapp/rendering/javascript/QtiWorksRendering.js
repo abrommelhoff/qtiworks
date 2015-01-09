@@ -861,8 +861,8 @@ var QtiWorksRendering = (function() {
 			ptsSelected = [];
 		});
 		$('#drawshape').click(function() {
-			$('#shapedirections').toggle(this.checked);
-			$('#connectPoints').toggle(this.checked);
+			$('#shapedirections').toggle(true);
+			$('#connectPoints').toggle(true);
 			mode = 'shape';
 			$('#linedirections').toggle(false);
 			$('#linesegdirections').toggle(false);
