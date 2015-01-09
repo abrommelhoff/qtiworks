@@ -2,7 +2,7 @@
 <!--
 
 Renders an "exploded" session.
-
+ 
 Input document: doesn't matter
 
 -->
