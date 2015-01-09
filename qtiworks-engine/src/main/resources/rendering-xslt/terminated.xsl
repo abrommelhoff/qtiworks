@@ -28,17 +28,34 @@ Input document: doesn't matter
       <head>
         <title>Assessment Completed</title>
         <link rel="stylesheet" href="{$webappContextPath}/rendering/css/assessment.css" type="text/css" media="screen"/>
+        <script type="text/javascript">
+          	<![CDATA[
+            	var fs = new RegExp("%2F", "g");
+            	var colon = new RegExp("%3A;", "g");
+            	var amp = new RegExp("&amp;", "g");
+            	function doRedirect(URI){
+            	window.location.replace(URI.replace(fs, "/").replace(colon, ":").replace(amp, "&"));
+            	};
+          	]]>
+        </script>
       </head>
-      <body class="qtiworks">
+      <xsl:if test="exists($exitSessionUrlAbsolute)">
+      <body class="qtiworks" onload="doRedirect('{$exitSessionUrlAbsolute}'); return true;">      
         <p>
-          This assessment is now closed and you can no longer interact with it.
+          You have finished the test, but your answers are not yet submitted. Click the link below to submit your answers.
         </p>
-        <xsl:if test="exists($exitSessionUrlAbsolute)">
           <p>
-            <a href="{$exitSessionUrlAbsolute}">Exit and return</a>
+            <a href="{$exitSessionUrlAbsolute}">Submit answers</a>
           </p>
-        </xsl:if>
       </body>
+      </xsl:if>
+      <xsl:if test="not(exists($exitSessionUrlAbsolute))">
+      <body class="qtiworks">      
+        <p>
+          You have finished the test, but your answers are not yet submitted. Click the link below to submit your answers.
+        </p>
+      </body>
+      </xsl:if>
     </html>
   </xsl:template>
 
