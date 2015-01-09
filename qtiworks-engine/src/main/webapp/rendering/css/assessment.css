@@ -19,15 +19,15 @@ h2 {
 
 .lineText {
 	  background: url(../images/line.png) no-repeat right;
-	  padding: 2px, 0px;
+	  padding: 2px 0px;
 }
 .lineSegmentText {
 	  background: url(../images/linesegment.png) no-repeat right;
-	  padding: 2px, 0px;
+	  padding: 2px 0px;
 }
 .rayText {
 	  background: url(../images/ray.png) no-repeat right;
-	  padding: 2px, 0px;
+	  padding: 2px 0px;
 }
 
 .JXGtext {
