@@ -2,7 +2,7 @@
 <!--
 
 Renders an "exploded" session.
-
+ 
 Input document: doesn't matter
 
 -->
@@ -64,7 +64,7 @@ Input document: doesn't matter
           </xsl:choose>
           <xsl:if test="exists($exitSessionUrlAbsolute)">
             <p>
-              <a href="{$exitSessionUrlAbsolute}">Exit and return</a>
+              <a href="{$exitSessionUrlAbsolute}">Submit answers</a>
             </p>
           </xsl:if>
         </div>
