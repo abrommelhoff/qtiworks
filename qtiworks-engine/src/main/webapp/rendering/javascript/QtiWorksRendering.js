@@ -809,7 +809,7 @@ var QtiWorksRendering = (function() {
 			setValue();
 		});
 		$('#plotPoint').click(function() {
-			mode = this.checked ? 'point' : 'point';
+			mode = 'point';
 			$('#linesegdirections').toggle(false);
 			$("#raydirections").toggle(false);
 			$('#linedirections').toggle(false);
@@ -818,8 +818,8 @@ var QtiWorksRendering = (function() {
 			$('#connectPoints').hide();
 		});
 		$('#drawline').click(function() {
-			$('#linedirections').toggle(this.checked);
-			mode = this.checked ? 'line' : 'point';
+			$('#linedirections').toggle(true);
+			mode = 'line';
 			$('#linesegdirections').toggle(false);
 			$("#raydirections").toggle(false);
 			$('#angledirections').toggle(false);
@@ -829,8 +829,8 @@ var QtiWorksRendering = (function() {
 
 		});
 		$('#drawlineseg').click(function() {
-			$('#linesegdirections').toggle(this.checked);
-			mode = this.checked ? 'lineseg' : 'point';
+			$('#linesegdirections').toggle(true);
+			mode = 'lineseg';
 			$("#raydirections").toggle(false);
 			$('#linedirections').toggle(false);
 			$('#angledirections').toggle(false);
@@ -840,8 +840,8 @@ var QtiWorksRendering = (function() {
 
 		});
 		$('#drawray').click(function() {
-			$('#raydirections').toggle(this.checked);
-			mode = this.checked ? 'ray' : 'point';
+			$('#raydirections').toggle(true);
+			mode = 'ray';
 			$('#linedirections').toggle(false);
 			$('#linesegdirections').toggle(false);
 			$('#angledirections').toggle(false);
@@ -851,8 +851,8 @@ var QtiWorksRendering = (function() {
 
 		});
 		$('#drawangle').click(function() {
-			$('#angledirections').toggle(this.checked);
-			mode = this.checked ? 'angle' : 'point';
+			$('#angledirections').toggle(true);
+			mode = 'angle';
 			$('#linedirections').toggle(false);
 			$('#linesegdirections').toggle(false);
 			$("#raydirections").toggle(false);
@@ -863,13 +863,17 @@ var QtiWorksRendering = (function() {
 		$('#drawshape').click(function() {
 			$('#shapedirections').toggle(this.checked);
 			$('#connectPoints').toggle(this.checked);
-			mode = this.checked ? 'shape' : 'point';
+			mode = 'shape';
 			$('#linedirections').toggle(false);
 			$('#linesegdirections').toggle(false);
 			$("#raydirections").toggle(false);
 			$('#angledirections').toggle(false);
 			ptsSelected = [];
 		});
+		// if there's only one drawing option, select it by default
+		if ($("#controlsDiv > input[type='radio']").length == 1) {
+			$("#controlsDiv > input[type='radio']").trigger("click");
+		}
 		$('#resetButton').click(function() {
 			var element;
 			for (element in board.objects) {
