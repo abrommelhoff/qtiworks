@@ -503,9 +503,9 @@ rendering.
       <xsl:when test="@endTime!=''">
         <span class="itemStatus ended">Finished</span>
       </xsl:when>
-      <xsl:when test="not(empty(@unboundResponseIdentifiers) and empty(@invalidResponseIdentifiers))">
+      <!-- <xsl:when test="(not(empty(@unboundResponseIdentifiers) and empty(@invalidResponseIdentifiers))) or ((@responded='true' or exists(qw:uncommittedResponseValue)) and (not($advanceTestItemAllowed)))">
         <span class="itemStatus invalid">Needs Attention</span>
-      </xsl:when>
+      </xsl:when>-->
       <xsl:when test="@responded='true' or exists(qw:uncommittedResponseValue)">
         <span class="itemStatus answered">Answered</span>
       </xsl:when>
