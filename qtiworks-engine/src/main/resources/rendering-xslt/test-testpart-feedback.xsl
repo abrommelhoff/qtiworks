@@ -49,7 +49,7 @@ Renders the test(Part) feedback
         </xsl:if>
 
         <!-- Review -->
-        <xsl:apply-templates select="$currentTestPartNode" mode="testPart-review"/>
+        <xsl:apply-templates select="$currentTestPartNode" mode="testPart-review"/> 
 
         <!-- Test session control -->
         <xsl:call-template name="qw:test-controls"/>
