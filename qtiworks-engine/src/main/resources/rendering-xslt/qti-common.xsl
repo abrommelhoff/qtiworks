@@ -32,6 +32,7 @@ rendering.
   <xsl:param name="stateUrl" as="xs:string" required="yes"/>
   <xsl:param name="resultUrl" as="xs:string" required="yes"/>
   <xsl:param name="validationUrl" as="xs:string" required="yes"/>
+  <xsl:param name="advanceTestItemAllowed" as="xs:boolean" required="no"/>
 
   <!--
   URI of the Item or Test being rendered.
@@ -497,23 +498,46 @@ rendering.
   <!-- Basic item states. NB: Some templates override this -->
   <xsl:template match="qw:itemSessionState" mode="item-status">
     <xsl:choose>
-      <xsl:when test="@markedForReview='true'">
-		<span class="itemStatus markedForReview">Marked for Review</span>
-      </xsl:when>
-      <xsl:when test="@endTime!=''">
-        <span class="itemStatus ended">Finished</span>
-      </xsl:when>
-      <!-- <xsl:when test="(not(empty(@unboundResponseIdentifiers) and empty(@invalidResponseIdentifiers))) or ((@responded='true' or exists(qw:uncommittedResponseValue)) and (not($advanceTestItemAllowed)))">
-        <span class="itemStatus invalid">Needs Attention</span>
-      </xsl:when>--> 
-      <xsl:when test="@responded='true' or exists(qw:uncommittedResponseValue)">
-        <span class="itemStatus answered">Answered</span>
-      </xsl:when>
-      <xsl:when test="@entryTime!=''">
-        <span class="itemStatus notAnswered">Not Answered</span>
+   	  <xsl:when test="exists($advanceTestItemAllowed)">
+   	    <xsl:choose>
+          <xsl:when test="@markedForReview='true'">
+	  	    <span class="itemStatus markedForReview">Marked for Review</span>
+          </xsl:when>
+          <xsl:when test="@endTime!=''">
+            <span class="itemStatus ended">Finished</span>
+          </xsl:when>
+          <xsl:when test="(not(empty(@unboundResponseIdentifiers) and empty(@invalidResponseIdentifiers))) or ((@responded='true' or exists(qw:uncommittedResponseValue)) and (not($advanceTestItemAllowed)))">
+            <span class="itemStatus invalid">Needs Attention</span>
+          </xsl:when>
+          <xsl:when test="@responded='true' or exists(qw:uncommittedResponseValue)">
+            <span class="itemStatus answered">Answered</span>
+          </xsl:when>
+          <xsl:when test="@entryTime!=''">
+            <span class="itemStatus notAnswered">Not Answered</span>
+          </xsl:when>
+          <xsl:otherwise>
+            <span class="itemStatus notPresented">Not Seen</span>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:otherwise>
-        <span class="itemStatus notPresented">Not Seen</span>
+        <xsl:choose>
+          <xsl:when test="@markedForReview='true'">
+	  	    <span class="itemStatus markedForReview">Marked for Review</span>
+          </xsl:when>
+          <xsl:when test="@endTime!=''">
+            <span class="itemStatus ended">Finished</span>
+          </xsl:when>
+          <xsl:when test="@responded='true' or exists(qw:uncommittedResponseValue)">
+            <span class="itemStatus answered">Answered</span>
+          </xsl:when>
+          <xsl:when test="@entryTime!=''">
+            <span class="itemStatus notAnswered">Not Answered</span>
+          </xsl:when>
+          <xsl:otherwise>
+            <span class="itemStatus notPresented">Not Seen</span>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
