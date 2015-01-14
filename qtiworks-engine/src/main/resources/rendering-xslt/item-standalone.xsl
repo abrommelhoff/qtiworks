@@ -29,6 +29,7 @@ Renders a standalone assessmentItem
   <xsl:param name="softSoftResetAllowed" as="xs:boolean" required="yes"/>
   <xsl:param name="hardResetAllowed" as="xs:boolean" required="yes"/>
   <xsl:param name="candidateCommentAllowed" as="xs:boolean" required="yes"/>
+  <xsl:variable name="advanceTestItemAllowed" select="false()"/>
 
   <!-- Action URLs -->
   <xsl:param name="softResetUrl" as="xs:string" required="yes"/>

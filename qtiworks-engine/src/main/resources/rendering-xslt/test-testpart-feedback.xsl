@@ -90,6 +90,7 @@ Renders the test(Part) feedback
           <h2><xsl:value-of select="@sectionPartTitle"/></h2>
           <!-- Handle rubrics -->
           <xsl:variable name="sectionIdentifier" select="qw:extract-identifier(.)" as="xs:string"/>
+          <xsl:variable name="advanceTestItemAllowed" select="false()"/>
           <xsl:variable name="assessmentSection" select="$assessmentTest//qti:assessmentSection[@identifier=$sectionIdentifier]" as="element(qti:assessmentSection)*"/>
           <xsl:apply-templates select="$assessmentSection/qti:rubricBlock"/>
         </header>

@@ -22,6 +22,7 @@ Renders the navigation for the current testPart
 
   <!-- Action permissions -->
   <xsl:param name="endTestPartAllowed" as="xs:boolean" required="yes"/>
+  <xsl:variable name="advanceTestItemAllowed" select="false()"/>
 
   <!-- ************************************************************ -->
 
