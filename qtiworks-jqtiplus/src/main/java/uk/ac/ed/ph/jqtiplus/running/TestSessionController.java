@@ -658,9 +658,10 @@ public final class TestSessionController extends TestProcessingController {
      */
     public void endCurrentTestPart(final Date timestamp) {
         Assert.notNull(timestamp, "timestamp");
+        /* NMD -- allow skipping due to rules.  Better solution would be to fix mayEndCurrentTestPart so it's smart enough to handle questions skipped due to rules.
         if (!mayEndCurrentTestPart()) {
             throw new QtiCandidateStateException("Current test part cannot be ended");
-        }
+        }*/
         final TestPlanNode currentTestPartNode = assertCurrentTestPartNode();
 
         /* Perform logic for ending testPart */
