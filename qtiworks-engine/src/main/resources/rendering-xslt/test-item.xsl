@@ -63,7 +63,7 @@ NB: This is used both while being presented, and during review.
 
   <!-- Text to use on submit button, which depends on submissionMode -->
   <xsl:variable name="submitButtonText" as="xs:string"
-    select="if ($currentTestPart/@submissionMode='individual') then 'Submit Answer' else 'Save Answer'"/>
+    select="if ($currentTestPart/@submissionMode='individual') then 'Submit ye Answer' else 'Save Answer'"/>
 
   <!-- ************************************************************ -->
 
