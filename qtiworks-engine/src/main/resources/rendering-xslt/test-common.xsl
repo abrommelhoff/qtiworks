@@ -61,7 +61,7 @@ Base templates used in test rendering
     select="if ($hasMultipleTestParts) then 'est part' else 'est'"/>
 
   <xsl:variable name="endTestPartAlertMessage" as="xs:string"
-    select="concat('Are you sure? This will commit your answers for this T', $testOrTestPart, '.')"/>
+    select="concat('Are you sure? This will leave the t', $testOrTestPart, ' and you can’t get back in.')"/>
 
   <xsl:variable name="exitTestPartAlertMessage" as="xs:string"
     select="concat('Are you sure? This will leave this T', $testOrTestPart, ' and you can''t go back in.')"/>
