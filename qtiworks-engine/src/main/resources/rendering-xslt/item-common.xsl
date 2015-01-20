@@ -246,11 +246,10 @@ rendering.
   </xsl:function>
 
   <!-- ************************************************************ -->
-
   <xsl:template name="qw:generic-bad-response-message">
     <div class="badResponse">
       Please make a selection for each row.
-    </div> 
+    </div>
   </xsl:template>
 
   <!-- ************************************************************ -->
