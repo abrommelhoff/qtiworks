@@ -504,7 +504,7 @@ rendering.
 	  	    <span class="itemStatus markedForReview">Marked for Review</span>
           </xsl:when>
           <xsl:when test="@endTime!=''">
-            <span class="itemStatus ended">Finished</span>
+            <span class="itemStatus ended">Answered</span>
           </xsl:when>
           <xsl:when test="(not(empty(@unboundResponseIdentifiers) and empty(@invalidResponseIdentifiers))) or ((@responded='true' or exists(qw:uncommittedResponseValue)) and (not($advanceTestItemAllowed)))">
             <span class="itemStatus invalid">Needs Attention</span>
@@ -526,7 +526,7 @@ rendering.
 	  	    <span class="itemStatus markedForReview">Marked for Review</span>
           </xsl:when>
           <xsl:when test="@endTime!=''">
-            <span class="itemStatus ended">Finished</span>
+            <span class="itemStatus ended">Answered</span>
           </xsl:when>
           <xsl:when test="@responded='true' or exists(qw:uncommittedResponseValue)">
             <span class="itemStatus answered">Answered</span>
