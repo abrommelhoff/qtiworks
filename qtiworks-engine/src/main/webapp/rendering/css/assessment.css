@@ -110,7 +110,7 @@ ul.sessionControl li form {
 }
 
 .itemStatus.answered {
-  background-color: blue;
+  background-color: #999999;
 }
 
 .itemStatus.notAnswered {
