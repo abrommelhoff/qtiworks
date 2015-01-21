@@ -24,7 +24,7 @@ if (!$getResponse) {
 	echo '<root>';
 	while ($row = mysql_fetch_row($getResponse)) {
 		echo '<response identifier="';
-		echo addslashes($row[0);
+		echo addslashes($row[0]);
 		echo '" timestamp="';
 		echo $row[1];
 		echo '" timeontask="';
