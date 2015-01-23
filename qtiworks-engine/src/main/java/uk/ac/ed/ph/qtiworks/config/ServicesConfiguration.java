@@ -33,8 +33,8 @@
  */
 package uk.ac.ed.ph.qtiworks.config;
 
-import src.main.java.geometrydrawing.FigurePlacementExtensionPackage;
-import src.main.java.geometrydrawing.GeometryDrawingExtensionPackage;
+import geometrydrawing.FigurePlacementExtensionPackage;
+import geometrydrawing.GeometryDrawingExtensionPackage;
 
 import uk.ac.ed.ph.qtiworks.config.beans.QtiWorksDeploymentSettings;
 import uk.ac.ed.ph.qtiworks.mathassess.MathAssessExtensionPackage;
