@@ -36,7 +36,7 @@ if (!$getResponse) {
 		echo '" correctness="';
 		echo $row[5];
 		echo '" stringvalue="';
-		echo addslashes($row[6]);
+		echo str_replace(chr(34), '&#34;', $row[6]);
 		echo '" score="';
 		echo $row[7];
 		echo '" key="';
