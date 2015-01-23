@@ -1,4 +1,4 @@
-package src.main.java.geometrydrawing;
+package geometrydrawing;
 
 public final class FigurePlacementConstants {
 

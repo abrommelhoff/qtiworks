@@ -1,4 +1,4 @@
-package src.main.java.geometrydrawing;
+package geometrydrawing;
 
 import uk.ac.ed.ph.jqtiplus.ExtensionNamespaceInfo;
 import uk.ac.ed.ph.jqtiplus.JqtiExtensionPackage;
