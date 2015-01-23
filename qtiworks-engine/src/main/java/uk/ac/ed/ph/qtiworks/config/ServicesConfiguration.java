@@ -33,6 +33,9 @@
  */
 package uk.ac.ed.ph.qtiworks.config;
 
+import src.main.java.geometrydrawing.FigurePlacementExtensionPackage;
+import src.main.java.geometrydrawing.GeometryDrawingExtensionPackage;
+
 import uk.ac.ed.ph.qtiworks.config.beans.QtiWorksDeploymentSettings;
 import uk.ac.ed.ph.qtiworks.mathassess.MathAssessExtensionPackage;
 import uk.ac.ed.ph.qtiworks.services.RequestTimestampContext;
@@ -45,8 +48,6 @@ import uk.ac.ed.ph.jqtiplus.xmlutils.SchemaCache;
 import uk.ac.ed.ph.jqtiplus.xmlutils.SimpleSchemaCache;
 import uk.ac.ed.ph.jqtiplus.xmlutils.xslt.SimpleXsltStylesheetCache;
 import uk.ac.ed.ph.jqtiplus.xmlutils.xslt.XsltStylesheetCache;
-
-import geometrydrawing.GeometryDrawingExtensionPackage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,6 +169,7 @@ public class ServicesConfiguration {
             extensionPackages.add(new MathAssessExtensionPackage(xsltStylesheetCache()));
         }
         extensionPackages.add(new GeometryDrawingExtensionPackage());
+        extensionPackages.add(new FigurePlacementExtensionPackage());
 
         return new JqtiExtensionManager(extensionPackages);
     }
