@@ -380,7 +380,11 @@ public class CandidateItemDeliveryService extends CandidateServiceBase {
                     }
                 }
             }
-            final String responseId = candidateResponse.getStringResponseData().get(0);
+            String responseId = "";
+            final List<String> responseData = candidateResponse.getStringResponseData();
+            if (responseData.size() != 0) {
+                responseId = responseData.get(0);
+            }
             final ResponseProcessing responseProcessing = itemSessionController.getNodeGroups().getResponseProcessingGroup().getResponseProcessing();
             if (responseProcessing != null) {
                 final Iterator<ResponseRule> responseRuleIter = responseProcessing.getResponseRules().iterator();

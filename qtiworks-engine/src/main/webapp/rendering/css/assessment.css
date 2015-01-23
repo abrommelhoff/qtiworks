@@ -3,7 +3,7 @@
 body {
   background-color: white;
   color: black;
-  font: 14px/1.4 Arial, Sans-Serif;
+  font: 18px/1.8 Arial, Sans-Serif;
   margin: 1em 1em 5em 1em;
   padding: 0;
 }
@@ -341,6 +341,11 @@ ul.sessionControl li form {
 .assessmentItem .mathEntryInteraction.vertical .previewPanel {
   margin-top: 2em;
   min-height: 4em;
+}
+
+.assessmentItem .matchInteraction input {
+  width: 20px;
+  height: 20px;
 }
 
 .assessmentItem div.upConversionAjaxControlMessage {
