@@ -17,9 +17,9 @@
           <xsl:apply-templates select="qti:prompt"/>
         </div>
       </xsl:if>
-      <xsl:if test="qw:is-invalid-response(@responseIdentifier)">
+      <!-- <xsl:if test="qw:is-invalid-response(@responseIdentifier)">
         <xsl:call-template name="qw:generic-bad-response-message"/>
-      </xsl:if>
+      </xsl:if>-->
 
       <xsl:variable name="object" select="fpi:object" as="element(fpi:object)"/>
       <xsl:variable name="appletContainerId" select="concat('qtiworks_id_appletContainer_', @responseIdentifier)" as="xs:string"/>

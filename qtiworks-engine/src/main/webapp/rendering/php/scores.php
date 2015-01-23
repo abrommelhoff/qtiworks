@@ -24,7 +24,7 @@ if (!$getResponse) {
 	echo '<root>';
 	while ($row = mysql_fetch_row($getResponse)) {
 		echo '<response identifier="';
-		echo $row[0];
+		echo addslashes($row[0]);
 		echo '" timestamp="';
 		echo $row[1];
 		echo '" timeontask="';
@@ -36,7 +36,7 @@ if (!$getResponse) {
 		echo '" correctness="';
 		echo $row[5];
 		echo '" stringvalue="';
-		echo $row[6];
+		echo str_replace(chr(34), '&#34;', $row[6]);
 		echo '" score="';
 		echo $row[7];
 		echo '" key="';

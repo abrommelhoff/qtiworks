@@ -536,7 +536,7 @@ public final class ItemSessionController extends ItemProcessingController implem
     public void suspendItemSession(final Date timestamp) {
         Assert.notNull(timestamp);
         assertItemOpen();
-        assertItemNotSuspended();
+        //assertItemNotSuspended();
         logger.debug("Suspending item session on {}", item.getSystemId());
 
         itemSessionState.setSuspendTime(timestamp);
@@ -1113,9 +1113,9 @@ public final class ItemSessionController extends ItemProcessingController implem
 
     private void assertItemNotEntered() {
         assertItemInitialized();
-        if (itemSessionState.isEntered()) {
-            throw new QtiCandidateStateException("Item session has already been entered");
-        }
+        //if (itemSessionState.isEntered()) {
+        //    throw new QtiCandidateStateException("Item session has already been entered");
+        //}
     }
 
     private void assertItemEntered() {

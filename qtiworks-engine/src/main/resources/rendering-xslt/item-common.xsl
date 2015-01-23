@@ -35,8 +35,8 @@ rendering.
   <xsl:variable name="outcomeValues" select="$itemSessionState/qw:outcomeVariable" as="element(qw:outcomeVariable)*"/>
   <xsl:variable name="overriddenCorrectResponses" select="$itemSessionState/qw:overriddenCorrectResponse" as="element(qw:overriddenCorrectResponse)*"/>
   <xsl:variable name="sessionStatus" select="$itemSessionState/@sessionStatus" as="xs:string"/>
-  <xsl:variable name="isItemSessionEnded" as="xs:boolean" select="$itemSessionState/@endTime!='' or $solutionMode"/>
-  <xsl:variable name="isItemSessionOpen" as="xs:boolean" select="$itemSessionState/@entryTime!='' and not($isItemSessionEnded)"/>
+  <xsl:variable name="isItemSessionEnded" as="xs:boolean" select="$solutionMode"/>
+  <xsl:variable name="isItemSessionOpen" as="xs:boolean" select="$itemSessionState/@entryTime!=''"/>
   <xsl:variable name="isItemSessionExited" as="xs:boolean" select="$itemSessionState/@exitTime!=''"/>
 
   <!-- Raw response inputs -->
@@ -246,11 +246,10 @@ rendering.
   </xsl:function>
 
   <!-- ************************************************************ -->
-
   <xsl:template name="qw:generic-bad-response-message">
     <div class="badResponse">
       Please make a selection for each row.
-    </div> 
+    </div>
   </xsl:template>
 
   <!-- ************************************************************ -->

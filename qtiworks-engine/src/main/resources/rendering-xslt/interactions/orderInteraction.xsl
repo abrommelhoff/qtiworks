@@ -16,9 +16,9 @@
           <xsl:apply-templates select="qti:prompt"/>
         </div>
       </xsl:if>
-      <xsl:if test="qw:is-invalid-response(@responseIdentifier)">
+      <!-- <xsl:if test="qw:is-invalid-response(@responseIdentifier)">
         <xsl:call-template name="qw:generic-bad-response-message"/>
-      </xsl:if>
+      </xsl:if>-->
 
       <div id="qtiworks_response_{@responseIdentifier}">
         <!-- Create holder for hidden form fields that will contain the actual data to pass back -->

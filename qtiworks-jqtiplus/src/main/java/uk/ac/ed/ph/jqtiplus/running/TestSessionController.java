@@ -658,9 +658,10 @@ public final class TestSessionController extends TestProcessingController {
      */
     public void endCurrentTestPart(final Date timestamp) {
         Assert.notNull(timestamp, "timestamp");
+        /* NMD -- allow skipping due to rules.  Better solution would be to fix mayEndCurrentTestPart so it's smart enough to handle questions skipped due to rules.
         if (!mayEndCurrentTestPart()) {
             throw new QtiCandidateStateException("Current test part cannot be ended");
-        }
+        }*/
         final TestPlanNode currentTestPartNode = assertCurrentTestPartNode();
 
         /* Perform logic for ending testPart */
@@ -942,7 +943,10 @@ public final class TestSessionController extends TestProcessingController {
         final TestPlanNode currentTestPartNode = assertCurrentTestPartNode();
         final TestPart currentTestPart = assertLinearTestPart(currentTestPartNode);
         final TestPlanNodeKey currentItemKey = assertItemSelected();
-
+        final TestPlanNode currentItemNode = getCurrentItemRefNode();
+        if (testWalkToNextSiblingOrAncestorNode(currentItemNode) == null) {
+            return false;
+        };
         /* The only thing preventing submission is allowSkipping and validateResponses, which
          * only apply in INDIVIDUAL submission mode.
          */
@@ -1177,6 +1181,30 @@ public final class TestSessionController extends TestProcessingController {
             logger.debug("Linear navigation has reached end of testPart");
         }
         return nextItemRefNode;
+    }
+
+    private TestPlanNode testWalkToNextSiblingOrAncestorNode(final TestPlanNode startNode) {
+        final TestPlanNode currentNode = startNode;
+        if (currentNode.hasFollowingSibling()) {
+            /* Walk to next sibling */
+            return currentNode.getFollowingSibling();
+        }
+        else {
+            /* No more siblings, so go up to parent then onto its next sibling */
+            final TestPlanNode parentNode = currentNode.getParent();
+            switch (parentNode.getTestNodeType()) {
+                case TEST_PART:
+                    /* We've reached the end of the TestPart, so stop searching altogether */
+                    return null;
+
+                case ASSESSMENT_SECTION:
+                    /* Reached end of section. So exit then move on */;
+                    return testWalkToNextSiblingOrAncestorNode(parentNode);
+
+                default:
+                    throw new QtiLogicException("Did not expect to meet a Node of type " + currentNode.getTestNodeType());
+            }
+        }
     }
 
     private TestPlanNode walkToNextSiblingOrAncestorNode(final TestPlanNode startNode, final Date timestamp) {

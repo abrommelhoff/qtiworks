@@ -108,25 +108,25 @@ public final class Identifier implements Serializable, Comparable<Identifier> {
     private static void verifyIdentifier(final String value) {
         Assert.notNull(value);
 
-        if (value.isEmpty()) {
-           // throw new QtiParseException("Invalid identifier '" + value + "': Must not be empty");
-        }
-
-        /* Check first character */
-        if (!Character.isLetter(value.codePointAt(0)) && value.charAt(0) != '_') {
-           // throw new QtiParseException("Invalid identifier '" + value + "': First character '" + value.charAt(0) + "' is not valid");
-        }
-
-        /* Check remaining characters */
-        for (int i = 1; i < value.length(); i++) {
-            if (value.charAt(i) == '.') {
-               // throw new QtiParseException("Invalid identifier '" + value + "': Period (.) characters are not allowed in this particular type of identifier.");
-            }
-            if (!Character.isLetterOrDigit(value.codePointAt(i)) && value.charAt(i) != '_' && value.charAt(i) != '-'
-                    && value.charAt(i) != '.') {
-                //throw new QtiParseException("Invalid identifier '" + value + "': Character '" + value.charAt(i) + "' at position " + (i + 1) + " is not valid");
-            	// who cares? Use whatever characters you want!
-            }
-        }
+//        if (value.isEmpty()) {
+//           // throw new QtiParseException("Invalid identifier '" + value + "': Must not be empty");
+//        }
+//
+//        /* Check first character */
+//        if (!Character.isLetter(value.codePointAt(0)) && value.charAt(0) != '_') {
+//           // throw new QtiParseException("Invalid identifier '" + value + "': First character '" + value.charAt(0) + "' is not valid");
+//        }
+//
+//        /* Check remaining characters */
+//        for (int i = 1; i < value.length(); i++) {
+//            if (value.charAt(i) == '.') {
+//               // throw new QtiParseException("Invalid identifier '" + value + "': Period (.) characters are not allowed in this particular type of identifier.");
+//            }
+//            if (!Character.isLetterOrDigit(value.codePointAt(i)) && value.charAt(i) != '_' && value.charAt(i) != '-'
+//                    && value.charAt(i) != '.') {
+//                //throw new QtiParseException("Invalid identifier '" + value + "': Character '" + value.charAt(i) + "' at position " + (i + 1) + " is not valid");
+//            	// who cares? Use whatever characters you want!
+//            }
+//        }
     }
 }

@@ -16,9 +16,9 @@
           <xsl:apply-templates select="qti:prompt"/>
         </div>
       </xsl:if>
-      <xsl:if test="qw:is-invalid-response(@responseIdentifier)">
+      <!-- <xsl:if test="qw:is-invalid-response(@responseIdentifier)">
         <xsl:call-template name="qw:generic-bad-response-message"/>
-      </xsl:if>
+      </xsl:if>-->
 
       <xsl:variable name="value" select="qw:get-response-value(/, @responseIdentifier)"/>
       <xsl:variable name="is-discrete" select="qw:get-response-declaration(/, @responseIdentifier)/@baseType='integer'" as="xs:boolean"/>

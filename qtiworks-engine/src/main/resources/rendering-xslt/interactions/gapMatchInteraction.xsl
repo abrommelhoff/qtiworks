@@ -18,9 +18,9 @@
           <xsl:apply-templates select="qti:prompt"/>
         </div>
       </xsl:if>
-      <xsl:if test="qw:is-invalid-response(@responseIdentifier)">
+      <!-- <xsl:if test="qw:is-invalid-response(@responseIdentifier)">
         <xsl:call-template name="qw:generic-bad-response-message"/>
-      </xsl:if>
+      </xsl:if>-->
       <xsl:apply-templates select="*[not(self::qti:gapText or self::qti:prompt)]"/>
       <table>
         <tr>
