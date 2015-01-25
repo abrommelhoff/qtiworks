@@ -11,11 +11,11 @@
   <xsl:template match="qti:inlineChoiceInteraction">
     <input name="qtiworks_presented_{@responseIdentifier}" type="hidden" value="1"/>
     <span class="{local-name()}">
-      <xsl:if test="qw:is-invalid-response(@responseIdentifier)">
+     <!-- <xsl:if test="qw:is-invalid-response(@responseIdentifier)">
         <span class="badResponse">
           You must select one of the following options
         </span>
-      </xsl:if>
+      </xsl:if>-->
       <select name="qtiworks_response_{@responseIdentifier}">
         <option value="">(Select)</option>
         <xsl:apply-templates select="qw:get-visible-ordered-choices(., qti:inlineChoice)"/>

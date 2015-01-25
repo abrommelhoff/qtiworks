@@ -16,7 +16,7 @@
           <xsl:apply-templates select="qti:prompt"/>
         </div>
       </xsl:if>
-      <xsl:if test="qw:is-invalid-response(@responseIdentifier)">
+      <!-- <xsl:if test="qw:is-invalid-response(@responseIdentifier)">
         <div class="badResponse">
           You must select
           <xsl:if test="@minChoices &gt; 0">
@@ -28,7 +28,7 @@
           </xsl:if>
           options.
         </div>
-      </xsl:if>
+      </xsl:if>-->
       <xsl:apply-templates/>
     </div>
   </xsl:template>
