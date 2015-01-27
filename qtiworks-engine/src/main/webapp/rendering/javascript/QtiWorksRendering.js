@@ -473,13 +473,13 @@ var QtiWorksRendering = (function() {
 					if (selectedCount < minChoices
 							|| selectedCount > maxChoices) {
 						if (minChoices != maxChoices) {
-							alert("You must select and order between "
-									+ minChoices + " and " + maxChoices
-									+ " items");
+							//alert("You must select and order between "
+							//		+ minChoices + " and " + maxChoices
+							//		+ " items");
 						} else {
-							alert("You must select and order exactly "
-									+ minChoices + " item"
-									+ (minChoices > 1 ? "s" : ""));
+							//alert("You must select and order exactly "
+							//		+ minChoices + " item"
+							//		+ (minChoices > 1 ? "s" : ""));
 						}
 						interaction.highlight(true);
 						return false;

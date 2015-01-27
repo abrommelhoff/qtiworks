@@ -46,7 +46,7 @@ DM: I don't have anything to test this out with!
           were made -->
           <xsl:variable name="quantity" as="xs:string"
             select="if (@minStrings=@maxStrings) then 'all' else concat('at least ', @minStrings)"/>
-          <xsl:choose>
+          <!-- <xsl:choose>
             <xsl:when test="@patternMask and @minStrings &gt; 0">
               You must fill in <xsl:value-of select="$quantity"/> boxes
               and use the correct format for your input in each box.
@@ -57,7 +57,7 @@ DM: I don't have anything to test this out with!
             <xsl:when test="@patternMask">
               You must use the correct format for your input in each box.
             </xsl:when>
-          </xsl:choose>
+          </xsl:choose>-->
         </div>
       </xsl:if>
       <xsl:choose>
