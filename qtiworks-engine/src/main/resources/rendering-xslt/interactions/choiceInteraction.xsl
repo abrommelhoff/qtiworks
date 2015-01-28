@@ -10,29 +10,6 @@
   <xsl:template match="qti:choiceInteraction">
     <input name="qtiworks_presented_{@responseIdentifier}" type="hidden" value="1"/>
     <div class="{local-name()}">
-      <!-- <xsl:if test="qw:is-invalid-response(@responseIdentifier)">
-        <div class="badResponse">
-          <xsl:choose>
-            <xsl:when test="@minChoices = @maxChoices and @minChoices > 0">
-              You must select
-              <xsl:value-of select="@minChoices"/>
-              <xsl:text> </xsl:text>
-              <xsl:value-of select="if (@minChoices = 1) then 'choice' else 'choices'"/>.
-            </xsl:when>
-            <xsl:otherwise>
-              You must select
-              <xsl:if test="@minChoices &gt; 0">
-                at least <xsl:value-of select="@minChoices"/>
-                <xsl:if test="@maxChoices &gt; 0"> and </xsl:if>
-              </xsl:if>
-              <xsl:if test="@maxChoices &gt; 0">
-                at most <xsl:value-of select="@maxChoices"/>
-              </xsl:if>
-              choices.
-            </xsl:otherwise>
-          </xsl:choose>
-        </div>
-      </xsl:if>-->
       <table id="{if (@id) then @id else concat('choiceInteraction-', @responseIdentifier)}">
         <xsl:if test="qti:prompt">
           <tr class="prompt">
