@@ -42,7 +42,7 @@ import javax.validation.constraints.NotNull;
 /**
  * General base options for passing to the {@link AssessmentRenderer}.
  *
- * @author David McKain
+ * @author David McKain 
  */
 public abstract class AbstractRenderingOptions implements Serializable {
 

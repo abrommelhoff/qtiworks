@@ -22,7 +22,7 @@
           <tr class="choiceInteractionLabelRow">
             <td class="leftTextLabel">
               <xsl:value-of select="substring-before(@label, '|')"/>
-            </td>
+            </td> 
             <td class="rightTextLabel">
               <xsl:value-of select="substring-after(@label, '|')"/>
             </td>
