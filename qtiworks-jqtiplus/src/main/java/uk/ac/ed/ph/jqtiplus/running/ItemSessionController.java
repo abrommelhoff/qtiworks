@@ -773,7 +773,7 @@ public final class ItemSessionController extends ItemProcessingController implem
     }
 
     public void setMarkedForReview() {
-    	itemSessionState.setMarkedForReview(true);
+    	itemSessionState.setMarkedForReview(!itemSessionState.isMarkedForReview());
     	itemSessionState.setSessionStatus(SessionStatus.PENDING_SUBMISSION);
     }
 
