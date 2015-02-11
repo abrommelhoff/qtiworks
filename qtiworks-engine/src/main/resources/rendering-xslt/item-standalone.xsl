@@ -178,18 +178,6 @@ Renders a standalone assessmentItem
 	        </xsl:otherwise>
         </xsl:choose>
       </xsl:if>
-      <xsl:if test="$solutionAllowed and $hasModelSolution">
-        <li>
-          <form action="{$webappContextPath}{$solutionUrl}" method="post">
-            <input type="submit" value="Show model solution">
-              <xsl:if test="$solutionMode">
-                <!-- Already in solution mode -->
-                <xsl:attribute name="disabled" select="'disabled'"/>
-              </xsl:if>
-            </input>
-          </form>
-        </li>
-      </xsl:if>
       <li>
         <form action="{$webappContextPath}{$exitUrl}" method="post">
           <input type="submit" value="Exit"/>
