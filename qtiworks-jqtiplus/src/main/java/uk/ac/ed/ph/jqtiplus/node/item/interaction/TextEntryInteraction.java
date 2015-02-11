@@ -237,7 +237,6 @@ public final class TextEntryInteraction extends InlineInteraction implements Str
             	}
             }
         }
-
         return true;
     }
 
