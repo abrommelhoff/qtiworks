@@ -36,7 +36,7 @@ session_start();
     "lis_person_name_given" => 'Given',
     "lis_person_contact_email_primary" => "user@school.edu",
     "lis_person_sourcedid" => "school.edu:user",
-//    "lis_outcome_service_url" => "http://innoca01-nc-dv.measuredprogress.org/coordinator/Teacher/Result.aspx", 
+//    "lis_outcome_service_url" => "http://innoca01-nc-dv.measuredprogress.org/coordinator/Teachers/Result.aspx", 
     "context_id" => "456434513",
     "context_title" => "Design of Personal Environments",
     "context_label" => "SI182",
@@ -128,7 +128,7 @@ function lmsdataToggle() {
     $parms["lis_result_sourcedid"] = "feb-123-456-2929::28883";
   }
 
-  $parms['launch_presentation_return_url'] = "http://innoca01-nc-dv.measuredprogress.org/coordinator/Teacher/Result.aspx";
+  $parms['launch_presentation_return_url'] = "http://innoca01-nc-dv.measuredprogress.org/coordinator/Teachers/Result.aspx";
 
   $custom = explode("\n", $custom);
   foreach ($custom as $line) {
