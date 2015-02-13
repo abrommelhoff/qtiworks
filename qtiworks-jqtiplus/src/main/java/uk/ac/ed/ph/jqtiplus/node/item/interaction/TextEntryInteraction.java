@@ -231,8 +231,12 @@ public final class TextEntryInteraction extends InlineInteraction implements Str
             if (!responseValue.toQtiString().matches(getPatternMask())) {
                 return false;
             }
+            if (getPatternMask().equals("[\\S]*")) {
+            	if (responseValue.isNull()) {
+            		return false;
+            	}
+            }
         }
-
         return true;
     }
 

@@ -59,12 +59,7 @@
           You must enter a valid <xsl:value-of select="$responseDeclaration/@baseType"/>!
         </span>
       </xsl:if>
-      <xsl:if test="$is-invalid-response">
-        <!-- (This must be a regex issue) -->
-        <span class="badResponse">
-          Your input is not of the required format!
-        </span>
-      </xsl:if>
+      
     </span>
   </xsl:template>
 

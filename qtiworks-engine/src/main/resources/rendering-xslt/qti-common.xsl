@@ -503,9 +503,9 @@ rendering.
           <xsl:when test="@markedForReview='true'">
 	  	    <span class="itemStatus markedForReview">Marked for Review</span>
           </xsl:when>
-          <xsl:when test="@endTime!=''">
+          <!-- <xsl:when test="@endTime!=''">
             <span class="itemStatus answered">Answered</span>
-          </xsl:when>
+          </xsl:when>-->
           <xsl:when test="(not(empty(@unboundResponseIdentifiers) and empty(@invalidResponseIdentifiers)))">
             <span class="itemStatus invalid">Needs Attention</span>
           </xsl:when>
