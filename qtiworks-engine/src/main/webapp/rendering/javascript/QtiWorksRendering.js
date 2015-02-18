@@ -1440,7 +1440,9 @@ var QtiWorksRendering = (function() {
 				}
 			}
 			for (var v = 0; v < altAngleMeasures.length; v++) {
-				angleValues += altAngleMeasures[v].toString() + ";";
+				if (altAngleMeasures[v] != null) {
+					angleValues += altAngleMeasures[v].toString() + ";";
+				}
 			}
 			if (angleValues == "/angles:") {
 				angleValues = "";
