@@ -1412,6 +1412,103 @@ var QtiWorksRendering = (function() {
 			if (rayMetaString == "/rayMeta:") {
 				rayMetaString = "";
 			}
+			var shapeAngle = "/shapeAngles:";
+			var shapeAngleTypes = "/shapeAngleTypes:";
+			a_obtuseCt = 0;
+			a_acuteCt = 0;
+			a_rightCt = 0;
+			a_reflexCt = 0; // should always be 0, but kept for debug purposes
+			for (var g = 0; g < shapesCreated.length; g++) {
+				if (shapesCreated[g].borders.length == 3) {
+					var tri_a0 = JXG.Math.Geometry.trueAngle(shapesCreated[g].vertices[2],shapesCreated[g].vertices[0],shapesCreated[g].vertices[1]);
+					if (tri_a0 > 180) { tri_a0 = 360 - tri_a0; }
+					if (tri_a0 > 90 && tri_a0 < 180) {
+						a_obtuseCt++;
+					} else if (tri_a0 < 90) {
+						a_acuteCt++;
+					} else if (tri_a0 == 90) {
+						a_rightCt++;
+					} else {
+						a_reflexCt++;
+					}
+					var tri_a1 = JXG.Math.Geometry.trueAngle(shapesCreated[g].vertices[0],shapesCreated[g].vertices[1],shapesCreated[g].vertices[2]);
+					if (tri_a1 > 180) { tri_a1 = 360 - tri_a1; }
+					if (tri_a1 > 90 && tri_a1 < 180) {
+						a_obtuseCt++;
+					} else if (tri_a1 < 90) {
+						a_acuteCt++;
+					} else if (tri_a1 == 90) {
+						a_rightCt++;
+					} else {
+						a_reflexCt++;
+					}
+					var tri_a2 = JXG.Math.Geometry.trueAngle(shapesCreated[g].vertices[1],shapesCreated[g].vertices[2],shapesCreated[g].vertices[0]);
+					if (tri_a2 > 180) { tri_a2 = 360 - tri_a2; }
+					if (tri_a2 > 90 && tri_a2 < 180) {
+						a_obtuseCt++;
+					} else if (tri_a2 < 90) {
+						a_acuteCt++;
+					} else if (tri_a2 == 90) {
+						a_rightCt++;
+					} else {
+						a_reflexCt++;
+					}
+					
+				} else if (shapesCreated[g].borders.length == 4) {
+					var quad_a0 = JXG.Math.Geometry.trueAngle(shapesCreated[g].vertices[3],shapesCreated[g].vertices[0],shapesCreated[g].vertices[1]);
+					if (quad_a0 > 180) { quad_a0 = 360 - quad_a0; }
+					if (quad_a0 > 90 && quad_a0 < 180) {
+						a_obtuseCt++;
+					} else if (quad_a0 < 90) {
+						a_acuteCt++;
+					} else if (quad_a0 == 90) {
+						a_rightCt++;
+					} else {
+						a_reflexCt++;
+					}
+					var quad_a1 = JXG.Math.Geometry.trueAngle(shapesCreated[g].vertices[0],shapesCreated[g].vertices[1],shapesCreated[g].vertices[2]);
+					if (quad_a1 > 180) { quad_a1 = 360 - quad_a1; }
+					if (quad_a1 > 90 && quad_a1 < 180) {
+						a_obtuseCt++;
+					} else if (quad_a1 < 90) {
+						a_acuteCt++;
+					} else if (quad_a1 == 90) {
+						a_rightCt++;
+					} else {
+						a_reflexCt++;
+					}
+					var quad_a2 = JXG.Math.Geometry.trueAngle(shapesCreated[g].vertices[1],shapesCreated[g].vertices[2],shapesCreated[g].vertices[3]);
+					if (quad_a2 > 180) { quad_a2 = 360 - quad_a2; }
+					if (quad_a2 > 90 && quad_a2 < 180) {
+						a_obtuseCt++;
+					} else if (quad_a2 < 90) {
+						a_acuteCt++;
+					} else if (quad_a2 == 90) {
+						a_rightCt++;
+					} else {
+						a_reflexCt++;
+					}
+					var quad_a3 = JXG.Math.Geometry.trueAngle(shapesCreated[g].vertices[2],shapesCreated[g].vertices[3],shapesCreated[g].vertices[0]);
+					if (quad_a3 > 180) { quad_a3 = 360 - quad_a3; }
+					if (quad_a3 > 90 && quad_a3 < 180) {
+						a_obtuseCt++;
+					} else if (quad_a3 < 90) {
+						a_acuteCt++;
+					} else if (quad_a3 == 90) {
+						a_rightCt++;
+					} else {
+						a_reflexCt++;
+					}
+				} else {
+					// do nothing
+				}
+			}
+			if (a_obtuseCt == 0 && a_acuteCt == 0 && a_rightCt == 0 && a_reflexCt == 0) {
+				shapeAngleTypes = "";
+			} else {
+				// using abbreviations to avoid any other scoring assumptions
+				shapeAngleTypes = "/shapeAngleTypes:obts="+a_obtuseCt+";act="+a_acuteCt+";rt="+a_rightCt+";rflx="+a_reflexCt+";";
+			}
 			var totalLineCountString = "/totalLineCount:";
 			totalLineCountString += (linesCreated.length + lineSegmentsCreated.length + raysCreated.length).toString() + ";";
 			var angleValues = "/angles:";
@@ -1646,7 +1743,7 @@ var QtiWorksRendering = (function() {
 			inputElementQuery.get(0).value = ptsValues + linesValues
 					+ lineSegValues + rayValues + angleValues + angleTypeValues + linePointValues
 					+ lineSegPointValues + lineSegExactValues + rayPointValues + rayExactValues + anglePointValues + lineMetaString + linesegMetaString 
-					+ rayMetaString + totalLineCountString + shapesString + triString + pgString + shapePointValues + rightAngleTop;
+					+ rayMetaString + totalLineCountString + shapesString + shapeAngleTypes + triString + pgString + shapePointValues + rightAngleTop;
 		}, remove = function(e) {
 		
 			var i, newcoords, el;
