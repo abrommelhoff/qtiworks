@@ -1133,7 +1133,8 @@ var QtiWorksRendering = (function() {
 					m = Infinity;
 				}
 				if (m != Infinity) {
-					if (Math.abs(m) > 20) {
+					// (arbitrarily chosen) value of 18 probably indicates the student was trying to draw a vertical line.
+					if (Math.abs(m) >= 18) {
 						linePointValues += x1.toString() + "," + y1.toString() + "_"
 						+ x2.toString() + "," + y2.toString() + ";";
 						linesValues += "x=" + Math.round(x1).toString() + ";";
@@ -1569,6 +1570,7 @@ var QtiWorksRendering = (function() {
 			}
 			
 			// get some shape data!
+			var squareCount = 0;
 			var pgCount = 0;
 			var rhomCount = 0;
 			var equCount = 0;
@@ -1676,6 +1678,10 @@ var QtiWorksRendering = (function() {
 					// get quadrilateral data
 					quads++;
 					var pdata = shapesCreated[g].borders[0].L();
+					if ( (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[1].L()) && (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[2].L()) && (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[3].L()) ) {
+						// this is a square!
+						squareCount++;
+					}
 					if ( (shapesCreated[g].borders[0].L() == shapesCreated[g].borders[2].L()) && (shapesCreated[g].borders[1].L() == shapesCreated[g].borders[3].L()) ) {
 						// this is (at least) a parallelogram!
 						pgCount++;
@@ -1712,7 +1718,7 @@ var QtiWorksRendering = (function() {
 				shapesString = "";
 			}
 			var triString = "/equilateral_triangles:"+equCount.toString() +"/isoceles_triangles:"+isoCount.toString()+"/scalene_triangles:"+scaCount.toString()+"/right_triangles:"+rightCount.toString();
-			var pgString = "/parallelograms:" + pgCount.toString() + ";/rhombuses:"+rhomCount.toString()+ ";/parallel_sides:";
+			var pgString = "/squares:"+squareCount.toString() + ";/parallelograms:" + pgCount.toString() + ";/rhombuses:"+rhomCount.toString()+ ";/parallel_sides:";
 			for (var o = 0; o < shapesPara.length; o++) {
 				pgString += "shape"+o+"="+shapesPara[o]+";";
 			}
