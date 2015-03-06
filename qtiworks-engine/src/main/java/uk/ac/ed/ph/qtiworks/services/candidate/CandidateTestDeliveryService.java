@@ -316,6 +316,7 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
         for (final CandidateResponse candidateResponse : candidateResponseMap.values()) {
             candidateResponse.setCandidateEvent(candidateEvent);
             candidateResponse.setResponseCorrectness(testSessionController.isCurrentItemCorrect() ? ResponseCorrectness.CORRECT : ResponseCorrectness.INCORRECT);
+            candidateResponse.setResponseFeedback(testSessionController.getTestIdentifier());
             candidateResponse.setTimeOnTask(Double.toString(itemSessionState.computeDuration()));
             candidateResponseDao.persist(candidateResponse);
         }

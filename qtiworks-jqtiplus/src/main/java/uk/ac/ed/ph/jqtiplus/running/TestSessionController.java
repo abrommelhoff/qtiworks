@@ -36,6 +36,8 @@ package uk.ac.ed.ph.jqtiplus.running;
 import uk.ac.ed.ph.jqtiplus.JqtiExtensionManager;
 import uk.ac.ed.ph.jqtiplus.JqtiExtensionPackage;
 import uk.ac.ed.ph.jqtiplus.JqtiLifecycleEventType;
+import uk.ac.ed.ph.jqtiplus.attribute.Attribute;
+import uk.ac.ed.ph.jqtiplus.attribute.AttributeList;
 import uk.ac.ed.ph.jqtiplus.exception.QtiCandidateStateException;
 import uk.ac.ed.ph.jqtiplus.exception.QtiLogicException;
 import uk.ac.ed.ph.jqtiplus.internal.util.Assert;
@@ -1526,6 +1528,13 @@ public final class TestSessionController extends TestProcessingController {
         /* Bind responses */
         final ItemSessionController itemSessionController = getItemSessionController(currentItemRefNode);
         return itemSessionController.countCorrect() == 1;
+    }
+
+    public String getTestIdentifier() {
+    	final AttributeList aList = this.subject.getAttributes();
+    	final Attribute<?> identifierAttribute = aList.get("identifier");
+    	final String identifierString = identifierAttribute.getValue().toString();
+    	return identifierString;
     }
 
     /**
