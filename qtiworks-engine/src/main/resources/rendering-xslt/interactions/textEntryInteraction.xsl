@@ -54,7 +54,7 @@
         <xsl:if test="exists($checks)">
           <xsl:attribute name="onchange" select="$checkJavaScript"/>
         </xsl:if>
-      </textarea> 
+      </textarea>  
       <xsl:if test="$is-bad-response">
         <span class="badResponse">
           You must enter a valid <xsl:value-of select="$responseDeclaration/@baseType"/>!
