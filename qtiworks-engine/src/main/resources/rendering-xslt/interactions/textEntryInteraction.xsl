@@ -30,7 +30,8 @@
         qw:to-javascript-arguments($checks),
         ')')" as="xs:string"/>
 
-      <input type="text" name="qtiworks_response_{@responseIdentifier}">
+	  <textarea name="qtiworks_response_{@responseIdentifier}" rows="5" cols="35">
+      <!-- <input type="text" name="qtiworks_response_{@responseIdentifier}">-->
         <xsl:if test="$isItemSessionEnded">
           <xsl:attribute name="disabled">disabled</xsl:attribute>
         </xsl:if>
@@ -53,7 +54,7 @@
         <xsl:if test="exists($checks)">
           <xsl:attribute name="onchange" select="$checkJavaScript"/>
         </xsl:if>
-      </input>
+      </textarea>
       <xsl:if test="$is-bad-response">
         <span class="badResponse">
           You must enter a valid <xsl:value-of select="$responseDeclaration/@baseType"/>!
