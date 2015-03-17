@@ -70,7 +70,7 @@ combine the feedback for the test and the testPart.)
         </form>
       </li>
     </ul>
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
         <h1>Scroll up to submit!</h1>
   </xsl:template>
 

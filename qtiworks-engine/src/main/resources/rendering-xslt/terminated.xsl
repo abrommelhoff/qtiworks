@@ -66,7 +66,7 @@ Input document: doesn't matter
         </p>
       </body>
       </xsl:if>
-      <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+      <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
         <h1>Scroll up to submit!</h1>
     </html>
   </xsl:template>
