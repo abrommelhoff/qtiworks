@@ -39,15 +39,6 @@ combine the feedback for the test and the testPart.)
         <xsl:call-template name="includeAssessmentJsAndCss"/>
       </head>
       <body class="qtiworks assessmentTest testFeedback">
-      	<SCRIPT LANGUAGE="javascript" DEFER="true">
-     		<xsl:comment>
-      			<![CDATA[ 
-					window.onbeforeunload = function(){
-						window.scrollTo(0,0);
-					}
-      			]]> 
-      		</xsl:comment>
-    	</SCRIPT>
         <xsl:call-template name="maybeAddAuthoringLink"/>
 
         <h1>You have finished the test, but your answers are not yet submitted. Click the button below to submit your answers.</h1>
@@ -57,6 +48,8 @@ combine the feedback for the test and the testPart.)
 
         <!-- Test session control -->
         <xsl:call-template name="qw:test-controls"/>
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+        <h1>Scroll up to submit!</h1>
        </body>
     </html>
   </xsl:template>
