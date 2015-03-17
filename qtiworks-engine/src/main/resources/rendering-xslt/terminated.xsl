@@ -40,7 +40,17 @@ Input document: doesn't matter
         </script>
       </head>
       <xsl:if test="exists($exitSessionUrlAbsolute)">
-      <body class="qtiworks" onload="doRedirect('{$exitSessionUrlAbsolute}'); return true;">      
+      <body class="qtiworks" onload="doRedirect('{$exitSessionUrlAbsolute}'); return true;">  
+      
+      	<SCRIPT LANGUAGE="javascript" DEFER="true">
+     		<xsl:comment>
+      			<![CDATA[ 
+					window.onbeforeunload = function(){
+						window.scrollTo(0,0);
+					}
+      			]]> 
+      		</xsl:comment>
+    	</SCRIPT>    
         <p>
           You have finished the test, but your answers are not yet submitted. Click the link below to submit your answers.
         </p>
