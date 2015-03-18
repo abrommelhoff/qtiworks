@@ -154,7 +154,7 @@ NB: This is used both while being presented, and during review.
       <xsl:if test="$endTestPartAllowed">
         <li>
           <form action="{$webappContextPath}{$endTestPartUrl}" method="post"
-            onsubmit="return confirm({qw:to-javascript-string($endTestPartAlertMessage)})">
+            onsubmit="window.scrollTo(0,0);return confirm({qw:to-javascript-string($endTestPartAlertMessage)})">
             <input type="submit" value="End T{$testOrTestPart}"/>
           </form>
         </li>

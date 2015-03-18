@@ -52,7 +52,7 @@ Renders the navigation for the current testPart
     <ul class="sessionControl">
       <li>
         <form action="{$webappContextPath}{$endTestPartUrl}" method="post"
-          onsubmit="return confirm('{$endTestPartAlertMessage}')">
+          onsubmit="window.scrollTo(0,0);return confirm('{$endTestPartAlertMessage}')">
           <input type="submit" value="End T{$testOrTestPart}">
             <xsl:if test="not($endTestPartAllowed)">
               <xsl:attribute name="disabled" select="'disabled'"/>
