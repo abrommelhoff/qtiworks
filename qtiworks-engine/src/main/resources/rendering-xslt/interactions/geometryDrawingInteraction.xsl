@@ -32,18 +32,18 @@
 		  	<input type="radio" name="drawingMode" id="drawray" value="drawray"/><span class="rayText">Draw a &#160;&#160;&#160;&#160;&#160;</span>&#160;&#160;&#160;&#160;
 		  </xsl:if>
 		  <xsl:if test="@gdi:showDrawAngle='true' or not(@gdi:showDrawAngle)">
-		  	<input type="radio" name="drawingMode" id="drawangle" value="drawangle"/>Draw an Angle
+		  	<input type="radio" name="drawingMode" id="drawangle" value="drawangle"/>Draw an angle
 		  </xsl:if>
 		  <xsl:if test="@gdi:showDrawShape='true' or not(@gdi:showDrawShape)">
-		  	<input type="radio" name="drawingMode" id="drawshape" value="drawshape"/>Draw a Shape<br/>
+		  	<input type="radio" name="drawingMode" id="drawshape" value="drawshape"/>Draw a shape<br/>
 		  </xsl:if>
 	  </div>
 	  <input type="button" id="connectPoints" value="Connect Points"/>
-	  <span id="linedirections">Click two points between which to draw a line</span>
-	  <span id="linesegdirections">Click two points between which to draw a line</span>
-	  <span id="raydirections">Click two points between which to draw a ray</span>
-	  <span id="angledirections">Click three points by which to construct an angle</span>
-	  <span id="shapedirections">Click any number points by which to construct an shape, then click Connect Points to draw the figure.</span>
+	  <span id="linedirections" class="lineText" style="font-style: italic;">Click two points to draw a &nbsp;&nbsp;&nbsp;&nbsp;</span>
+	  <span id="linesegdirections" class="lineSegmentText" style="font-style: italic;">Click two points to draw a &nbsp;&nbsp;&nbsp;&nbsp;</span>
+	  <span id="raydirections" class="rayText" style="font-style: italic;">Click two points to draw a &nbsp;&nbsp;&nbsp;&nbsp;</span>
+	  <span id="angledirections" style="font-style: italic;">Click three points to draw an angle</span>
+	  <span id="shapedirections" style="font-style: italic;">First, click any number of points set up the shape. Second, click Connect Points to draw the shape.</span>
 	  <xsl:for-each select="gdi:object">
 	  	<jsObject type="gridImg" name="movable_object{position()-1}" data="{qw:convert-link(@data)}" height="{@height}" width="{@width}" x="{@x}" y="{@y}"/>
       </xsl:for-each>
