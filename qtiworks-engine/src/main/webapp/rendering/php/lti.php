@@ -146,7 +146,7 @@ function lmsdataToggle() {
   }
 
   $parms = signParameters($parms, $endpoint, "POST", $key, $secret, $tool_consumer_instance_guid, $tool_consumer_instance_description);
-  $content = postLaunchHTML($parms, $endpoint, "Press to Launch", true,"width=\"100%\" height=\"900\" scrolling=\"auto\" frameborder=\"1\" transparency");
+  $content = postLaunchHTML($parms, $endpoint, "Press to Launch", true,"width=\"100%\" height=\"100%\" scrolling=\"no\" frameborder=\"1\" transparency");
   print($content);
 
 ?>
