@@ -44,11 +44,11 @@
         <xsl:choose>
           <xsl:when test="$is-bad-response">
             <!-- Response won't have been bound to variable, so show raw input -->
-            <xsl:attribute name="value" select="$responseInputString"/>
+            <xsl:value-of select="$responseInputString"/>
           </xsl:when>
           <xsl:when test="exists($responseValue)">
             <!-- Response has been bound, so show current variable value -->
-            <xsl:attribute name="value" select="qw:extract-single-cardinality-value($responseValue)"/>
+            <xsl:value-of select="qw:extract-single-cardinality-value($responseValue)"/>
           </xsl:when>
         </xsl:choose>
         <xsl:if test="exists($checks)">
