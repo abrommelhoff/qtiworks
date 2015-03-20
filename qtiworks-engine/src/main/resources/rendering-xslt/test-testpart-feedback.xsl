@@ -62,8 +62,6 @@ Renders the test(Part) feedback
 
         <!-- Test session control -->
         <xsl:call-template name="qw:test-controls"/>
-        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-        <h1>Scroll up to submit!</h1>
        </body>
     </html>
   </xsl:template>
