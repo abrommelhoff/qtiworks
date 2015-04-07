@@ -146,7 +146,7 @@ function lmsdataToggle() {
   }
 
   $parms = signParameters($parms, $endpoint, "POST", $key, $secret, $tool_consumer_instance_guid, $tool_consumer_instance_description);
-  $content = postLaunchHTML($parms, $endpoint, "Press to Launch", false,"width=\"100%\" height=\"" + $(window).height()-20 + "\" scrolling=\"auto\" frameborder=\"1\" transparency"); 
+  $content = postLaunchHTML($parms, $endpoint, "Press to Launch", false,"width=\"100%\" height=\"95%\" scrolling=\"auto\" frameborder=\"1\" transparency"); 
   print($content);
 
 ?>
@@ -156,3 +156,13 @@ $(document).ready(function(){
    $("#ltiLaunchForm").submit();
 });
 </script>
+<style>
+<!--[if IE 9]>
+body {
+  height: 95%;
+}
+html {
+  height: 100%;
+}
+<![endif]-->
+</style>
