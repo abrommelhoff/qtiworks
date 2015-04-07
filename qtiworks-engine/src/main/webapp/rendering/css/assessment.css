@@ -473,7 +473,8 @@ ul.testPartNavigation li.assessmentItem .questionTitle {
 }
 
 ul.testPartNavigation li.assessmentItem .itemStatus {
-  display: inline;
+  display: inline-block;
+  white-space: nowrap;
   float: none;
   margin: 0.2em;
   padding: 0.4em;
