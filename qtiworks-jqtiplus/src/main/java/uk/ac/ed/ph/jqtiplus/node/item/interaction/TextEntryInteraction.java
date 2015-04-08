@@ -229,7 +229,7 @@ public final class TextEntryInteraction extends InlineInteraction implements Str
     @Override
     public boolean validateResponse(final InteractionBindingContext interactionBindingContext, final Value responseValue) {
         if (getPatternMask() != null) {
-        	if (getPatternMask().equals("[\\S]*")) {
+        	if (getPatternMask().equals("[\\S]*")) { 
             	if (responseValue.isNull() || responseValue.toQtiString().trim().isEmpty()) {
             		return false;
             	}
