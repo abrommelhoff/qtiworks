@@ -1,3 +1,4 @@
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <?php   
 error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
