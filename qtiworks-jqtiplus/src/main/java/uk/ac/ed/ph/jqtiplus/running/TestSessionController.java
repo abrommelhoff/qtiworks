@@ -973,7 +973,7 @@ public final class TestSessionController extends TestProcessingController {
                     responded = false;
                 }
             }
-            if ((!itemSessionState.isResponded()/* || !responded*/) && !effectiveItemSessionControl.isAllowSkipping()) {
+            if ((!itemSessionState.isResponded() || (!responded && currentTestPart.getNavigationMode()==NavigationMode.LINEAR)) && !effectiveItemSessionControl.isAllowSkipping()) {
                 /* Not responded, and allowSkipping=false */
                 logger.debug("Item {} has not been responded and allowSkipping=false, so ending item is forbidden", currentItemKey);
                 return false;
