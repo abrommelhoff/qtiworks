@@ -158,6 +158,9 @@ $(document).ready(function(){
 });
 </script>
 <style>
+body {
+	height: 100%
+}
 <!--[if IE 9]>
 body {
   height: 95%;
