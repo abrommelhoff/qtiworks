@@ -85,6 +85,10 @@ public final class GeometryDrawingInteraction extends CustomInteraction<Geometry
 
     @Override
     protected boolean validateResponse(final GeometryDrawingExtensionPackage jqtiExtensionPackage, final InteractionBindingContext interactionBindingContext, final Value responseValue) {
-        return true;
+        if (responseValue.toQtiString().length() > 0) {
+        	return true;
+        } else {
+        	return false;
+        }
     }
 }
