@@ -118,8 +118,10 @@ Renders a standalone assessmentItem
           </xsl:variable>
           <xsl:if test="exists($modalFeedback)">
             <div class="modalFeedback">
+            <div class="modal-dialog">
               <h2>Feedback</h2>
               <xsl:sequence select="$modalFeedback"/>
+            </div>
             </div>
           </xsl:if>
         </xsl:if>
