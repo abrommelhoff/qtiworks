@@ -119,7 +119,7 @@ Renders a standalone assessmentItem
             </div>
             </div>
           </xsl:if>
-        </xsl:if>
+        </xsl:if>  
 
         <!-- Item body -->
         <xsl:apply-templates select="qti:itemBody"/>

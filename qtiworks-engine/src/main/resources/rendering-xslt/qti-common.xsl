@@ -507,6 +507,9 @@ rendering.
             <span class="itemStatus answered">Answered</span>
           </xsl:when>-->
           <xsl:when test="(not(empty(@unboundResponseIdentifiers) and empty(@invalidResponseIdentifiers)))">
+            <div class="modal-dialog-blank">
+              You <b>must</b> click submit for your answer to be saved! Notice that this question is now marked as &quot;Needs Attention&quot; in the upper right corner, because you left it blank.<br/><br/>Try again- select the answer and then click the Submit button.
+            </div>
             <span class="itemStatus invalid">Needs Attention</span>
           </xsl:when>
           <xsl:when test="@responded='true' or exists(qw:uncommittedResponseValue)">
