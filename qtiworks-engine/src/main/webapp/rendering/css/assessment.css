@@ -593,15 +593,19 @@ ul.testPartDrilldown li.currentItem {
 }
 
 .modal-dialog{
-  background: #fefefe;
+  background: #ffc;
   border: 1px solid #cccccc;
   border-radius: 5px;
-  margin-left: 200px;
-  position: fixed; 
-  left: 40%; 
-  top: 20%;  
   z-index: 11; 
-  width: 360px;
+  width: 80%;
+  padding: 5px;
+}
+.orientationpara {
+  background: #ddf;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  z-index: 11; 
+  width: 80%;
   padding: 5px;
 }
 

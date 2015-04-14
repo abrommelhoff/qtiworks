@@ -294,7 +294,6 @@ NB: This is used both while being presented, and during review.
       <xsl:if test="exists($modalFeedback)">
         <div class="modalFeedback">
          <div class="modal-dialog">
-          <h2>Feedback</h2>
           <xsl:sequence select="$modalFeedback"/>
          </div>
         </div>
