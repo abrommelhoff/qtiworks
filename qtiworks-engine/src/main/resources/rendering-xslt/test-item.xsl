@@ -281,7 +281,7 @@ NB: This is used both while being presented, and during review.
             <div class="modalFeedback">
              <div class="modal-dialog">
               <xsl:if test="@title"><h3><xsl:value-of select="@title"/></h3></xsl:if>
-              <xsl:sequence select="$feedback"/>
+              <xsl:sequence select="$feedback"/> 
              </div>
             </div>
           </xsl:if>
