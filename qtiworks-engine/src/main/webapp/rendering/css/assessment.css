@@ -611,7 +611,9 @@ ul.testPartDrilldown li.currentItem {
   width: 80%;
   padding: 5px;
 }
-
+.modalFeedbackItem h3 {
+	margin-top: 0px;
+}
 
 
 tr.choiceinteraction td.control {width:25px;}
