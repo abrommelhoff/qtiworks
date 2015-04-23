@@ -611,7 +611,7 @@ ul.testPartDrilldown li.currentItem {
   width: 80%;
   padding: 5px;
 }
-.modalFeedbackItem h3 {
+.modal-dialog h3 {
 	margin-top: 0px;
 }
 
