@@ -98,11 +98,7 @@ Renders a standalone assessmentItem
           </div>
         </xsl:if>
 
-        <!-- Item body -->
-        <xsl:apply-templates select="qti:itemBody"/>
-
-        <!-- Display active modal feedback (only after responseProcessing) -->
-        <xsl:if test="$sessionStatus='final'">
+		<xsl:if test="$sessionStatus='final'">
           <xsl:variable name="modalFeedback" as="element()*">
             <xsl:for-each select="qti:modalFeedback">
               <xsl:variable name="feedback" as="node()*">
@@ -118,11 +114,18 @@ Renders a standalone assessmentItem
           </xsl:variable>
           <xsl:if test="exists($modalFeedback)">
             <div class="modalFeedback">
-              <h2>Feedback</h2>
+            <div class="modal-dialog">
               <xsl:sequence select="$modalFeedback"/>
             </div>
+            </div>
           </xsl:if>
-        </xsl:if>
+        </xsl:if>  
+
+        <!-- Item body -->
+        <xsl:apply-templates select="qti:itemBody"/>
+
+        <!-- Display active modal feedback (only after responseProcessing) -->
+        
 
         <!-- Session control -->
         <xsl:call-template name="qw:item-controls"/>

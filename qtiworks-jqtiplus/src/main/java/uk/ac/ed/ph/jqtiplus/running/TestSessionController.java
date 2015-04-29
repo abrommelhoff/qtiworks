@@ -628,7 +628,7 @@ public final class TestSessionController extends TestProcessingController {
             for (final TestPlanNode itemRefNode : itemRefNodes) {
                 final ItemSessionState itemSessionState = testSessionState.getItemSessionStates().get(itemRefNode.getKey());
                 final EffectiveItemSessionControl effectiveItemSessionControl = testProcessingMap.resolveEffectiveItemSessionControl(itemRefNode);
-                if (!itemSessionState.isResponded() && !effectiveItemSessionControl.isAllowSkipping()) {
+                if (!itemSessionState.isResponded() && !effectiveItemSessionControl.isAllowSkipping() && !itemSessionState.isPreConditionFailed()) {
                     logger.debug("Item " + itemRefNode.getKey() + " has not been responded and allowSkipping=false, so ending test part will be forbidden");
                     return false;
                 }
@@ -973,7 +973,7 @@ public final class TestSessionController extends TestProcessingController {
                     responded = false;
                 }
             }
-            if ((!itemSessionState.isResponded() || !responded) && !effectiveItemSessionControl.isAllowSkipping()) {
+            if ((!itemSessionState.isResponded() || (!responded && currentTestPart.getNavigationMode()==NavigationMode.LINEAR)) && !effectiveItemSessionControl.isAllowSkipping()) {
                 /* Not responded, and allowSkipping=false */
                 logger.debug("Item {} has not been responded and allowSkipping=false, so ending item is forbidden", currentItemKey);
                 return false;

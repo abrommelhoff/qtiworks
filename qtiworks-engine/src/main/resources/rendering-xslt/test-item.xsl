@@ -270,11 +270,7 @@ NB: This is used both while being presented, and during review.
       <xsl:apply-templates select="$itemSessionState" mode="item-status"/>
       <!--  <xsl:value-of select="@title"/> -->
     </h1>
-
-    <!-- Render item body -->
-    <xsl:apply-templates select="qti:itemBody"/>
-
-    <!-- Display active modal feedback (only after responseProcessing) -->
+<!-- Display active modal feedback (only after responseProcessing) -->
     <xsl:if test="$itemFeedbackAllowed and $sessionStatus='final'">
       <xsl:variable name="modalFeedback" as="element()*">
         <xsl:for-each select="qti:modalFeedback">
@@ -283,19 +279,22 @@ NB: This is used both while being presented, and during review.
           </xsl:variable>
           <xsl:if test="$feedback">
             <div class="modalFeedback">
+             <div class="modal-dialog">
               <xsl:if test="@title"><h3><xsl:value-of select="@title"/></h3></xsl:if>
-              <xsl:sequence select="$feedback"/>
+              <xsl:sequence select="$feedback"/> 
+             </div>
             </div>
           </xsl:if>
         </xsl:for-each>
       </xsl:variable>
       <xsl:if test="exists($modalFeedback)">
-        <div class="modalFeedback">
-          <h2>Feedback</h2>
           <xsl:sequence select="$modalFeedback"/>
-        </div>
       </xsl:if>
     </xsl:if>
+    <!-- Render item body -->
+    <xsl:apply-templates select="qti:itemBody"/>
+
+    
   </xsl:template>
 
   <xsl:template match="qti:itemBody">

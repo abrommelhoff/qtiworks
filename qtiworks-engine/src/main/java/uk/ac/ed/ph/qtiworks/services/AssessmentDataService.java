@@ -87,7 +87,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
-public class AssessmentDataService {
+public class AssessmentDataService { 
 
     @Resource
     private IdentityService identityService;

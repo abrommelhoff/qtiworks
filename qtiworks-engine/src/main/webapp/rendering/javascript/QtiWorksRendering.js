@@ -13,7 +13,7 @@
 
 /** ********************************************************* */
 
-var QtiWorksRendering = (function() {
+var QtiWorksRendering = (function() { 
 
 	var submitCallbacks = [];
 	var resetCallbacks = [];
@@ -2143,12 +2143,12 @@ var QtiWorksRendering = (function() {
 					}
 					break;
 
-				case 'regex':
-					var regex = arguments[++i];
-					if (!value.match(regex)) {
-						errorMessage += 'This input is not valid!\n';
-					}
-					break;
+				//case 'regex':
+				//	var regex = arguments[++i];
+				//	if (!value.match(regex)) {
+				//		errorMessage += 'This input is not valid!\n';
+				//	}
+				//	break;
 				}
 			}
 			if (errorMessage.length != 0) {

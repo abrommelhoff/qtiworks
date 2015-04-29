@@ -41,19 +41,19 @@
         <xsl:if test="@expectedLength">
           <xsl:attribute name="size" select="@expectedLength"/>
         </xsl:if>
-        <xsl:choose>
-          <xsl:when test="$is-bad-response">
-            <!-- Response won't have been bound to variable, so show raw input -->
-            <xsl:attribute name="value" select="$responseInputString"/>
-          </xsl:when>
-          <xsl:when test="exists($responseValue)">
-            <!-- Response has been bound, so show current variable value -->
-            <xsl:attribute name="value" select="qw:extract-single-cardinality-value($responseValue)"/>
-          </xsl:when>
-        </xsl:choose>
         <xsl:if test="exists($checks)">
           <xsl:attribute name="onchange" select="$checkJavaScript"/>
         </xsl:if>
+        <xsl:choose>
+          <xsl:when test="$is-bad-response">
+            <!-- Response won't have been bound to variable, so show raw input -->
+            <xsl:value-of select="$responseInputString"/>  
+          </xsl:when>
+          <xsl:when test="exists($responseValue)">
+            <!-- Response has been bound, so show current variable value -->
+            <xsl:value-of select="qw:extract-single-cardinality-value($responseValue)"/>
+          </xsl:when>
+        </xsl:choose>
       </textarea>  
       <xsl:if test="$is-bad-response">
         <span class="badResponse">

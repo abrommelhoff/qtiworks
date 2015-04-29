@@ -473,7 +473,8 @@ ul.testPartNavigation li.assessmentItem .questionTitle {
 }
 
 ul.testPartNavigation li.assessmentItem .itemStatus {
-  display: inline;
+  display: inline-block;
+  white-space: nowrap;
   float: none;
   margin: 0.2em;
   padding: 0.4em;
@@ -563,7 +564,56 @@ ul.testPartDrilldown li.currentItem {
 .authorModePanel li.infoSummary {
   background: url(../../includes/images/information.png) 5px center no-repeat;
 }
+.modalFeedback{
+  
+   
+  // This is modal bg
+  &:before{
+    content: ""; 
+    display: none;
+    background: rgba(0,0,0,.6);
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0; 
+    z-index: 10;
+  }
+  
+  &:target{
+     
+    // Active animate in modal
+    &:before{
+      display: block;
+    }  
+    .modal-dialog{
+      .translate(0, 0); 
+      top: 20%;  
+    }
+     
+  }
+  
+}
 
+.modal-dialog {
+  background: #ffc;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  z-index: 11; 
+  width: 80%;
+  padding: 5px;
+}
+.modal-dialog-blank {
+  display: none;
+}
+.orientationpara {
+  background: #ddf;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  z-index: 11; 
+  width: 80%;
+  padding: 5px;
+}
+.modal-dialog h3 {
+	margin-top: 0px;
+}
 
 
 tr.choiceinteraction td.control {width:25px;}

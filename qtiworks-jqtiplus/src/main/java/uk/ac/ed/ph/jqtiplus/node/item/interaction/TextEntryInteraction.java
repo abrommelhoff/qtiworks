@@ -113,6 +113,7 @@ public final class TextEntryInteraction extends InlineInteraction implements Str
 
     @Override
     public String getPatternMask() {
+    	final String ret = getAttributes().getStringAttribute(ATTR_PATTERN_MASK_NAME).getComputedValue();
         return getAttributes().getStringAttribute(ATTR_PATTERN_MASK_NAME).getComputedValue();
     }
 
@@ -228,13 +229,12 @@ public final class TextEntryInteraction extends InlineInteraction implements Str
     @Override
     public boolean validateResponse(final InteractionBindingContext interactionBindingContext, final Value responseValue) {
         if (getPatternMask() != null) {
-            if (!responseValue.toQtiString().matches(getPatternMask())) {
-                return false;
-            }
-            if (getPatternMask().equals("[\\S]*")) {
-            	if (responseValue.isNull()) {
+        	if (getPatternMask().equals("[\\S]*")) { 
+            	if (responseValue.isNull() || responseValue.toQtiString().trim().isEmpty()) {
             		return false;
             	}
+            } else if (!responseValue.toQtiString().matches(getPatternMask())) {
+                return false;
             }
         }
         return true;

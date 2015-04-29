@@ -1,3 +1,4 @@
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <?php   
 error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
@@ -17,7 +18,7 @@ session_start();
   //$secret = "dy65bjEFcpNCcGJt0kMb70iO2XgNnzoU";
   $userid = trim($_REQUEST["userid"]);
   if ( ! $secret ) $secret = "dy65bjEFcpNCcGJt0kMb70iO2XgNnzoU";
-  $endpoint = "http://innoqti01-nc-dv.measuredprogress.org:8080/qtiworks/lti/linklaunch";
+  $endpoint = "http://qtiworks.measuredprogress.org/qtiworks/lti/linklaunch";
 
 //  $endpoint = trim($_REQUEST["endpoint"]);
   $b64 = base64_encode($key.":::".$secret);
@@ -128,7 +129,7 @@ function lmsdataToggle() {
     $parms["lis_result_sourcedid"] = "feb-123-456-2929::28883";
   }
 
-  $parms['launch_presentation_return_url'] = "http://innoca01-nc-dv.measuredprogress.org/coordinator/Student/Result.aspx";
+  $parms['launch_presentation_return_url'] = "http://coral.measuredprogress.org/coordinator/Student/Result.aspx";
 
   $custom = explode("\n", $custom);
   foreach ($custom as $line) {
@@ -146,8 +147,8 @@ function lmsdataToggle() {
   }
 
   $parms = signParameters($parms, $endpoint, "POST", $key, $secret, $tool_consumer_instance_guid, $tool_consumer_instance_description);
-  $content = postLaunchHTML($parms, $endpoint, "Press to Launch", true,"width=\"100%\" height=\"100%\" scrolling=\"no\" frameborder=\"1\" transparency"); 
-  print($content);
+  $content = postLaunchHTML($parms, $endpoint, "Press to Launch", false,"width=\"100%\" height=\"95%\" scrolling=\"auto\" frameborder=\"1\" transparency"); 
+  print($content); 
 
 ?>
 
@@ -156,3 +157,16 @@ $(document).ready(function(){
    $("#ltiLaunchForm").submit();
 });
 </script>
+<style>
+body {
+	height: 100%
+}
+<!--[if IE 9]>
+body {
+  height: 95%;
+}
+html {
+  height: 100%;
+}
+<![endif]-->
+</style>

@@ -463,7 +463,6 @@ function signParameters($oldparms, $endpoint, $method, $oauth_consumer_key, $oau
         $r .= $value;
         $r .= "\"/>\n";
     }
-    $r .= "<input type=\"submit\" value=\"" . $submit_text . "\"/>\n";
     if ( $debug ) {
         $r .= "<script language=\"javascript\"> \n";
         $r .= "  //<![CDATA[ \n" ;
