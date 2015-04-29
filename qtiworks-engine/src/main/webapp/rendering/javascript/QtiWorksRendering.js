@@ -1776,6 +1776,21 @@ var QtiWorksRendering = (function() {
 					linesCreated.splice(k, 1);
 				}
 			}
+			for (var l = lineSegmentsCreated.length - 1; l >= 0; l--) {
+				if (!board.objects[lineSegmentsCreated[l]]) {
+					lineSegmentsCreated.splice(l, 1);
+				}
+			}
+			for (var m = raysCreated.length - 1; m >= 0; m--) {
+				if (!board.objects[raysCreated[m]]) {
+					raysCreated.splice(m, 1);
+				}
+			}
+			for (var n = shapesCreated.length - 1; n >= 0; n--) {
+				if (!board.objects[shapesCreated[n]]) {
+					shapesCreated.splice(n, 1);
+				}
+			}
 			setValue();
 		}, containsId = function(e) {
 			for (var a = 0; a < ptsCreated.length; a++) {
