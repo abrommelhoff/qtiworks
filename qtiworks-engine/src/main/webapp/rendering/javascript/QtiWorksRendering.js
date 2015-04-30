@@ -776,7 +776,14 @@ var QtiWorksRendering = (function() {
 		}
 		;
 		getValue();
+		
+		$(document).on("contextmenu", "#jxgbox", function(e){
+			   remove(e);
+			   return false;
+		});
+		
 		$('#jxgbox').mousedown(function(e) {
+			e.prevent
 			if (mode == "none") {
 				return;
 			}
@@ -1791,6 +1798,11 @@ var QtiWorksRendering = (function() {
 			for (var n = shapesCreated.length - 1; n >= 0; n--) {
 				if (!board.objects[shapesCreated[n]]) {
 					shapesCreated.splice(n, 1);
+				}
+			}
+			for (var o = anglesCreated.length - 1; o >= 0; o--) {
+				if (!board.objects[anglesCreated[o]]) {
+					anglesCreated.splice(o, 1);
 				}
 			}
 			setValue();

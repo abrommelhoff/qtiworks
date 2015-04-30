@@ -82,7 +82,7 @@ Renders a standalone assessmentItem
         <!-- Include stylesheet declared within item -->
         <xsl:apply-templates select="qti:stylesheet"/>
       </head>
-      <body class="qtiworks assessmentItem" oncontextmenu="return false;">
+      <body class="qtiworks assessmentItem">
         <xsl:call-template name="maybeAddAuthoringLink"/>
 
         <!-- Item title -->

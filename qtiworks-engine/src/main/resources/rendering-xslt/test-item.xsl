@@ -105,7 +105,7 @@ NB: This is used both while being presented, and during review.
         <!-- Include stylesheet declared within item -->
         <xsl:apply-templates select="qti:stylesheet"/>
       </head>
-      <body class="qtiworks assessmentItem assessmentTest" oncontextmenu="return false;">
+      <body class="qtiworks assessmentItem assessmentTest">
         <xsl:call-template name="maybeAddAuthoringLink"/>
 
         <!--
