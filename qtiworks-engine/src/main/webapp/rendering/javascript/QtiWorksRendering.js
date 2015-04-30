@@ -1753,6 +1753,8 @@ var QtiWorksRendering = (function() {
 		}, remove = function(e) {
 		
 			var i, newcoords, el;
+			// clear ptsSelected array to avoid problems with attempting to draw lines between points that don't exist!
+			ptsSelected = [];
 
 			if (e[JXG.touchProperty]) {
 				// index of the finger that is used to extract the coordinates
