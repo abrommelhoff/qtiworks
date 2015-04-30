@@ -38,12 +38,12 @@
 		  	<input type="radio" name="drawingMode" id="drawshape" value="drawshape"/>Draw a shape<br/>
 		  </xsl:if>
 	  </div>
-	  <input type="button" id="connectPoints" value="Connect Points"/>
 	  <span id="linedirections" class="lineText" style="font-style: italic;">Click two points to draw a &nbsp;&nbsp;&nbsp;&nbsp;</span>
 	  <span id="linesegdirections" class="lineSegmentText" style="font-style: italic;">Click two points to draw a &nbsp;&nbsp;&nbsp;&nbsp;</span>
 	  <span id="raydirections" class="rayText" style="font-style: italic;">Click two points to draw a &nbsp;&nbsp;&nbsp;&nbsp;</span>
 	  <span id="angledirections" style="font-style: italic;">Click three points to draw an angle</span>
-	  <span id="shapedirections" style="font-style: italic;">First, click any number of points set up the shape. Second, click Connect Points to draw the shape.</span>
+	  <span id="shapedirections" style="font-style: italic;">First, click any number of points set up the shape. Second, click the "Connect Points" button to draw the shape.</span>
+	  <div><input type="button" id="connectPoints" value="Connect Points"/></div>
 	  <xsl:for-each select="gdi:object">
 	  	<jsObject type="gridImg" name="movable_object{position()-1}" data="{qw:convert-link(@data)}" height="{@height}" width="{@width}" x="{@x}" y="{@y}"/>
       </xsl:for-each>
