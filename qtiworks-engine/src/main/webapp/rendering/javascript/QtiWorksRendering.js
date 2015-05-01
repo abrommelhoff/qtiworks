@@ -612,6 +612,9 @@ var QtiWorksRendering = (function() {
 				var coord = pt.split(",");
 				var x = parseFloat(coord[0]);
 				var y = parseFloat(coord[1]);
+				if (isNaN(x) || isNaN(y) == 'NaN') {
+					continue;
+				}
 				var newPoint = board.create('point', [ x, y ], {
 					snapToGrid : isSnapTo,
 					withLabel : false,
@@ -782,6 +785,9 @@ var QtiWorksRendering = (function() {
 			   return false;
 		});
 		
+		var $input = $('<input type="button" id="resetButton" value="Reset" />');
+	    $input.insertBefore($(".controls"));
+		
 		$('#jxgbox').mousedown(function(e) {
 			e.prevent
 			if (mode == "none") {
@@ -897,6 +903,9 @@ var QtiWorksRendering = (function() {
 			linesCreated = [];
 			raysCreated = [];
 			lineSegmentsCreated = [];
+			anglesCreated = [];
+			angleMeasures = [];
+			shapesCreated = [];
 			setValue();
 		});
 
