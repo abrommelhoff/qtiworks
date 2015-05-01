@@ -1803,6 +1803,7 @@ var QtiWorksRendering = (function() {
 			for (var o = anglesCreated.length - 1; o >= 0; o--) {
 				if (!board.objects[anglesCreated[o]]) {
 					anglesCreated.splice(o, 1);
+					angleMeasures.splice(o, 1);
 				}
 			}
 			setValue();
