@@ -627,6 +627,9 @@ var QtiWorksRendering = (function() {
 						$("ellipse").css('cursor', 'default');
 					}
 				}, newPoint);
+				newPoint.on('touchend', function(){
+					dragDetected();
+				});
 				ptsCreated.push(newPoint.id);
 				// this.setValue();
 			}
@@ -789,7 +792,6 @@ var QtiWorksRendering = (function() {
 	    $input.insertBefore($(".controls"));
 		
 		$('#jxgbox').mousedown(function(e) {
-			e.prevent
 			if (mode == "none") {
 				return;
 			}
@@ -809,7 +811,7 @@ var QtiWorksRendering = (function() {
 				alert('You have a strange mouse');
 			}
 		});
-		$('#jxgbox').mouseup(function(e) {
+		$('#jxgbox').mouseup(function() {
 			if (mode == "none") {
 				return;
 			}
@@ -951,10 +953,19 @@ var QtiWorksRendering = (function() {
 						$("ellipse").css('cursor', 'default');
 					}
 				}, newPoint);
+				newPoint.on('touchend', function(){
+					dragDetected();
+				});
 				ptsCreated.push(newPoint.id);
 				setValue();
 			}
-		}, lineSelect = function(e) {
+		}, dragDetected = function() {
+			if (mode == 'none') {
+				return;
+			}
+			setValue();
+		},
+		lineSelect = function(e) {
 			var canCreate = true, i, coords, el;
 		
 			if (e[JXG.touchProperty]) {
@@ -989,6 +1000,9 @@ var QtiWorksRendering = (function() {
 						$("ellipse").css('cursor', 'default');
 					}
 				}, newPoint);
+				newPoint.on('touchend', function(){
+					dragDetected();
+				});
 				ptsCreated.push(newPoint.id);
 				ptsSelected.push(newPoint.id);
 				setValue();
