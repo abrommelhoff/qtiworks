@@ -612,6 +612,9 @@ var QtiWorksRendering = (function() {
 				var coord = pt.split(",");
 				var x = parseFloat(coord[0]);
 				var y = parseFloat(coord[1]);
+				if (isNaN(x) || isNaN(y) == 'NaN') {
+					continue;
+				}
 				var newPoint = board.create('point', [ x, y ], {
 					snapToGrid : isSnapTo,
 					withLabel : false,
@@ -624,6 +627,9 @@ var QtiWorksRendering = (function() {
 						$("ellipse").css('cursor', 'default');
 					}
 				}, newPoint);
+				newPoint.on('touchend', function(){
+					dragDetected();
+				});
 				ptsCreated.push(newPoint.id);
 				// this.setValue();
 			}
@@ -776,6 +782,15 @@ var QtiWorksRendering = (function() {
 		}
 		;
 		getValue();
+		
+		$(document).on("contextmenu", "#jxgbox", function(e){
+			   remove(e);
+			   return false;
+		});
+		
+		var $input = $('<input type="button" id="resetButton" value="Reset" />');
+	    $input.insertBefore($("div[class='controls'], div[class='testItemControl']").first());
+		
 		$('#jxgbox').mousedown(function(e) {
 			if (mode == "none") {
 				return;
@@ -796,7 +811,7 @@ var QtiWorksRendering = (function() {
 				alert('You have a strange mouse');
 			}
 		});
-		$('#jxgbox').mouseup(function(e) {
+		$('#jxgbox').mouseup(function() {
 			if (mode == "none") {
 				return;
 			}
@@ -890,6 +905,9 @@ var QtiWorksRendering = (function() {
 			linesCreated = [];
 			raysCreated = [];
 			lineSegmentsCreated = [];
+			anglesCreated = [];
+			angleMeasures = [];
+			shapesCreated = [];
 			setValue();
 		});
 
@@ -935,10 +953,19 @@ var QtiWorksRendering = (function() {
 						$("ellipse").css('cursor', 'default');
 					}
 				}, newPoint);
+				newPoint.on('touchend', function(){
+					dragDetected();
+				});
 				ptsCreated.push(newPoint.id);
 				setValue();
 			}
-		}, lineSelect = function(e) {
+		}, dragDetected = function() {
+			if (mode == 'none') {
+				return;
+			}
+			setValue();
+		},
+		lineSelect = function(e) {
 			var canCreate = true, i, coords, el;
 		
 			if (e[JXG.touchProperty]) {
@@ -973,6 +1000,9 @@ var QtiWorksRendering = (function() {
 						$("ellipse").css('cursor', 'default');
 					}
 				}, newPoint);
+				newPoint.on('touchend', function(){
+					dragDetected();
+				});
 				ptsCreated.push(newPoint.id);
 				ptsSelected.push(newPoint.id);
 				setValue();
@@ -1753,6 +1783,8 @@ var QtiWorksRendering = (function() {
 		}, remove = function(e) {
 		
 			var i, newcoords, el;
+			// clear ptsSelected array to avoid problems with attempting to draw lines between points that don't exist!
+			ptsSelected = [];
 
 			if (e[JXG.touchProperty]) {
 				// index of the finger that is used to extract the coordinates
@@ -1789,6 +1821,12 @@ var QtiWorksRendering = (function() {
 			for (var n = shapesCreated.length - 1; n >= 0; n--) {
 				if (!board.objects[shapesCreated[n]]) {
 					shapesCreated.splice(n, 1);
+				}
+			}
+			for (var o = anglesCreated.length - 1; o >= 0; o--) {
+				if (!board.objects[anglesCreated[o]]) {
+					anglesCreated.splice(o, 1);
+					angleMeasures.splice(o, 1);
 				}
 			}
 			setValue();
