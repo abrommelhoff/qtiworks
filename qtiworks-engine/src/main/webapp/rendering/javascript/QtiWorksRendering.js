@@ -602,39 +602,19 @@ var QtiWorksRendering = (function() {
 		// restore any responses
 		function getValue() {
 			var res = $("input[name='previousResponses']").attr("value");
+			// if this is the first time entering the item, do not disable the submit button!
+			if (res != "") {
+				$("#submit_button").prop('disabled', true);
+			}
 			// parse values
 			var resValues = res.split("/");
 			var ptsValues = resValues[0].split(";");
-			// ptsValues is always first
+			// ptsValues is always first, create the array, but don't plot any points yet!
 			ptsValues[0] = ptsValues[0].replace('points:', '');
-			for (var a = 0; a < ptsValues.length; a++) {
-				var pt = ptsValues[a];
-				var coord = pt.split(",");
-				var x = parseFloat(coord[0]);
-				var y = parseFloat(coord[1]);
-				if (isNaN(x) || isNaN(y) == 'NaN') {
-					continue;
-				}
-				var newPoint = board.create('point', [ x, y ], {
-					snapToGrid : isSnapTo,
-					withLabel : false,
-					showInfobox : false
-				});
-				JXG.addEvent(newPoint.rendNode, 'mouseover', function() {
-					if (mode != "point") {
-						$("ellipse").css('cursor', 'crosshair');
-					} else {
-						$("ellipse").css('cursor', 'default');
-					}
-				}, newPoint);
-				newPoint.on('touchend', function(){
-					dragDetected();
-				});
-				ptsCreated.push(newPoint.id);
-				// this.setValue();
-			}
+			
 			var resPtsSelected = [];
 			var ptArr = [];
+			var allPoints = [];
 			var coord1;
 			var coord2 = "";
 			var coord3 = "";
@@ -674,7 +654,10 @@ var QtiWorksRendering = (function() {
 							coord5 = "";
 							coord6 = "";
 							ptArr = lnsValues[b].split("_");
+							if (ptArr.length == 1 && ptArr[0] == "")
+								continue;
 							for (var c = 0; c < ptArr.length; c++) {
+								allPoints.push(ptArr[c]);
 								if (c == 0) {
 									coord1 = ptArr[c];
 								} else if (c == 1) {
@@ -716,8 +699,31 @@ var QtiWorksRendering = (function() {
 	
 							if (!isNaN(x1) && !isNaN(y1) && !isNaN(x2)
 									&& !isNaN(y2) && mode != 'angle' && mode != 'shape') {
-								var newLine = board.create('line', [ [ x1, y1 ],
-										[ x2, y2 ] ], {
+								var point1 = board.create('point',[ x1, y1 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+								JXG.addEvent(point1.rendNode, 'mouseover', function() {
+									if (mode != "point") {
+										$("ellipse").css('cursor', 'crosshair');
+									} else {
+										$("ellipse").css('cursor', 'default');
+									}
+								}, point1);
+								point1.on('touchend', function(){
+									dragDetected();
+								});
+								ptsCreated.push(point1.id);
+								var point2 = board.create('point',[ x2, y2 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+								JXG.addEvent(point2.rendNode, 'mouseover', function() {
+									if (mode != "point") {
+										$("ellipse").css('cursor', 'crosshair');
+									} else {
+										$("ellipse").css('cursor', 'default');
+									}
+								}, point2);
+								point2.on('touchend', function(){
+									dragDetected();
+								});
+								ptsCreated.push(point2.id);
+								var newLine = board.create('line', [ point1, point2 ], {
 									firstArrow : mode == 'line',
 									lastArrow : mode == 'ray' || mode == 'line',
 									straightFirst : mode == 'line',
@@ -725,10 +731,53 @@ var QtiWorksRendering = (function() {
 									strokeColor : '#00ff00',
 									strokeWidth : 2
 								});
+								if (mode == 'line') {
+									linesCreated.push(newLine.id);
+								} else if (mode == 'lineseg') {
+									lineSegmentsCreated.push(newLine.id);
+								} else if (mode == 'ray') {
+									raysCreated.push(newLine.id);
+								}
 								resPtsSelected = [];
 							} else if (mode == 'angle') {
-								var angleRay1 = board.create('line', [ [x1,y1],
-									             						[x3,y3] ], {
+								var point1 = board.create('point',[ x1, y1 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+								JXG.addEvent(point1.rendNode, 'mouseover', function() {
+									if (mode != "point") {
+										$("ellipse").css('cursor', 'crosshair');
+									} else {
+										$("ellipse").css('cursor', 'default');
+									}
+								}, point1);
+								point1.on('touchend', function(){
+									dragDetected();
+								});
+								ptsCreated.push(point1.id);
+								var point2 = board.create('point',[ x2, y2 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+								JXG.addEvent(point2.rendNode, 'mouseover', function() {
+									if (mode != "point") {
+										$("ellipse").css('cursor', 'crosshair');
+									} else {
+										$("ellipse").css('cursor', 'default');
+									}
+								}, point2);
+								point2.on('touchend', function(){
+									dragDetected();
+								});
+								ptsCreated.push(point2.id);
+								var point3 = board.create('point',[ x3, y3 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+								JXG.addEvent(point3.rendNode, 'mouseover', function() {
+									if (mode != "point") {
+										$("ellipse").css('cursor', 'crosshair');
+									} else {
+										$("ellipse").css('cursor', 'default');
+									}
+								}, point3);
+								point3.on('touchend', function(){
+									dragDetected();
+								});
+								ptsCreated.push(point3.id);
+								var angleRay1 = board.create('line', [ point1,
+									             						point3 ], {
 									             					firstArrow : false,
 									             					lastArrow : true,
 									             					straightFirst : false,
@@ -736,8 +785,8 @@ var QtiWorksRendering = (function() {
 									             					strokeColor : '#00ff00',
 									             					strokeWidth : 2
 									             				});
-								var angleRay2 = board.create('line', [[x1,y1],
-										             						[x2,y2] ], {
+								var angleRay2 = board.create('line', [point1,
+										             						point2 ], {
 										             				firstArrow : false,
 										             				lastArrow : true,
 										             				straightFirst : false,
@@ -745,39 +794,167 @@ var QtiWorksRendering = (function() {
 										             				strokeColor : '#00ff00',
 										             				strokeWidth : 2
 										             			});
-								var alpha = board.create('angle', [ [ x2, y2 ],
-										[ x1, y1 ], [ x3, y3 ] ], {
+								var alpha = board.create('angle', [ point2,
+										point1, point3 ], {
 									radius : 3, withLabel : false, showInfobox:false
 								});
+								var an = JXG.Math.Geometry.trueAngle([x2, y2],
+										[x1, y2], [x3, y3]);
+								anglesCreated.push(alpha.id);
+								angleMeasures.push(an);
 							} else if (mode == 'shape') {
 								var poly;
-								if (coord6 != "") {
-									poly = board.create('polygon', [ board.create('point',[ x1, y1 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
-									                                 board.create('point',[ x2, y2 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
-									                                 board.create('point',[ x3, y3 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
-									                                 board.create('point',[ x4, y4 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
-									                                 board.create('point',[ x5, y5 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
-									                                 board.create('point',[ x6, y6 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}) ]);
-								} else if (coord5 != "") {
-									poly = board.create('polygon', [ board.create('point',[ x1, y1 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
-									                                 board.create('point',[ x2, y2 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}), 
-									                                 board.create('point',[ x3, y3 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
-									                                 board.create('point',[ x4, y4 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
-									                                 board.create('point',[ x5, y5 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}) ]);
-								} else if (coord4 != "") {
-									poly = board.create('polygon', [ board.create('point',[ x1, y1 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
-									                                 board.create('point',[ x2, y2 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}), 
-									                                 board.create('point',[ x3, y3 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}), 
-									                                 board.create('point',[ x4, y4 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}) ]);
-								} else {
-									poly = board.create('polygon', [ board.create('point',[ x1, y1 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}),
-									                                 board.create('point',[ x2, y2 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}), 
-									                                 board.create('point',[ x3, y3 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false}) ]);
+								var point1 = board.create('point',[ x1, y1 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+								JXG.addEvent(point1.rendNode, 'mouseover', function() {
+									if (mode != "point") {
+										$("ellipse").css('cursor', 'crosshair');
+									} else {
+										$("ellipse").css('cursor', 'default');
+									}
+								}, point1);
+								point1.on('touchend', function(){
+									dragDetected();
+								});
+								ptsCreated.push(point1.id);
+								var point2 = board.create('point',[ x2, y2 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+								JXG.addEvent(point2.rendNode, 'mouseover', function() {
+									if (mode != "point") {
+										$("ellipse").css('cursor', 'crosshair');
+									} else {
+										$("ellipse").css('cursor', 'default');
+									}
+								}, point2);
+								point2.on('touchend', function(){
+									dragDetected();
+								});
+								ptsCreated.push(point2.id);
+								var point3 = board.create('point',[ x3, y3 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+								JXG.addEvent(point3.rendNode, 'mouseover', function() {
+									if (mode != "point") {
+										$("ellipse").css('cursor', 'crosshair');
+									} else {
+										$("ellipse").css('cursor', 'default');
+									}
+								}, point3);
+								point3.on('touchend', function(){
+									dragDetected();
+								});
+								ptsCreated.push(point3.id);
+								var point4;
+								var point5;
+								var point6;
+								
+								if ( (coord4 == "") && (coord5 == "") && (coord6 == "") ) {
+									poly = board.create('polygon', [ point1,
+									                                 point2, 
+									                                 point3 ]);
 								}
+								
+								if (coord4 != "") {
+									// create point here
+									var point4 = board.create('point',[ x4, y4 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point4.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point4);
+									point4.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point4.id);
+									if (coord5 == "" && coord6 == "") {
+										poly = board.create('polygon', [ point1,
+										                                 point2, 
+										                                 point3,
+										                                 point4]);
+									}
+								}
+								
+								if (coord5 != "") {
+									// create point here
+									var point5 = board.create('point',[ x5, y5 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point5);
+									point5.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point5.id);
+									if (coord6 == "") {
+										poly = board.create('polygon', [ point1,
+										                                 point2, 
+										                                 point3,
+										                                 point4,
+										                                 point5]);
+									}
+								}
+								
+								
+								if (coord6 != "") {
+									var point6 = board.create('point',[ x6, y6 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point6);
+									point6.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point6.id);
+									poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6 ]);
+								}
+								shapesCreated.push(poly);
 							}
 						}
 					}
 				}
+			}
+			// now any points we haven't created yet, plot them
+			for (var a = 0; a < ptsValues.length; a++) {
+				var found = false;
+				for (var b = 0; b < allPoints.length; b++) {
+					if (ptsValues[a] == allPoints[b]) {
+						found = true;
+					}
+				}
+				if (found)
+					continue;
+				var pt = ptsValues[a];
+				var coord = pt.split(",");
+				var x = parseFloat(coord[0]);
+				var y = parseFloat(coord[1]);
+				if (isNaN(x) || isNaN(y) == 'NaN') {
+					continue;
+				}
+				var newPoint = board.create('point', [ x, y ], {
+					snapToGrid : isSnapTo,
+					withLabel : false,
+					showInfobox : false
+				});
+				JXG.addEvent(newPoint.rendNode, 'mouseover', function() {
+					if (mode != "point") {
+						$("ellipse").css('cursor', 'crosshair');
+					} else {
+						$("ellipse").css('cursor', 'default');
+					}
+				}, newPoint);
+				newPoint.on('touchend', function(){
+					dragDetected();
+				});
+				ptsCreated.push(newPoint.id);
 			}
 		}
 		;
@@ -890,7 +1067,13 @@ var QtiWorksRendering = (function() {
 			$("#controlsDiv > input[type='radio']").trigger("click");
 		}
 		$('#resetButton').click(function() {
-			var element;
+			$("#submit_button").prop('disabled', false);
+			
+			/*for (var element in board.objects) {
+				if ( (board.objects[element].elType == "line" || board.objects[element].elType == "point") && (board.objects[element].draggable) ) {
+					board.removeObject(board.objects[element]);
+				}
+			}*/
 			for (element in board.objects) {
 				try {
 					if (containsId(element) >= 0) {
@@ -898,6 +1081,31 @@ var QtiWorksRendering = (function() {
 					}
 				} catch (err) {
 					// do nothing
+				}
+			}
+			for (var k = linesCreated.length - 1; k >= 0; k--) {
+				if (board.objects[linesCreated[k]]) {
+					board.removeObject(board.objects[linesCreated[k]]);
+				}
+			}
+			for (var l = lineSegmentsCreated.length - 1; l >= 0; l--) {
+				if (board.objects[lineSegmentsCreated[l]]) {
+					board.removeObject(board.objects[lineSegmentsCreated[l]]);
+				}
+			}
+			for (var m = raysCreated.length - 1; m >= 0; m--) {
+				if (board.objects[raysCreated[m]]) {
+					board.removeObject(board.objects[raysCreated[m]]);
+				}
+			}
+			for (var n = shapesCreated.length - 1; n >= 0; n--) {
+				if (board.objects[shapesCreated[n]]) {
+					board.removeObject(board.objects[shapesCreated[n]]);
+				}
+			}
+			for (var o = anglesCreated.length - 1; o >= 0; o--) {
+				if (board.objects[anglesCreated[o]]) {
+					board.removeObject(board.objects[anglesCreated[o]]);
 				}
 			}
 			ptsCreated = [];
