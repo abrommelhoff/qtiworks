@@ -602,10 +602,6 @@ var QtiWorksRendering = (function() {
 		// restore any responses
 		function getValue() {
 			var res = $("input[name='previousResponses']").attr("value");
-			// if this is the first time entering the item, do not disable the submit button!
-			if (res != "") {
-				$("#submit_button").prop('disabled', true);
-			}
 			// parse values
 			var resValues = res.split("/");
 			var ptsValues = resValues[0].split(";");
@@ -1066,14 +1062,7 @@ var QtiWorksRendering = (function() {
 		if ($("#controlsDiv > input[type='radio']").length == 1) {
 			$("#controlsDiv > input[type='radio']").trigger("click");
 		}
-		$('#resetButton').click(function() {
-			$("#submit_button").prop('disabled', false);
-			
-			/*for (var element in board.objects) {
-				if ( (board.objects[element].elType == "line" || board.objects[element].elType == "point") && (board.objects[element].draggable) ) {
-					board.removeObject(board.objects[element]);
-				}
-			}*/
+		$('#resetButton').click(function() {		
 			for (element in board.objects) {
 				try {
 					if (containsId(element) >= 0) {
