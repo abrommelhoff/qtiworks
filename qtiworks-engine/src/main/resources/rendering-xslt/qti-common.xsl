@@ -508,7 +508,7 @@ rendering.
           </xsl:when>-->
           <xsl:when test="(not(empty(@unboundResponseIdentifiers) and empty(@invalidResponseIdentifiers)))">
             <div class="modal-dialog-blank">
-              You <b>must</b> click submit for your answer to be saved! Notice that this question is now marked as "Skipped" in the upper right corner, because you left it blank.<br/><br/>Try again. Select the answer and then click the "Submit Answer" button.
+              You must select an answer choice <b>and</b> click the &quot;Submit Answer&quot; button for your answer to be saved! Notice that this question is now marked as &quot;Skipped&quot; in the upper right corner, because you left it blank.<br/><br/>Try again. Select the answer and then click the &quot;Submit Answer&quot; button.
             </div>
             <span class="itemStatus invalid">Skipped</span> 
           </xsl:when>
