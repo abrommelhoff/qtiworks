@@ -961,7 +961,7 @@ var QtiWorksRendering = (function() {
 			   return false;
 		});
 		
-		var $input = $('<input type="button" id="resetButton" value="Reset" />');
+		var $input = $('<input type="button" id="resetButton" value="Clear Drawing" />');
 	    $input.insertBefore($("div[class='controls'], div[class='testItemControl']").first());
 		
 		$('#jxgbox').mousedown(function(e) {
