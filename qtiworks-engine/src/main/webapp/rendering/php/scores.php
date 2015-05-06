@@ -17,7 +17,7 @@ function getUsers($dbname)
 $xml = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>';
 echo $xml;
 
-$getResponse = getUsers('qtiworksdev');
+$getResponse = getUsers('qtiworksprod');
 if (!$getResponse) { 
 	echo 'No scores returned';
 } else {

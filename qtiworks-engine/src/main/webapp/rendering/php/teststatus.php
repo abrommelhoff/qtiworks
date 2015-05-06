@@ -17,7 +17,7 @@ function getStatus($dbname)
 $xml = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>';
 echo $xml;
 
-$getResponse = getStatus('qtiworksdev');
+$getResponse = getStatus('qtiworksprod');
 if (!$getResponse) { 
 	echo 'No scores returned';
 } else {
