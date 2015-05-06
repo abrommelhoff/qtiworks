@@ -18,7 +18,7 @@ session_start();
   //$secret = "dy65bjEFcpNCcGJt0kMb70iO2XgNnzoU";
   $userid = trim($_REQUEST["userid"]);
   if ( ! $secret ) $secret = "dy65bjEFcpNCcGJt0kMb70iO2XgNnzoU";
-  $endpoint = "http://qtiworks.measuredprogress.org/qtiworks/lti/linklaunch";
+  $endpoint = "https://qtiworks.measuredprogress.org/qtiworks/lti/linklaunch";
 
 //  $endpoint = trim($_REQUEST["endpoint"]);
   $b64 = base64_encode($key.":::".$secret);
@@ -129,7 +129,7 @@ function lmsdataToggle() {
     $parms["lis_result_sourcedid"] = "feb-123-456-2929::28883";
   }
 
-  $parms['launch_presentation_return_url'] = "http://coral.measuredprogress.org/coordinator/Student/Result.aspx";
+  $parms['launch_presentation_return_url'] = "https://coral.measuredprogress.org/coordinator/Student/Result.aspx";
 
   $custom = explode("\n", $custom);
   foreach ($custom as $line) {
