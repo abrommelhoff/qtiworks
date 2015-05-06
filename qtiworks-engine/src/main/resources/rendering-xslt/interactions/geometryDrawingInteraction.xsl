@@ -13,7 +13,7 @@
   <xsl:template match="qti:customInteraction[@class='org.qtitools.geometrydrawing.GeometryDrawingInteraction']">
   	<html>
   		<head>
-  			<script src="//jsxgraph.uni-bayreuth.de/distrib/jsxgraphcore.js"/>
+  			<script src="{$webappContextPath}/rendering/javascript/jsxgraphcore.js"/>
   		</head>
   	</html>
     <p/>
