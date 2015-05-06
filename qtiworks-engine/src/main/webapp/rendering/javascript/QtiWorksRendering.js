@@ -681,16 +681,31 @@ var QtiWorksRendering = (function() {
 							if ( coord4 != "") {
 								x4 = parseFloat(coord4.split(",")[0]);
 								y4 = parseFloat(coord4.split(",")[1]); 
+								if ( (x4 == x1) && (y4 == y1) ) {
+									x4 = "";
+									y4 = "";
+									coord4 = "";
+								}
 							}
 							var x5, y5;
 							if ( coord5 != "") {
 								x5 = parseFloat(coord5.split(",")[0]);
-								y5 = parseFloat(coord5.split(",")[1]); 
+								y5 = parseFloat(coord5.split(",")[1]);
+								if ( (x5 == x1) && (y5 == y1) ) {
+									x5 = "";
+									y5 = "";
+									coord5 = "";
+								}
 							}
 							var x6, y6;
 							if ( coord6 != "") {
 								x6 = parseFloat(coord6.split(",")[0]);
 								y6 = parseFloat(coord6.split(",")[1]); 
+								if ( (x6 == x1) && (y6 == y1) ) {
+									x6 = "";
+									y6 = "";
+									coord6 = "";
+								}
 							}
 	
 							if (!isNaN(x1) && !isNaN(y1) && !isNaN(x2)
@@ -2034,6 +2049,9 @@ var QtiWorksRendering = (function() {
 				}
 			}
 			return -1;
+		}
+		if (ptsCreated.length > 0) {
+			setValue();
 		}
 	};
 
