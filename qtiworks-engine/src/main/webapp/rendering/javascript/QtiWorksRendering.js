@@ -861,7 +861,7 @@ var QtiWorksRendering = (function() {
 								if ( (coord4 == "") && (coord5 == "") && (coord6 == "") ) {
 									poly = board.create('polygon', [ point1,
 									                                 point2, 
-									                                 point3 ]);
+									                                 point3 ],{fixed: true});
 								}
 								
 								if (coord4 != "") {
@@ -882,7 +882,7 @@ var QtiWorksRendering = (function() {
 										poly = board.create('polygon', [ point1,
 										                                 point2, 
 										                                 point3,
-										                                 point4]);
+										                                 point4],{fixed: true});
 									}
 								}
 								
@@ -905,7 +905,7 @@ var QtiWorksRendering = (function() {
 										                                 point2, 
 										                                 point3,
 										                                 point4,
-										                                 point5]);
+										                                 point5],{fixed: true});
 									}
 								}
 								
@@ -928,7 +928,7 @@ var QtiWorksRendering = (function() {
 									                                 point3,
 									                                 point4,
 									                                 point5,
-									                                 point6 ]);
+									                                 point6],{fixed: true});
 								}
 								shapesCreated.push(poly);
 							}
@@ -1009,7 +1009,7 @@ var QtiWorksRendering = (function() {
 			setValue();
 		});
 		$('#connectPoints').click(function () {
-			var poly = board.create('polygon', ptsSelected);
+			var poly = board.create('polygon', ptsSelected,{fixed: true});
 			shapesCreated.push(poly);
 			ptsSelected = [];
 			setValue();
@@ -1135,7 +1135,7 @@ var QtiWorksRendering = (function() {
 		}, down = function(e) {
 			var canCreate = true, i, coords, el;
 			
-			if (maxChoices > 0 && maxChoices <= (ptsCreated.length - 1)) {
+			if (maxChoices > 0 && maxChoices <= (ptsCreated.length)) {
 				return;
 			}
 
@@ -1198,7 +1198,7 @@ var QtiWorksRendering = (function() {
 					break;
 				}
 			}
-			if (maxChoices > 0 && maxChoices <= (ptsCreated.length - 1) && canCreate) {
+			if (maxChoices > 0 && maxChoices <= (ptsCreated.length) && canCreate) {
 				return;
 			}
 			if (canCreate) {
