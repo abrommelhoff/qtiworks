@@ -740,7 +740,8 @@ var QtiWorksRendering = (function() {
 									straightFirst : mode == 'line',
 									straightLast : mode == 'ray' || mode == 'line',
 									strokeColor : '#00ff00',
-									strokeWidth : 2
+									strokeWidth : 2,
+									fixed : true
 								});
 								if (mode == 'line') {
 									linesCreated.push(newLine.id);
@@ -794,7 +795,8 @@ var QtiWorksRendering = (function() {
 									             					straightFirst : false,
 									             					straightLast : true,
 									             					strokeColor : '#00ff00',
-									             					strokeWidth : 2
+									             					strokeWidth : 2,
+									             					fixed : true
 									             				});
 								var angleRay2 = board.create('line', [point1,
 										             						point2 ], {
@@ -803,7 +805,8 @@ var QtiWorksRendering = (function() {
 										             				straightFirst : false,
 										             				straightLast : true,
 										             				strokeColor : '#00ff00',
-										             				strokeWidth : 2
+										             				strokeWidth : 2,
+										             				fixed : true
 										             			});
 								var alpha = board.create('angle', [ point2,
 										point1, point3 ], {
@@ -1227,7 +1230,8 @@ var QtiWorksRendering = (function() {
 					straightFirst : mode == 'line',
 					straightLast : mode == 'ray' || mode == 'line',
 					strokeColor : '#00ff00',
-					strokeWidth : 2
+					strokeWidth : 2,
+					fixed: true
 				});
 				if (mode == 'line') {
 					linesCreated.push(newLine.id);
@@ -1308,7 +1312,8 @@ var QtiWorksRendering = (function() {
 				             					straightFirst : false,
 				             					straightLast : true,
 				             					strokeColor : '#00ff00',
-				             					strokeWidth : 2
+				             					strokeWidth : 2,
+				             					fixed : true
 				             				});
 				var angleRay2 = board.create('line', [ ptsSelected[1],
 					             						ptsSelected[2] ], {
@@ -1317,7 +1322,8 @@ var QtiWorksRendering = (function() {
 					             					straightFirst : false,
 					             					straightLast : true,
 					             					strokeColor : '#00ff00',
-					             					strokeWidth : 2
+					             					strokeWidth : 2,
+					             					fixed : true
 					             				});
 				var alpha;
 				var an = JXG.Math.Geometry.trueAngle([board.objects[ptsSelected[0]].XEval(), board.objects[ptsSelected[0]].YEval()],
