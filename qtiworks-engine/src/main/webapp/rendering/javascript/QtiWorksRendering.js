@@ -931,6 +931,15 @@ var QtiWorksRendering = (function() {
 									                                 point6],{fixed: true});
 								}
 								shapesCreated.push(poly);
+								
+								// set the borders of the polygon to fixed
+								for (var element in board.objects) {
+									if ( (board.objects[element].elType == "segment") && (board.objects[element].parentPolygon != null) ) {
+										board.objects[element].setAttribute({
+											fixed: true
+										});
+									}
+								}
 							}
 						}
 					}
@@ -1011,6 +1020,14 @@ var QtiWorksRendering = (function() {
 		$('#connectPoints').click(function () {
 			var poly = board.create('polygon', ptsSelected,{fixed: true});
 			shapesCreated.push(poly);
+			// set the borders of the polygon to fixed
+			for (var element in board.objects) {
+				if ( (board.objects[element].elType == "segment") && (board.objects[element].parentPolygon != null) ) {
+					board.objects[element].setAttribute({
+						fixed: true
+					});
+				}
+			}
 			ptsSelected = [];
 			setValue();
 		});
