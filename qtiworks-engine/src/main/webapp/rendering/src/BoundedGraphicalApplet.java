@@ -1152,6 +1152,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 		    		{
 		    		    int j = i;
 		    		    int heightOffset = 0;
+		    		    int extraSpace = 0;
 		    			final MovableObject mo = (MovableObject)getBoundObjFromStr(getParameter("movable_object"+i), true, imCount, m,font,frc, new Point(0,0));
 
 		    			// TODO: Fix the y-values, veer away from hard-coded values.
@@ -1165,7 +1166,10 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 		    			    //heightOffset = maxHeight + 10;
 		    			    //heightOffset = maxHeight;
 		    			}
-		    			final Point p = new Point((space/2)+(space*j),this.getHeight()-heightOffset);
+		    			if (om.equals("gap_match_interaction")) {
+		    			    extraSpace = 25;
+		    			}
+		    			final Point p = new Point((space/2)+(space*j),this.getHeight()-heightOffset-extraSpace);
 		    			mo.setStartPos(p);
 		    			movableObjects.add(mo);
 		     		}
