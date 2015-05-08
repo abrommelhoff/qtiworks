@@ -80,6 +80,14 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 	 * borrowed code for drawing an arrow head, all credit to the java forum poster
 	 * who openly donated this code.
 	 */
+
+    // determines if the item has been skipped or not
+    private boolean skipped = true;
+
+    public void setSkipped(final boolean b) {
+        skipped = b;
+    }
+
 	public static void drawArrow(final Graphics2D g2d, final int xCenter, final int yCenter, final int x, final int y, final float stroke)
 	{
 	      final double aDir=Math.atan2(xCenter-x,yCenter-y);
@@ -917,6 +925,8 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 	 */
 	public Vector<String> getValues(final String _identifier)
 	{
+	    System.out.println("Okay, let's set some values!");
+
 		if(!_identifier.equals(identifier))
 			return null;
 		final Vector<String> values = new Vector<String>();
@@ -948,6 +958,11 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 			}
 		}else if(om.equals("figure_placement_interaction"))
         {
+		    if (skipped) {
+                values.add("");
+                return values;
+            }
+
 		    Boolean found = false;
             for(int i = 0; i < movableObjects.size(); i++)
             {
@@ -1213,6 +1228,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
     @Override
     public void mouseDragged(final MouseEvent me){
 
+        setSkipped(false);
     	if(om.equals("graphic_associate_interaction") || om.equals("graphic_order_interaction") || om.equals("gap_match_interaction"))
     	{
 	    	if(start != null || mov != null)
@@ -1500,11 +1516,11 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 
             g.drawImage(offScreenImg, 0, 0, this);
 
-            /*if (om.equals("figure_placement_interaction")) {
+            if (om.equals("figure_placement_interaction")) {
                 for (int h=0; h < hotspots.size(); h++) {
-                    g.drawRect(hotspots.elementAt(h).coords[0],hotspots.elementAt(h).coords[1],hotspots.elementAt(h).coords[2],hotspots.elementAt(h).coords[3]);
+                    //g.drawRect(hotspots.elementAt(h).coords[0],hotspots.elementAt(h).coords[1],hotspots.elementAt(h).coords[2],hotspots.elementAt(h).coords[3]);
                 }
-            }*/
+            }
         }
         catch(final Exception exception)
         {
