@@ -512,6 +512,8 @@ var QtiWorksRendering = (function() {
 		var shapesCreated = [];
 		var shapePointValues = "/shapePoints:";
 		var isSnapTo = false;
+		var downEventX = 0;
+		var downEventY = 0;
 		var maxChoices = 0;
 		var interaction = this;
 		var yScaleSymbol = "";
@@ -990,8 +992,10 @@ var QtiWorksRendering = (function() {
 		
 		var $input = $('<input type="button" id="resetButton" value="Clear Drawing" />');
 	    $input.insertBefore($("div[class='controls'], div[class='testItemControl']").first());
-		
+	    
 		$('#jxgbox').mousedown(function(e) {
+			downEventX = e.screenX;
+			downEventY = e.screenY;
 			if (mode == "none") {
 				return;
 			}
@@ -1011,9 +1015,17 @@ var QtiWorksRendering = (function() {
 				alert('You have a strange mouse');
 			}
 		});
-		$('#jxgbox').mouseup(function() {
+		$('#jxgbox').mouseup(function(e) {
 			if (mode == "none") {
 				return;
+			}
+			var upEventX = e.screenX;
+			var upEventY = e.screenY;
+			if ( (Math.abs(upEventX - downEventX) <= 10) && (Math.abs(upEventY - downEventY) <= 10) ) {
+				// this is a click -- do nothing
+			} else {
+				// this is a drag -- pop the last element
+				ptsSelected.pop();
 			}
 			setValue();
 		});
