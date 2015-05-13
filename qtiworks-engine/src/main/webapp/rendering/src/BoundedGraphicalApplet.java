@@ -451,7 +451,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 			//draw highlight by shape
 			if(highlighted)
 			{
-				g.setColor(Color.RED);
+			    g.setColor(new Color(0, 153, 0));
 				g.setStroke(new BasicStroke(2));
 				if(obj instanceof Polygon)
 				{
@@ -461,7 +461,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 				{
 					final Ellipse2D e = (Ellipse2D)obj;
 					g.drawOval((int)(e.getCenterX()-e.getWidth()/2), (int)(e.getCenterY()-e.getHeight()/2), (int)e.getWidth(), (int)e.getHeight());
-				}else
+				} else
 				{
 					final Rectangle r = (Rectangle)obj;
 					g.drawRect(r.x, r.y, r.width, r.height);
