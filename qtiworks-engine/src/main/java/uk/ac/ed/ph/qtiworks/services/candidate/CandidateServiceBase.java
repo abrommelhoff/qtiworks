@@ -91,7 +91,7 @@ public abstract class CandidateServiceBase {
     protected void assertSessionNotTerminated(final CandidateSession candidateSession)
             throws CandidateException {
         if (candidateSession.isTerminated()) {
-            candidateAuditLogger.logAndThrowCandidateException(candidateSession, CandidateExceptionReason.SESSION_IS_TERMINATED);
+            //candidateAuditLogger.logAndThrowCandidateException(candidateSession, CandidateExceptionReason.SESSION_IS_TERMINATED);
         }
     }
 
