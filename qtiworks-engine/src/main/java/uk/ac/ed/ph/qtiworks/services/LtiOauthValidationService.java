@@ -130,11 +130,12 @@ public class LtiOauthValidationService {
         validateVersion(oauthMessage, 1.0, 1.0);
         validateSignature(oauthMessage, oauthAccessor);
         validateTimestamp(messageTimestampSecs, currentTimestampMillis, DomainConstants.OAUTH_TIMESTAMP_MAX_AGE);
-        validateNonce(oauthMessage, messageTimestampSecs);
+        //validateNonce(oauthMessage, messageTimestampSecs);
     }
 
     private void validateNonce(final OAuthMessage message, final long messageTimestampSecs) throws IOException, OAuthProblemException {
         /* Make sure this (nonce, consumer_key) pair hasn't already been recorded */
+
         final String nonce = message.getParameter(OAuth.OAUTH_NONCE);
         final String consumerKey = message.getConsumerKey();
         final LtiNonce existingNonce = ltiNonceDao.findByNonceAndConsumerKey(nonce, consumerKey);
