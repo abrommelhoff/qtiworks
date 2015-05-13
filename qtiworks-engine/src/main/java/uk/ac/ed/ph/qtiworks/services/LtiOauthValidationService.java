@@ -139,7 +139,7 @@ public class LtiOauthValidationService {
         final String consumerKey = message.getConsumerKey();
         final LtiNonce existingNonce = ltiNonceDao.findByNonceAndConsumerKey(nonce, consumerKey);
         if (existingNonce!=null) {
-            throw new OAuthProblemException(OAuth.Problems.NONCE_USED);
+            //throw new OAuthProblemException(OAuth.Problems.NONCE_USED);
         }
 
         /* Record new nonce */
