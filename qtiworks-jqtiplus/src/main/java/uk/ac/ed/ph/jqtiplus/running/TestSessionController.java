@@ -1556,13 +1556,12 @@ public final class TestSessionController extends TestProcessingController {
         final TestPlanNode currentItemRefNode = expectItemRefNode(currentItemKey);
         final EffectiveItemSessionControl effectiveItemSessionControl = currentItemRefNode.getEffectiveItemSessionControl();
         if (!effectiveItemSessionControl.isAllowComment()) {
-            //throw new QtiCandidateStateException("The item has allowComment=false, so setting a candidate comment is not permitted");
-        } else {
-        	logger.debug("Setting candidate comment to {}", candidateComment);
-
-        	final ItemSessionController itemSessionController = getItemSessionController(currentItemRefNode);
-        	itemSessionController.setCandidateComment(timestamp, candidateComment);
+            throw new QtiCandidateStateException("The item has allowComment=false, so setting a candidate comment is not permitted");
         }
+        logger.debug("Setting candidate comment to {}", candidateComment);
+
+        final ItemSessionController itemSessionController = getItemSessionController(currentItemRefNode);
+        itemSessionController.setCandidateComment(timestamp, candidateComment);
     }
 
     //-------------------------------------------------------------------

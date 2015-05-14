@@ -649,8 +649,8 @@ public final class ItemSessionController extends ItemProcessingController implem
             Assert.notNull(responseData, "responseMap entry for key " + responseIdentifier);
         }
         //assertItemOpen();
-        assertItemEntered();
-        assertItemNotSuspended();
+        //assertItemEntered();
+        //assertItemNotSuspended();
         logger.debug("Binding responses {} on item {}", responseMap, item.getSystemId());
 
         /* Stop duration timer */
