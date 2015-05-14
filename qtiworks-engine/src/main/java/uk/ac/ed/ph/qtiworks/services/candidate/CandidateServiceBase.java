@@ -99,7 +99,7 @@ public abstract class CandidateServiceBase {
             throws CandidateException {
         final CandidateEvent mostRecentEvent = candidateDataService.getMostRecentEvent(candidateSession);
         if (mostRecentEvent==null) {
-            //candidateAuditLogger.logAndThrowCandidateException(candidateSession, CandidateExceptionReason.SESSION_NOT_ENTERED);
+            candidateAuditLogger.logAndThrowCandidateException(candidateSession, CandidateExceptionReason.SESSION_NOT_ENTERED);
         }
         return mostRecentEvent;
     }

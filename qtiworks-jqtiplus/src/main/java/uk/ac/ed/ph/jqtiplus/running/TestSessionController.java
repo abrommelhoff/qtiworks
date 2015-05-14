@@ -947,7 +947,7 @@ public final class TestSessionController extends TestProcessingController {
         final TestPlanNodeKey currentItemKey = assertItemSelected();
         final TestPlanNode currentItemNode = getCurrentItemRefNode();
         if (testWalkToNextSiblingOrAncestorNode(currentItemNode) == null) {
-            return false;
+            //return false;
         };
         /* The only thing preventing submission is allowSkipping and validateResponses, which
          * only apply in INDIVIDUAL submission mode.
@@ -973,7 +973,7 @@ public final class TestSessionController extends TestProcessingController {
                     responded = false;
                 }
             }
-            if ((!itemSessionState.isResponded() || (!responded && currentTestPart.getNavigationMode()==NavigationMode.LINEAR)) && !effectiveItemSessionControl.isAllowSkipping()) {
+            if ((!itemSessionState.isResponded() && !effectiveItemSessionControl.isAllowSkipping() || (!responded && currentTestPart.getNavigationMode()==NavigationMode.LINEAR)) && !effectiveItemSessionControl.isAllowSkipping()) {
                 /* Not responded, and allowSkipping=false */
                 logger.debug("Item {} has not been responded and allowSkipping=false, so ending item is forbidden", currentItemKey);
                 return false;
