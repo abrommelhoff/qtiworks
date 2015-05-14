@@ -1801,7 +1801,7 @@ public final class TestSessionController extends TestProcessingController {
     private TestPlanNodeKey assertItemSelected() {
         final TestPlanNodeKey currentItemKey = testSessionState.getCurrentItemKey();
         if (currentItemKey==null) {
-            //throw new QtiCandidateStateException("Expected to be inside an item");
+            throw new QtiCandidateStateException("Expected to be inside an item");
         }
         return currentItemKey;
     }
