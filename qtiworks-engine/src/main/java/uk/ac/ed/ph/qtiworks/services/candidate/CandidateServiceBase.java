@@ -91,7 +91,7 @@ public abstract class CandidateServiceBase {
     protected void assertSessionNotTerminated(final CandidateSession candidateSession)
             throws CandidateException {
         if (candidateSession.isTerminated()) {
-            // candidateAuditLogger.logAndThrowCandidateException(candidateSession, CandidateExceptionReason.SESSION_IS_TERMINATED);
+            candidateAuditLogger.logAndThrowCandidateException(candidateSession, CandidateExceptionReason.SESSION_IS_TERMINATED);
         }
     }
 
@@ -99,7 +99,7 @@ public abstract class CandidateServiceBase {
             throws CandidateException {
         final CandidateEvent mostRecentEvent = candidateDataService.getMostRecentEvent(candidateSession);
         if (mostRecentEvent==null) {
-            candidateAuditLogger.logAndThrowCandidateException(candidateSession, CandidateExceptionReason.SESSION_NOT_ENTERED);
+            //candidateAuditLogger.logAndThrowCandidateException(candidateSession, CandidateExceptionReason.SESSION_NOT_ENTERED);
         }
         return mostRecentEvent;
     }
