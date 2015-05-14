@@ -1049,6 +1049,8 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 	    	final String hspotStr = getParameter("hotspot_count");
 	    	final String movableElementStr = getParameter("movable_element_count");
 	    	final String number_of_responses = getParameter("number_of_responses");
+	    	final boolean needsExtraSpace = Boolean.valueOf(getParameter("extraSpace"));
+
 	    	retType = getParameter("baseType");
 	    	identifier = getParameter("identifier");
 
@@ -1168,7 +1170,11 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 		    			    //heightOffset = maxHeight;
 		    			}
 		    			if (om.equals("gap_match_interaction")) {
-		    			    extraSpace = 25;
+		    			    if (needsExtraSpace) {
+		    			        extraSpace = 25;
+		    			    } else {
+		    			        extraSpace = 0;
+		    			    }
 		    			    System.out.println("Setting extraSpace of: "+extraSpace);
 		    			}
 		    			final Point p = new Point((space/2)+(space*j),this.getHeight()-heightOffset-extraSpace);
