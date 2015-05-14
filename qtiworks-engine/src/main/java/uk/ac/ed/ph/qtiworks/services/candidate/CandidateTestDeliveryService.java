@@ -269,7 +269,7 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
             testSessionController.handleResponsesToCurrentItem(timestamp, responseDataMap);
         }
         catch (final QtiCandidateStateException e) {
-            candidateAuditLogger.logAndThrowCandidateException(candidateSession, CandidateExceptionReason.RESPONSES_NOT_EXPECTED);
+            //candidateAuditLogger.logAndThrowCandidateException(candidateSession, CandidateExceptionReason.RESPONSES_NOT_EXPECTED);
             return null;
         }
         catch (final RuntimeException e) {

@@ -96,7 +96,7 @@ public class CandidateAuditLogger {
     public void logAndThrowCandidateException(final CandidateSession candidateSession, final CandidateExceptionReason reason)
             throws CandidateException {
         logSessionAction(candidateSession, "error=" + reason);
-        //throw new CandidateException(candidateSession, reason);
+        throw new CandidateException(candidateSession, reason);
     }
 
     public void logAndThrowCandidateException(final User candidate, final Delivery delivery, final CandidateExceptionReason reason)
