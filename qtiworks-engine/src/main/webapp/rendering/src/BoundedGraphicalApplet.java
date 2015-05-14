@@ -451,8 +451,8 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 			//draw highlight by shape
 			if(highlighted)
 			{
-			    g.setColor(new Color(0, 153, 0));
-				g.setStroke(new BasicStroke(2));
+			    g.setColor(new Color(0x3333FF));
+				g.setStroke(new BasicStroke(4));
 				if(obj instanceof Polygon)
 				{
 					g.drawPolygon((Polygon)obj);
