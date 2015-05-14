@@ -102,13 +102,13 @@ public class CandidateAuditLogger {
     public void logAndThrowCandidateException(final User candidate, final Delivery delivery, final CandidateExceptionReason reason)
             throws CandidateException {
         logPreSessionAction(candidate, delivery, "error=" + reason);
-        //throw new CandidateException(candidate, delivery, reason);
+        throw new CandidateException(candidate, delivery, reason);
     }
 
     public void logAndThrowCandidateException(final User candidate, final Assessment assessment, final CandidateExceptionReason reason)
             throws CandidateException {
         logPreSessionAction(candidate, assessment, "error=" + reason);
-        //throw new CandidateException(candidate, assessment, reason);
+        throw new CandidateException(candidate, assessment, reason);
     }
 
     public void logExplosion(final CandidateSession candidateSession) {
