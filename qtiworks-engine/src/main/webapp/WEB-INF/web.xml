@@ -14,7 +14,7 @@ QTIWorks Delivery Engine web deployment descriptor
 
   <!-- Set large enough session timeout -->
   <session-config>
-    <session-timeout>600</session-timeout>
+    <session-timeout>200000</session-timeout>
   </session-config>
 
   <!-- Listener to allow external logback configuration -->
