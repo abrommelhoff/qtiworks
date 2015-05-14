@@ -184,10 +184,10 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
             final Map<Identifier, MultipartFile> fileResponseMap,
             final String candidateComment)
             throws CandidateException {
-        Assert.notNull(candidateSessionContext, "candidateSessionContext");
-        assertSessionType(candidateSessionContext, AssessmentObjectType.ASSESSMENT_TEST);
+        //Assert.notNull(candidateSessionContext, "candidateSessionContext");
+        //assertSessionType(candidateSessionContext, AssessmentObjectType.ASSESSMENT_TEST);
         final CandidateSession candidateSession = candidateSessionContext.getCandidateSession();
-        assertSessionNotTerminated(candidateSession);
+        //assertSessionNotTerminated(candidateSession);
 
         /* Get current JQTI state and create JQTI controller */
         final NotificationRecorder notificationRecorder = new NotificationRecorder(NotificationLevel.INFO);
