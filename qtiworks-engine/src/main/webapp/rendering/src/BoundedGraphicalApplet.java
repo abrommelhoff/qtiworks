@@ -1138,6 +1138,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
                     }
 
 	    		    if (totalWidth > this.getWidth()) {
+	    		        System.out.println("Using two rows because "+totalWidth+" is greater than "+this.getWidth());
 	    		        twoRows = true;
 	    		        space = this.getWidth() / (movCount/2)+1;
 	    		    }
@@ -1168,8 +1169,10 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 		    			}
 		    			if (om.equals("gap_match_interaction")) {
 		    			    extraSpace = 25;
+		    			    System.out.println("Setting extraSpace of: "+extraSpace);
 		    			}
 		    			final Point p = new Point((space/2)+(space*j),this.getHeight()-heightOffset-extraSpace);
+		    			System.out.println("This point at x: "+p.x+", y: "+p.y);
 		    			mo.setStartPos(p);
 		    			movableObjects.add(mo);
 		     		}
