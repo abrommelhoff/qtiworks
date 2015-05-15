@@ -451,8 +451,8 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 			//draw highlight by shape
 			if(highlighted)
 			{
-			    g.setColor(new Color(0, 153, 0));
-				g.setStroke(new BasicStroke(2));
+			    g.setColor(new Color(0x3333FF));
+				g.setStroke(new BasicStroke(4));
 				if(obj instanceof Polygon)
 				{
 					g.drawPolygon((Polygon)obj);
@@ -1049,6 +1049,8 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 	    	final String hspotStr = getParameter("hotspot_count");
 	    	final String movableElementStr = getParameter("movable_element_count");
 	    	final String number_of_responses = getParameter("number_of_responses");
+	    	final boolean needsExtraSpace = Boolean.valueOf(getParameter("extraSpace"));
+
 	    	retType = getParameter("baseType");
 	    	identifier = getParameter("identifier");
 
@@ -1138,6 +1140,7 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
                     }
 
 	    		    if (totalWidth > this.getWidth()) {
+	    		        System.out.println("Using two rows because "+totalWidth+" is greater than "+this.getWidth());
 	    		        twoRows = true;
 	    		        space = this.getWidth() / (movCount/2)+1;
 	    		    }
@@ -1167,9 +1170,15 @@ public class BoundedGraphicalApplet extends Applet implements MouseInputListener
 		    			    //heightOffset = maxHeight;
 		    			}
 		    			if (om.equals("gap_match_interaction")) {
-		    			    extraSpace = 25;
+		    			    if (needsExtraSpace) {
+		    			        extraSpace = 25;
+		    			    } else {
+		    			        extraSpace = 0;
+		    			    }
+		    			    System.out.println("Setting extraSpace of: "+extraSpace);
 		    			}
 		    			final Point p = new Point((space/2)+(space*j),this.getHeight()-heightOffset-extraSpace);
+		    			System.out.println("This point at x: "+p.x+", y: "+p.y);
 		    			mo.setStartPos(p);
 		    			movableObjects.add(mo);
 		     		}

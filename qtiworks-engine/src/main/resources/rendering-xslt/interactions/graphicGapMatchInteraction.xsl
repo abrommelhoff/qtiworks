@@ -28,6 +28,7 @@
           <param name="codebase" value="{$appletCodebase}"/>
           <param name="identifier" value="{@responseIdentifier}"/>
           <param name="baseType" value="directedPair"/>
+          <param name="extraSpace" value="{@class='extraSpace'}"/>
           <param name="operation_mode" value="gap_match_interaction"/>
           <param name="number_of_responses" value="{count(qti:associableHotspot)}"/>
           <param name="background_image" value="{qw:convert-link($object/@data)}"/>
