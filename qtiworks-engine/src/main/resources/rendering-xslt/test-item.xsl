@@ -130,10 +130,10 @@ NB: This is used both while being presented, and during review.
   <xsl:template name="qw:test-controls">
     <ul class="sessionControl">
       <!-- Interacting state -->
-      <xsl:if test="$advanceTestItemAllowed">
+      <xsl:if test="$advanceTestItemAllowed and not($endTestPartAllowed)">
         <li>
           <form action="{$webappContextPath}{$advanceTestItemUrl}" method="post">
-            <input type="submit" value="Next Question"/>
+            <input type="submit" value="Next Question"/> 
           </form>
         </li>
       </xsl:if>
