@@ -82,7 +82,7 @@ public final class FigurePlacementInteraction extends CustomInteraction<FigurePl
 
     @Override
     protected boolean validateResponse(final FigurePlacementExtensionPackage jqtiExtensionPackage, final InteractionBindingContext interactionBindingContext, final Value responseValue) {
-    	if (!responseValue.isNull() && responseValue.toQtiString().length() > 0) {
+    	if (!responseValue.isNull() && responseValue.toQtiString().length() > 2) {
         	return true;
         } else {
         	return false;
