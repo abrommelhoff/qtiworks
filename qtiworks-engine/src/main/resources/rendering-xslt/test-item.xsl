@@ -84,7 +84,7 @@ NB: This is used both while being presented, and during review.
         <xsl:attribute name="xml:lang" select="@lang"/>
       </xsl:if>
       <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=8,chrome=1"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=10,chrome=1"></meta>
         <title><xsl:value-of select="@title"/></title>
         <xsl:call-template name="includeAssessmentJsAndCss"/>
 
