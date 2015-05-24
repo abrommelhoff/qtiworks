@@ -14,7 +14,7 @@ function getUsers($dbname)
 		
 }
 
-$getResponse = getUsers('qtiworksdev');
+$getResponse = getUsers('qtiworksprod');
 if (!$getResponse) { 
 	echo 'No scores returned';
 } else {
