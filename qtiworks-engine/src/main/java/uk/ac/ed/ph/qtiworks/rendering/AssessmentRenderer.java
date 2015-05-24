@@ -358,6 +358,7 @@ public class AssessmentRenderer {
         xsltParameters.put("reviewMode", Boolean.FALSE);
         xsltParameters.put("solutionMode", Boolean.FALSE);
         xsltParameters.put("advanceTestItemAllowed", Boolean.valueOf(testSessionController.mayAdvanceItemLinear()));
+        xsltParameters.put("canWalkForward", Boolean.valueOf(testSessionController.canWalkForwardLinear()));
         xsltParameters.put("testPartNavigationAllowed", Boolean.valueOf(navigationMode==NavigationMode.NONLINEAR));
         xsltParameters.put("endTestPartAllowed", Boolean.valueOf(testSessionController.mayEndCurrentTestPart()));
 
@@ -378,6 +379,7 @@ public class AssessmentRenderer {
         xsltParameters.put("solutionMode", Boolean.FALSE);
         xsltParameters.put("testPartNavigationAllowed", Boolean.FALSE);
         xsltParameters.put("advanceTestItemAllowed", Boolean.FALSE);
+        xsltParameters.put("canWalkForward", Boolean.FALSE);
         xsltParameters.put("endTestPartAllowed", Boolean.FALSE);
 
         /* We finally do the transform on the _item_ (NB!) */
@@ -397,6 +399,7 @@ public class AssessmentRenderer {
         xsltParameters.put("solutionMode", Boolean.TRUE);
         xsltParameters.put("testPartNavigationAllowed", Boolean.FALSE);
         xsltParameters.put("advanceTestItemAllowed", Boolean.FALSE);
+        xsltParameters.put("canWalkForward", Boolean.FALSE);
         xsltParameters.put("endTestPartAllowed", Boolean.FALSE);
 
         /* We finally do the transform on the _item_ (NB!) */
@@ -539,6 +542,7 @@ public class AssessmentRenderer {
         xsltParameters.put("solutionMode", Boolean.FALSE);
         xsltParameters.put("testPartNavigationAllowed", Boolean.FALSE);
         xsltParameters.put("advanceTestItemAllowed", Boolean.FALSE);
+        xsltParameters.put("canWalkForward", Boolean.FALSE);
         xsltParameters.put("endTestPartAllowed", Boolean.FALSE);
 
         return itemRefNode.getItemSystemId();

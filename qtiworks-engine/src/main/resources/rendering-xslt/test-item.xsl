@@ -39,6 +39,7 @@ NB: This is used both while being presented, and during review.
 
   <!-- Action permissions -->
   <xsl:param name="advanceTestItemAllowed" as="xs:boolean" required="yes"/>
+  <xsl:param name="canWalkForward" as="xs:boolean" required="yes"/>
   <xsl:param name="endTestPartAllowed" as="xs:boolean" required="yes"/>
   <xsl:param name="testPartNavigationAllowed" as="xs:boolean" required="yes"/>
 
@@ -130,7 +131,7 @@ NB: This is used both while being presented, and during review.
   <xsl:template name="qw:test-controls">
     <ul class="sessionControl">
       <!-- Interacting state -->
-      <xsl:if test="$advanceTestItemAllowed and not($endTestPartAllowed)">  
+      <xsl:if test="$advanceTestItemAllowed and $canWalkForward">  
         <li>
           <form action="{$webappContextPath}{$advanceTestItemUrl}" method="post">
             <input type="submit" value="Next Question"/> 

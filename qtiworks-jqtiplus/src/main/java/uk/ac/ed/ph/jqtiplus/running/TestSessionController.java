@@ -924,6 +924,14 @@ public final class TestSessionController extends TestProcessingController {
     //-------------------------------------------------------------------
     // Linear navigation within a testPart
 
+    public boolean canWalkForwardLinear() {
+        final TestPlanNode currentItemNode = getCurrentItemRefNode();
+        if (testWalkToNextSiblingOrAncestorNode(currentItemNode) == null) {
+            return false;
+        };
+        return true;
+    }
+
     /**
      * Returns whether the currently-selected item within a {@link TestPart} with
      * {@link NavigationMode#LINEAR} may be advanced. (If the {@link TestPart} has
