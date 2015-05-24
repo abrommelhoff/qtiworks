@@ -152,7 +152,7 @@ NB: This is used both while being presented, and during review.
           </form>
       	</li>
       </xsl:if>
-      <xsl:if test="$advanceTestItemAllowed and $endTestPartAllowed">
+      <xsl:if test="$endTestPartAllowed">
         <li>
           <form action="{$webappContextPath}{$endTestPartUrl}" method="post"
             onsubmit="window.scrollTo(0,0);return confirm({qw:to-javascript-string($endTestPartAlertMessage)})">
