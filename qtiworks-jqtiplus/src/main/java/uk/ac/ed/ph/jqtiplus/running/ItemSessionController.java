@@ -1144,7 +1144,7 @@ public final class ItemSessionController extends ItemProcessingController implem
 
     private void assertItemNotSuspended() {
         if (itemSessionState.isSuspended()) {
-            throw new QtiCandidateStateException("Item session has been suspended");
+            //throw new QtiCandidateStateException("Item session has been suspended");
         }
     }
 
