@@ -139,11 +139,6 @@ NB: This is used both while being presented, and during review.
           </form>
         </li>
       </xsl:if>
-      <li>
-        <form action="{$webappContextPath}{$softResetUrl}" method="post">
-           <input type="submit" value="Reset{if ($isItemSessionEnded) then ' and play again' else ''}"/>
-        </form>
-      </li>
       <xsl:if test="$testPartNavigationAllowed">
         <li>
           <form action="{$webappContextPath}{$testPartNavigationUrl}" method="post">
@@ -166,6 +161,11 @@ NB: This is used both while being presented, and during review.
           </form>
         </li>
       </xsl:if>
+      <li>
+        <form action="{$webappContextPath}{$softResetUrl}" method="post">
+           <input type="submit" value="Clear Answer"/>
+        </form>
+      </li>
       <!-- Probably need to check for something here. Is 'Take a Break' defined in manifest or PNP?? -->
       <xsl:if test="true()">
       	<li>
