@@ -79,6 +79,9 @@ public final class TestRenderingOptions extends AbstractRenderingOptions {
     @NotNull
     private String markForReviewUrl;
 
+    @NotNull
+    private String softResetUrl;
+
     //----------------------------------------------------
 
     public String getSelectTestItemUrl() {
@@ -175,6 +178,14 @@ public final class TestRenderingOptions extends AbstractRenderingOptions {
 
     public void setMarkForReviewUrl(final String markForReviewUrl) {
         this.markForReviewUrl = markForReviewUrl;
+    }
+
+    public String getSoftResetUrl() {
+        return softResetUrl;
+    }
+
+    public void setSoftResetUrl(final String softResetUrl) {
+        this.softResetUrl = softResetUrl;
     }
 
     //----------------------------------------------------

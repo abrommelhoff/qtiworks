@@ -42,6 +42,7 @@ NB: This is used both while being presented, and during review.
   <xsl:param name="canWalkForward" as="xs:boolean" required="yes"/>
   <xsl:param name="endTestPartAllowed" as="xs:boolean" required="yes"/>
   <xsl:param name="testPartNavigationAllowed" as="xs:boolean" required="yes"/>
+  <xsl:param name="softResetUrl" as="xs:string" required="yes"/>
 
   <!-- Relevant properties of EffectiveItemSessionControl for this item -->
   <xsl:param name="showFeedback" as="xs:boolean" required="yes"/>
@@ -138,6 +139,11 @@ NB: This is used both while being presented, and during review.
           </form>
         </li>
       </xsl:if>
+      <li>
+        <form action="{$webappContextPath}{$softResetUrl}" method="post">
+           <input type="submit" value="Reset{if ($isItemSessionEnded) then ' and play again' else ''}"/>
+        </form>
+      </li>
       <xsl:if test="$testPartNavigationAllowed">
         <li>
           <form action="{$webappContextPath}{$testPartNavigationUrl}" method="post">

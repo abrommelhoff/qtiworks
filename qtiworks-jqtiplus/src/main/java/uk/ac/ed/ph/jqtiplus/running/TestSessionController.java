@@ -1529,6 +1529,18 @@ public final class TestSessionController extends TestProcessingController {
         itemSessionController.setMarkedForReview();
     }
 
+    public void resetItemSessionSoft(final Date timestamp, final boolean resetDuration) {
+    	final TestPlanNodeKey currentItemKey = assertItemSelected();
+
+        /* Touch durations on item, ancestor sections, test part and test */
+        final TestPlanNode currentItemRefNode = expectItemRefNode(currentItemKey);
+
+        /* Bind responses */
+        final ItemSessionController itemSessionController = getItemSessionController(currentItemRefNode);
+
+        itemSessionController.resetItemSessionHard(timestamp, true);
+    }
+
     public boolean isCurrentItemCorrect() {
         final TestPlanNodeKey currentItemKey = assertItemSelected();
         final TestPlanNode currentItemRefNode = expectItemRefNode(currentItemKey);

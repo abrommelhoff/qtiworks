@@ -124,6 +124,7 @@ public class CandidateTestController extends CandidateControllerBase {
         renderingOptions.setExitTestUrl(sessionBaseUrl + "/exit-test");
         renderingOptions.setTakeBreakUrl(sessionBaseUrl + "/takeBreak");
         renderingOptions.setMarkForReviewUrl(sessionBaseUrl + "/markForReview");
+        renderingOptions.setSoftResetUrl(sessionBaseUrl + "/soft-reset");
 
         final ServletOutputStreamer outputStreamer = new ServletOutputStreamer(response, null /* No caching */);
         candidateRenderingService.renderCurrentCandidateTestSessionState(candidateSessionContext, renderingOptions, outputStreamer);
@@ -200,6 +201,16 @@ public class CandidateTestController extends CandidateControllerBase {
         /* Call up service layer */
       //  candidateTestDeliveryService.handleResponses(candidateSessionContext, stringResponseMap, fileResponseMap, candidateComment);
        candidateTestDeliveryService.handleMFR(candidateSessionContext);
+
+        /* Redirect to rendering of current session state */
+        return redirectToRenderSession(xid, xsrfToken);
+    }
+
+    @RequestMapping(value="/testsession/{xid}/{xsrfToken}/soft-reset", method=RequestMethod.POST)
+    public String resetTestItemSessionSoft(@PathVariable final long xid, @PathVariable final String xsrfToken)
+            throws CandidateException {
+        final CandidateSessionContext candidateSessionContext = getCandidateSessionContext();
+        candidateTestDeliveryService.resetCandidateSessionSoft(candidateSessionContext);
 
         /* Redirect to rendering of current session state */
         return redirectToRenderSession(xid, xsrfToken);
