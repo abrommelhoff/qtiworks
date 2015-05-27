@@ -157,9 +157,9 @@ public final class InlineChoiceInteraction extends InlineInteraction implements 
     @Override
     public boolean validateResponse(final InteractionBindingContext interactionBindingContext, final Value responseValue) {
         if (responseValue.isNull()) {
-            if (getRequired()) {
+            //if (getRequired()) {
                 return false;
-            }
+            //}
         }
         else {
             /* Make sure the identifier corresponds to that of one of the choices */
