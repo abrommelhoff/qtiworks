@@ -753,19 +753,22 @@ public final class ItemSessionController extends ItemProcessingController implem
 
         /* Stop duration timer */
         endItemSessionTimer(timestamp);
-
+        Boolean isResponded = true;
         /* Copy uncommitted responses over */
         for (final Entry<Identifier, Value> uncommittedResponseEntry : uncommittedResponseValues.entrySet()) {
             final Identifier identifier = uncommittedResponseEntry.getKey();
             final Value value = uncommittedResponseEntry.getValue();
             itemSessionState.setResponseValue(identifier, value);
+            if (uncommittedResponseValues.entrySet().size() > 0 && value.isNull()) {
+            	isResponded = false;
+            }
         }
 
         /* Clear uncommitted responses */
         itemSessionState.clearUncommittedResponseValues();
 
         /* Update session status */
-        itemSessionState.setResponded(true);
+        itemSessionState.setResponded(isResponded);
         itemSessionState.setSessionStatus(SessionStatus.PENDING_RESPONSE_PROCESSING);
 
         /* Restart the duration timer (if appropriate) */
