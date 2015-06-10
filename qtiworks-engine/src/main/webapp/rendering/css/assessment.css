@@ -491,9 +491,7 @@ ul.testPartDrilldown {
 }
 
 ul.testPartDrilldown li.assessmentSection {
-  border: 2px solid #eeeeee;
-  border-radius: 0.5em;
-  padding: 0 1em 0.5em 1em;
+  
 }
 
 ul.testPartDrilldown li.assessmentSection header {
@@ -511,10 +509,7 @@ ul.testPartDrilldown li.assessmentSection ul.testPartDrilldownInner {
 }
 
 ul.testPartDrilldown li.currentItem {
-  border: 2px solid #eeeeee;
-  border-radius: 0.5em;
-  padding: 0 1em;
-  margin-top: 1em;
+
 }
 
 .testItemControl {

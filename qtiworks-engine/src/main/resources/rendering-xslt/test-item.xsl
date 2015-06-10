@@ -240,8 +240,6 @@ NB: This is used both while being presented, and during review.
       <!-- Only show sections that ancestors of current item -->
       <li class="assessmentSection">
         <header>
-          <!-- Section title -->
-          <h2><xsl:value-of select="@sectionPartTitle"/></h2>
           <!-- Handle rubrics -->
           <xsl:variable name="sectionIdentifier" select="qw:extract-identifier(.)" as="xs:string"/>
           <xsl:variable name="assessmentSection" select="$assessmentTest//qti:assessmentSection[@identifier=$sectionIdentifier]" as="element(qti:assessmentSection)*"/>
