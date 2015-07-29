@@ -304,7 +304,7 @@ NB: This is used both while being presented, and during review.
 
   <xsl:template match="qti:itemBody">
     <div id="itemBody">
-      <form method="post" action="{$webappContextPath}{$responseUrl}"
+      <form id="itemForm" method="post" action="{$webappContextPath}{$responseUrl}"
         enctype="multipart/form-data" accept-charset="UTF-8"
         onsubmit="return QtiWorksRendering.maySubmit()"
         onreset="QtiWorksRendering.reset()" autocomplete="off">

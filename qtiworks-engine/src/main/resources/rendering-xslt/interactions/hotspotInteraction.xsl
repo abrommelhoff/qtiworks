@@ -23,30 +23,33 @@
       <xsl:variable name="object" select="qti:object" as="element(qti:object)"/>
       <xsl:variable name="appletContainerId" select="concat('qtiworks_id_appletContainer_', @responseIdentifier)" as="xs:string"/>
       <div id="{$appletContainerId}" class="appletContainer">
-        <object type="application/x-java-applet" height="{$object/@height + 40}" width="{$object/@width}">
-          <param name="code" value="BoundedGraphicalApplet"/>
-          <param name="codebase" value="{$appletCodebase}"/>
-          <param name="identifier" value="{@responseIdentifier}"/>
-          <param name="operation_mode" value="hotspot_interaction"/>
-          <!-- (BoundedGraphicalApplet uses -1 to represent 'unlimited') -->
-          <param name="number_of_responses" value="{if (@maxChoices &gt; 0) then @maxChoices else -1}"/>
-          <param name="background_image" value="{qw:convert-link($object/@data)}"/>
-          <xsl:variable name="hotspotChoices" select="qw:filter-visible(qti:hotspotChoice)" as="element(qti:hotspotChoice)*"/>
-          <param name="hotspot_count" value="{count($hotspotChoices)}"/>
-          <xsl:for-each select="qti:hotspotChoice">
-            <param name="hotspot{position()-1}"
-              value="{@identifier}::::{@shape}::{@coords}{if (@label) then concat('::hotSpotLabel',@label) else ''}{if (@matchGroup) then concat('::', translate(normalize-space(@matchGroup), ' ', '::')) else ''}"/>
-          </xsl:for-each>
-
-          <xsl:variable name="responseValue" select="qw:get-response-value(/, @responseIdentifier)" as="element(qw:responseVariable)?"/>
-          <xsl:if test="qw:is-not-null-value($responseValue)">
-            <param name="feedback">
-              <xsl:attribute name="value">
-                <xsl:value-of select="$responseValue/qw:value" separator=","/>
-              </xsl:attribute>
-            </param>
-          </xsl:if>
-        </object>
+      	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+      	<style>
+			#myCanvas {
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			#theImage {
+				left: 0;
+				top: 0;
+			}
+			.appletContainer {
+				position: relative;
+			}
+		</style>
+      	<img id="theImage" src="{qw:convert-link($object/@data)}" height="280" width="206"/>
+  		<canvas id="myCanvas" width="206" height="280"></canvas>
+  		<input type="hidden" name="qtiworks_response_RESPONSE" id="qtiworks_response_RESPONSE"/>
+  		<input type="hidden" id="previousResponses" name="previousResponses" value="{$responseValues}"/>
+  		<script>
+  			var maxResponses = <xsl:value-of select="@maxChoices"/>;
+  			var hotspots = [];
+			<xsl:for-each select="qti:hotspotChoice">
+            	hotspots.push({identifier: '<xsl:value-of select="@identifier"/>', shape: '<xsl:value-of select="@shape"/>', coords: '<xsl:value-of select="@coords"/>', clicked: false});
+  			</xsl:for-each>
+  		</script>
+		<script src="{$webappContextPath}/rendering/javascript/hotspot.js"/>     
         <script type="text/javascript">
           $(document).ready(function() {
             QtiWorksRendering.registerAppletBasedInteractionContainer('<xsl:value-of
