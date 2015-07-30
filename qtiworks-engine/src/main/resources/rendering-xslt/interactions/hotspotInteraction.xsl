@@ -49,13 +49,7 @@
             	hotspots.push({identifier: '<xsl:value-of select="@identifier"/>', shape: '<xsl:value-of select="@shape"/>', coords: '<xsl:value-of select="@coords"/>', clicked: false});
   			</xsl:for-each>
   		</script>
-		<script src="{$webappContextPath}/rendering/javascript/hotspot.js"/>     
-        <script type="text/javascript">
-          $(document).ready(function() {
-            QtiWorksRendering.registerAppletBasedInteractionContainer('<xsl:value-of
-              select="$appletContainerId"/>', ['<xsl:value-of select="@responseIdentifier"/>']);
-          });
-        </script>
+		<script src="{$webappContextPath}/rendering/javascript/hotspot.js"/>
       </div>
     </div>
   </xsl:template>
