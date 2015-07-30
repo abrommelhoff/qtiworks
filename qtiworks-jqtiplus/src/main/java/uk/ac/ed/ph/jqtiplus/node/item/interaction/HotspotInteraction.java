@@ -178,7 +178,7 @@ public final class HotspotInteraction extends GraphicInteraction implements Hots
         /* Extract response values */
         final Set<Identifier> responseChoiceIdentifiers = new HashSet<Identifier>();
         if (responseValue.isNull()) {
-            /* (Empty response) */
+            return false;
         }
         else if (responseValue.getCardinality().isList()) {
             /* (Container response) */
@@ -206,11 +206,11 @@ public final class HotspotInteraction extends GraphicInteraction implements Hots
         for (final HotspotChoice choice : getHotspotChoices()) {
             choiceIdentifiers.add(choice.getIdentifier());
         }
-        for (final Identifier choiceIdentifier : responseChoiceIdentifiers) {
-            if (!choiceIdentifiers.contains(choiceIdentifier)) {
-                return false;
-            }
-        }
+        //for (final Identifier choiceIdentifier : responseChoiceIdentifiers) {
+        //    if (!choiceIdentifiers.contains(choiceIdentifier)) {
+        //        return false;
+        //    }
+        //}
 
         return true;
     }

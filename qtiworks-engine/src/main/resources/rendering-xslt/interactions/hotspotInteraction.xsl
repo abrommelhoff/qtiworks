@@ -38,9 +38,9 @@
 				position: relative;
 			}
 		</style>
-      	<img id="theImage" src="{qw:convert-link($object/@data)}" height="280" width="206"/>
-  		<canvas id="myCanvas" width="206" height="280"></canvas>
-  		<input type="hidden" name="qtiworks_response_RESPONSE" id="qtiworks_response_RESPONSE"/>
+      	<img id="theImage" src="{qw:convert-link($object/@data)}"/>
+  		<canvas id="myCanvas"></canvas>
+  		<!-- <input type="hidden" name="qtiworks_response_RESPONSE" id="qtiworks_response_RESPONSE"/>-->
   		<input type="hidden" id="previousResponses" name="previousResponses" value="{$responseValues}"/>
   		<script>
   			var maxResponses = <xsl:value-of select="@maxChoices"/>;

@@ -10,6 +10,8 @@
 				}
 				var c = document.getElementById("myCanvas");
 				var ctx = c.getContext("2d");
+				ctx.canvas.height = $("#theImage").height();
+				ctx.canvas.width = $("#theImage").width();
 				for (var x=0; x<hotspots.length; x++) {
 					if (hotspots[x].shape == 'circle') {
 						var left = hotspots[x].coords.split(',')[0];
@@ -81,7 +83,12 @@
 						theResponse += hotspots[x].identifier;
 					}
 				}
-				$("#qtiworks_response_RESPONSE").val(theResponse);
+				//$("#qtiworks_response_RESPONSE").val(theResponse);
+				$('<input />').attr('type', 'hidden')
+				          .attr('name', "qtiworks_response_RESPONSE")
+				          .attr('value', theResponse)
+				          .appendTo('#itemForm');
+				return true;
 			});
   			$("#myCanvas").click(function(e) {
   				var offset = $(this).offset();
