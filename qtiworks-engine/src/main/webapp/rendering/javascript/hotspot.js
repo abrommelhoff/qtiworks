@@ -1,4 +1,4 @@
-			$( document ).ready(function() {
+			$( window ).load(function() {
 				var prev = $("#previousResponses").val();
 				if (prev.length > 0) {
 					var prevArr = prev.split(",");
