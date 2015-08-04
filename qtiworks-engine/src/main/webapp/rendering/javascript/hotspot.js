@@ -67,11 +67,18 @@
 				}
 			});
 			function isPointInPoly(poly, pt){
-			    for(var c = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i)
-			        ((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y))
-			        && (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)
-			        && (c = !c);
-			    return c;
+			    var x = Number(pt.x), y = Number(pt.y);
+			    
+			    var inside = false;
+			    for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+			        var xi = Number(poly[i].x), yi = Number(poly[i].y);
+			        var xj = Number(poly[j].x), yj = Number(poly[j].y);
+			        
+			        var intersect = ((yi > y) != (yj > y))
+			            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+			        if (intersect) inside = !inside;
+			    }
+			    return inside;
 			}
 			$("#itemForm").submit(function() {
 				var theResponse = "";
