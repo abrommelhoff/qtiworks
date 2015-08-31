@@ -8,7 +8,7 @@
   xmlns="http://www.w3.org/1999/xhtml"
   exclude-result-prefixes="qti qw xs">
 
-  <xsl:template match="qti:graphicGapMatchInteraction">
+    <xsl:template match="qti:graphicGapMatchInteraction">
     <input name="qtiworks_presented_{@responseIdentifier}" type="hidden" value="1"/>
     <div class="{local-name()}">
       <xsl:if test="qti:prompt">
@@ -22,45 +22,54 @@
 
       <xsl:variable name="object" select="qti:object" as="element(qti:object)"/>
       <xsl:variable name="appletContainerId" select="concat('qtiworks_id_appletContainer_', @responseIdentifier)" as="xs:string"/>
+      <xsl:variable name="gapImgs" select="qw:filter-visible(qti:gapImg)" as="element(qti:gapImg)*"/>
       <div id="{$appletContainerId}" class="appletContainer">
-        <object type="application/x-java-applet" height="{$object/@height + 40}" width="{$object/@width}">
-          <param name="code" value="BoundedGraphicalApplet"/>
-          <param name="codebase" value="{$appletCodebase}"/>
-          <param name="identifier" value="{@responseIdentifier}"/>
-          <param name="baseType" value="directedPair"/>
-          <param name="extraSpace" value="{@class='extraSpace'}"/>
-          <param name="operation_mode" value="gap_match_interaction"/>
-          <param name="number_of_responses" value="{count(qti:associableHotspot)}"/>
-          <param name="background_image" value="{qw:convert-link($object/@data)}"/>
-          <xsl:variable name="hotspots" select="qw:filter-visible(qti:associableHotspot)" as="element(qti:associableHotspot)*"/>
-          <param name="hotspot_count" value="{count($hotspots)}"/>
-          <xsl:for-each select="$hotspots">
-            <param name="hotspot{position()-1}">
-              <xsl:attribute name="value"><xsl:value-of select="@identifier"/>::::<xsl:value-of select="@shape"/>::<xsl:value-of select="@coords"/><xsl:if test="@label">::hotSpotLabel:<xsl:value-of select="@label"/></xsl:if><xsl:if test="@matchGroup">::<xsl:value-of select="translate(normalize-space(@matchGroup), ' ', '::')"/></xsl:if><xsl:if test="@matchMax">::maxAssociations:<xsl:value-of select="@matchMax"/></xsl:if></xsl:attribute>
-            </param>
-          </xsl:for-each>
-          <xsl:variable name="gapImgs" select="qw:filter-visible(qti:gapImg)" as="element(qti:gapImg)*"/>
-          <param name="movable_element_count" value="{count($gapImgs)}"/>
-          <xsl:for-each select="$gapImgs">
-            <param name="movable_object{position()-1}">
-              <xsl:attribute name="value"><xsl:value-of select="@identifier"/>::<xsl:value-of select="qw:convert-link(qti:object/@data)"/>::<xsl:if test="@label">::hotSpotLabel:<xsl:value-of select="@label"/></xsl:if><xsl:if test="@matchGroup">::<xsl:value-of select="translate(normalize-space(@matchGroup), ' ', '::')"/></xsl:if><xsl:if test="@matchMax">::maxAssociations:<xsl:value-of select="@matchMax"/></xsl:if></xsl:attribute>
-            </param>
-          </xsl:for-each>
-          <xsl:variable name="responseValue" select="qw:get-response-value(/, @responseIdentifier)" as="element(qw:responseVariable)?"/>
-          <xsl:if test="qw:is-not-null-value($responseValue)">
-            <param name="feedback">
-              <xsl:attribute name="value">
-                <xsl:value-of select="$responseValue/qw:value" separator=","/>
-              </xsl:attribute>
-            </param>
-          </xsl:if>
-        </object>
-        <script type="text/javascript">
-          $(document).ready(function() {
-            QtiWorksRendering.registerAppletBasedInteractionContainer('<xsl:value-of
-              select="$appletContainerId"/>', ['<xsl:value-of select="@responseIdentifier"/>']);
-          });
-        </script>
+      	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"/>
+      	<style>
+			#canvasContainer {
+				position: relative;
+				height: 350px;
+			}
+			#myCanvas {
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			#theImage {
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			.opt {
+				position: relative;
+			}
+		</style>
+		<div id="canvasContainer">
+      		<img id="theImage" src="{qw:convert-link($object/@data)}"/>  
+  			<canvas id="myCanvas"></canvas>
+  		</div>
+  		<xsl:for-each select="$gapImgs">
+      		<img class="opt" id='{@identifier}' src='{qw:convert-link(qti:object/@data)}'/>&#160;
+        </xsl:for-each>
+  		<!-- <input type="hidden" name="qtiworks_response_RESPONSE" id="qtiworks_response_RESPONSE"/>-->
+  		<input type="hidden" id="previousResponses" name="previousResponses" value="{$responseValues}"/>
+  		<script>
+  			var hotspots = [];
+			<xsl:variable name="hotspots" select="qw:filter-visible(qti:associableHotspot)" as="element(qti:associableHotspot)*"/>
+          	<xsl:for-each select="$hotspots">
+          		hotspots.push({identifier: '<xsl:value-of select="@identifier"/>', shape: '<xsl:value-of select="@shape"/>', coords: '<xsl:value-of select="@coords"/>', clicked: false});
+  			</xsl:for-each>
+  			var images = [];
+  			<xsl:for-each select="$gapImgs">
+  				images.push({identifier: '<xsl:value-of select="@identifier"/>', url: '<xsl:value-of select="qw:convert-link(qti:object/@data)"/>', selection: -1});
+          	  	<!-- <param name="movable_object{position()-1}">
+           	  		<xsl:attribute name="value"><xsl:value-of select="@identifier"/>::<xsl:value-of select="qw:convert-link(qti:object/@data)"/>::<xsl:if test="@label">::hotSpotLabel:<xsl:value-of select="@label"/></xsl:if><xsl:if test="@matchGroup">::<xsl:value-of select="translate(normalize-space(@matchGroup), ' ', '::')"/></xsl:if><xsl:if test="@matchMax">::maxAssociations:<xsl:value-of select="@matchMax"/></xsl:if></xsl:attribute>
+           	  		
+            	</param>-->
+          	</xsl:for-each>
+          
+  		</script>
+		<script src="{$webappContextPath}/rendering/javascript/gapmatch.js"/>
       </div>
     </div>
   </xsl:template>
