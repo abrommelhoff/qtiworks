@@ -32,6 +32,26 @@
 		    	var prev = $("#previousResponses").val();
 				
 		    });
+		    
+		    $("#itemForm").submit(function() {
+				var theResponse = "";
+				for (var x=0; x<hotspots.length; x++) {
+					for (var y=0; y<images.length; y++) {
+						if (images[y].selection == x) {
+							if (theResponse.length > 0) {
+								theResponse += ",";
+							}
+							theResponse += hotspots[x].identifier + " " + images[x].identifier;
+						}
+					}
+				}
+				//$("#qtiworks_response_RESPONSE").val(theResponse);
+				$('<input />').attr('type', 'hidden')
+				          .attr('name', "qtiworks_response_RESPONSE")
+				          .attr('value', theResponse)
+				          .appendTo('#itemForm');
+				return true;
+			});
 
   			var maxResponses = 0;
   			var canvas=document.getElementById("myCanvas");
