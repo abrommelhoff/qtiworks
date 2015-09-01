@@ -41,7 +41,7 @@
 							if (theResponse.length > 0) {
 								theResponse += ",";
 							}
-							theResponse += hotspots[x].identifier + " " + images[x].identifier;
+							theResponse += images[y].identifier + " " + hotspots[x].identifier;
 						}
 					}
 				}
