@@ -14,7 +14,7 @@
 			    return inside;
 			}
 			
-  			$( document ).ready(function() {
+  			$(window).load(function(){
   				$('#myCanvas')[0].width = $('#theImage').width();
   				$('#myCanvas')[0].height = $('#theImage').height();
   				$('#canvasContainer').css({width:$('#theImage').width()+'px', height:$('#theImage').height()+'px'});
@@ -33,21 +33,22 @@
 		    	var prevArr = prev.split(",");
 				for (var p=0; p<prevArr.length; p++) {
 					var image = prevArr[p].split(' ')[0];
-					var hotspot = prevArr[p].split(' ')[0];
+					var hotspot = prevArr[p].split(' ')[1];
 					for (var x=0; x<hotspots.length; x++) {
 						for (var y=0; y<images.length; y++) {
-							if (hotspots[x].identifier == hotspot && images[y].identifier == image) {
+							var n = prev.indexOf(images[y].identifier); 
+							if (n>-1 && prev.substr(n).split(' ')[1].indexOf(hotspots[x].identifier) == 0) {
 								images[y].selection = x;
 								var coordList = hotspots[x].coords.split(',');
 				        		var coordcount = 0;
 				        		var xSum = 0;
 				        		var ySum = 0;
-				        		for (var y=0; y<coordList.length; y++) {
-				        			if (y%2 == 0) {
+				        		for (var z=0; z<coordList.length; z++) {
+				        			if (z%2 == 0) {
 				        				coordcount++;
-										xSum += Number(coordList[y]);
+										xSum += Number(coordList[z]);
 									} else {
-										ySum += Number(coordList[y]);
+										ySum += Number(coordList[z]);
 									}
 								} 
 						        var dropElement=document.getElementById(id);
@@ -55,7 +56,7 @@
 						        var dropY = ySum/coordcount - $('#'+images[y].identifier).height()/2 + $('#canvasContainer').position().top;
 						        
 						        images[y].origPos = $('#'+images[y].identifier).position();
-						        $('#'+id).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
+						        $('#'+images[y].identifier).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
 							}
 						}
 					}
@@ -69,17 +70,18 @@
 					for (var y=0; y<images.length; y++) {
 						if (images[y].selection == x) {
 							if (theResponse.length > 0) {
-								theResponse += ",";
+								//theResponse += ",";
 							}
-							theResponse += images[y].identifier + " " + hotspots[x].identifier;
+							theResponse = images[y].identifier + " " + hotspots[x].identifier;
+							$('<input />').attr('type', 'hidden')
+				          		.attr('name', "qtiworks_response_RESPONSE")
+				          		.attr('value', theResponse)
+				          		.appendTo('#itemForm');
 						}
 					}
 				}
 				//$("#qtiworks_response_RESPONSE").val(theResponse);
-				$('<input />').attr('type', 'hidden')
-				          .attr('name', "qtiworks_response_RESPONSE")
-				          .attr('value', theResponse)
-				          .appendTo('#itemForm');
+				
 				return true;
 			});
 
