@@ -234,6 +234,8 @@
 				        	}
 				        }
 				        $('#'+id).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
+				        ctx.fillStyle = "#FF0000";
+						ctx.fillRect($('#'+id).position().left,$('#'+id).position().right,$('#'+id).width(),$('#'+id).height());
 				    }
 				}  
 				if (droppable == false) {
