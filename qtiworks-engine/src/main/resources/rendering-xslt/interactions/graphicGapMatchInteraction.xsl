@@ -36,7 +36,7 @@
 				top: 0;
 			}
 			#theImage {
-				position: absolute;
+				position: relative;
 				left: 0;
 				top: 0;
 			}
@@ -47,10 +47,11 @@
 		<div id="canvasContainer">
       		<img id="theImage" src="{qw:convert-link($object/@data)}"/>  
   			<canvas id="myCanvas"></canvas>
+  			<xsl:for-each select="$gapImgs">
+      			<img class="opt" id='{@identifier}' src='{qw:convert-link(qti:object/@data)}'/>&#160;
+        	</xsl:for-each>
   		</div>
-  		<xsl:for-each select="$gapImgs">
-      		<img class="opt" id='{@identifier}' src='{qw:convert-link(qti:object/@data)}'/>&#160;
-        </xsl:for-each>
+  		
   		<!-- <input type="hidden" name="qtiworks_response_RESPONSE" id="qtiworks_response_RESPONSE"/>-->
   		<input type="hidden" id="previousResponses" name="previousResponses" value="{$responseValues}"/>
   		<script>

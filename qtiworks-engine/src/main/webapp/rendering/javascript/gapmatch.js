@@ -15,9 +15,15 @@
 			}
 			
   			$(window).load(function(){
+  				var imgMaxHeight = 0;
+  				$( ".opt" ).each(function( index, element ) {
+  					if ($(element).height() > imgMaxHeight) {
+  						imgMaxHeight = $(element).height();
+  					}
+				});
   				$('#myCanvas')[0].width = $('#theImage').width();
-  				$('#myCanvas')[0].height = $('#theImage').height();
-  				$('#canvasContainer').css({width:$('#theImage').width()+'px', height:$('#theImage').height()+'px'});
+  				$('#myCanvas')[0].height = $('#theImage').height() + imgMaxHeight + 30;
+  				$('#canvasContainer').css({width:$('#theImage').width()+'px', height:$('#theImage').height()+imgMaxHeight + 30 +'px'});
   				
 	  			for (var im=0; im<images.length; im++) {
 		  			if (!images[im].hasOwnProperty('origPos')) {
@@ -52,8 +58,8 @@
 									}
 								} 
 						        var dropElement=document.getElementById(id);
-						        var dropX = xSum/coordcount - $('#'+images[y].identifier).width()/2 + $('#canvasContainer').position().left;
-						        var dropY = ySum/coordcount - $('#'+images[y].identifier).height()/2 + $('#canvasContainer').position().top;
+						        var dropX = xSum/coordcount - $('#'+images[y].identifier).width()/2;// + $('#canvasContainer').position().left;
+						        var dropY = ySum/coordcount - $('#'+images[y].identifier).height()/2;// + $('#canvasContainer').position().top;
 						        
 						        images[y].origPos = $('#'+images[y].identifier).position();
 						        $('#'+images[y].identifier).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
@@ -216,8 +222,8 @@
 							}
 						} 
 				        var dropElement=document.getElementById(id);
-				        var dropX = xSum/coordcount - $('#'+id).width()/2 + $('#canvasContainer').position().left;
-				        var dropY = ySum/coordcount - $('#'+id).height()/2 + $('#canvasContainer').position().top;
+				        var dropX = xSum/coordcount - $('#'+id).width()/2;// + $('#canvasContainer').position().left;
+				        var dropY = ySum/coordcount - $('#'+id).height()/2;// + $('#canvasContainer').position().top;
 				        
 				        for (var im=0; im<images.length; im++) {
 				        	if (images[im].identifier==id) {
