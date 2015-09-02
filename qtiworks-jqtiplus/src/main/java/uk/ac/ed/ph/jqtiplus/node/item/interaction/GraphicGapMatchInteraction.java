@@ -133,7 +133,7 @@ public final class GraphicGapMatchInteraction extends GraphicInteraction impleme
         /* Extract response values */
         final List<DirectedPairValue> responseAssociations = new ArrayList<DirectedPairValue>();
         if (responseValue.isNull()) {
-            /* Empty response */
+            return false;
         }
         else if (responseValue.getCardinality().isList()) {
             /* (Container response) */
