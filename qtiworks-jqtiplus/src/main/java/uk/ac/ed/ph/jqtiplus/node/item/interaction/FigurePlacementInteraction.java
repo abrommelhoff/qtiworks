@@ -58,7 +58,9 @@ public final class FigurePlacementInteraction extends BlockInteraction implement
 
     @Override
     public boolean validateResponse(final InteractionBindingContext interactionBindingContext, final Value responseValue) {
-        /* We assume anything is valid here */
+    	if (responseValue.isNull()) {
+            return false;
+        }
         return true;
     }
 }

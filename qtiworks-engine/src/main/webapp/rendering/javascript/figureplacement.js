@@ -1,5 +1,6 @@
 			var layerX = 0;
 			var layerY = 0;
+			var answered = false;
 			function isPointInPoly(poly, pt){
 			    var x = Number(pt.x), y = Number(pt.y);
 			    
@@ -38,6 +39,9 @@
 	    			$('#'+id).css({position:'absolute', top:images[im].origPos.top+'px', left:images[im].origPos.left+'px'});
 		    	}
 		    	var prev = $("#previousResponses").val(); 
+		    	if (prev.length > 0) {
+		    		answered = true;
+		    	}
 		    	for (var y=0; y<images.length; y++) {
 		    		var n = prev.indexOf(images[y].identifier);
 		    		if (n>-1) {
@@ -62,17 +66,19 @@
 		    });
 		    
 		    $("#itemForm").submit(function() {
-				var theResponse = "";
-				for (var im=0; im<images.length; im++) {
-		        	var id = images[im].identifier;
-			       	var top = $('#'+id).offset().top;
-			       	var left = $('#'+id).offset().left;
-			       	theResponse = id + ":" + top + "-" + left;
-						$('<input />').attr('type', 'hidden')
-				       		.attr('name', "qtiworks_response_RESPONSE")
-				          	.attr('value', theResponse)
-				          	.appendTo('#itemForm');
-			    }
+		    	if (answered) {
+					var theResponse = "";
+					for (var im=0; im<images.length; im++) {
+			        	var id = images[im].identifier;
+				       	var top = $('#'+id).offset().top;
+				       	var left = $('#'+id).offset().left;
+				       	theResponse = id + ":" + top + "-" + left;
+							$('<input />').attr('type', 'hidden')
+					       		.attr('name', "qtiworks_response_RESPONSE")
+					          	.attr('value', theResponse)
+					          	.appendTo('#itemForm');
+				    }
+				}
 				return true;
 			});
 
@@ -197,6 +203,7 @@
 		    }
 
 		    function drop(ev) {
+		    	answered = true;
 		        ev.preventDefault();
 
 		        var id=ev.dataTransfer.getData("Text");
