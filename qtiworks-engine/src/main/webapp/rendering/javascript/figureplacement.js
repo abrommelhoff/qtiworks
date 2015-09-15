@@ -37,7 +37,7 @@
 	  				var id = images[im].identifier;
 	    			$('#'+id).css({position:'absolute', top:images[im].origPos.top+'px', left:images[im].origPos.left+'px'});
 		    	}
-		    	var prev = $("#previousResponses").val();
+		    	var prev = $("#previousResponses").val(); 
 		    	for (var y=0; y<images.length; y++) {
 		    		var n = prev.indexOf(images[y].identifier);
 		    		if (n>-1) {
