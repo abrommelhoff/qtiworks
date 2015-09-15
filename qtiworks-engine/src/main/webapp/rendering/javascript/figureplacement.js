@@ -1,3 +1,5 @@
+			var layerX = 0;
+			var layerY = 0;
 			function isPointInPoly(poly, pt){
 			    var x = Number(pt.x), y = Number(pt.y);
 			    
@@ -36,58 +38,41 @@
 	    			$('#'+id).css({position:'absolute', top:images[im].origPos.top+'px', left:images[im].origPos.left+'px'});
 		    	}
 		    	var prev = $("#previousResponses").val();
-		    	var prevArr = prev.split(",");
-				for (var p=0; p<prevArr.length; p++) {
-					var image = prevArr[p].split(' ')[0];
-					var hotspot = prevArr[p].split(' ')[1];
-					for (var x=0; x<hotspots.length; x++) {
-						for (var y=0; y<images.length; y++) {
-							var n = prev.indexOf(images[y].identifier); 
-							if (n>-1 && prev.substr(n).split(' ')[1].indexOf(hotspots[x].identifier) == 0) {
-								images[y].selection = x;
-								var coordList = hotspots[x].coords.split(',');
-				        		var coordcount = 0;
-				        		var xSum = 0;
-				        		var ySum = 0;
-				        		for (var z=0; z<coordList.length; z++) {
-				        			if (z%2 == 0) {
-				        				coordcount++;
-										xSum += Number(coordList[z]);
-									} else {
-										ySum += Number(coordList[z]);
-									}
-								} 
-						        var dropElement=document.getElementById(id);
-						        var dropX = xSum/coordcount - $('#'+images[y].identifier).width()/2;// + $('#canvasContainer').position().left;
-						        var dropY = ySum/coordcount - $('#'+images[y].identifier).height()/2;// + $('#canvasContainer').position().top;
-						        
-						        images[y].origPos = $('#'+images[y].identifier).position();
-						        $('#'+images[y].identifier).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
-							}
-						}
-					}
-				}
-				
+		    	for (var y=0; y<images.length; y++) {
+		    		var n = prev.indexOf(images[y].identifier);
+		    		if (n>-1) {
+		    			var subPrev = prev.substr(n);
+		    			for (var z=0; z<images.length; z++) {
+		    				var m = prev.indexOf(images[z].identifier);
+		    				if (m>0) {
+		    					subPrev = subPrev.substr(0,m);
+		    				}
+		    			}
+		    			for (var i=0; i<images.length; i++) {
+		    				if (subPrev.split(":")[0] == images[i].identifier) {
+		    					var offset = $('#myCanvas').offset();
+		    					var imgX = Number(subPrev.split(":")[1].split("-")[1]) - offset.left;
+		    					var imgY = Number(subPrev.split(":")[1].split("-")[0]) - offset.top;
+		    					$('#'+images[i].identifier).css({position:'absolute', left:imgX+'px', top:imgY+'px'});
+		    				}
+		    			}
+		    		}
+		    	}
+		    	
 		    });
 		    
 		    $("#itemForm").submit(function() {
 				var theResponse = "";
-				for (var x=0; x<hotspots.length; x++) {
-					for (var y=0; y<images.length; y++) {
-						if (images[y].selection == x) {
-							if (theResponse.length > 0) {
-								//theResponse += ",";
-							}
-							theResponse = images[y].identifier + " " + hotspots[x].identifier;
-							$('<input />').attr('type', 'hidden')
-				          		.attr('name', "qtiworks_response_RESPONSE")
-				          		.attr('value', theResponse)
-				          		.appendTo('#itemForm');
-						}
-					}
-				}
-				//$("#qtiworks_response_RESPONSE").val(theResponse);
-				
+				for (var im=0; im<images.length; im++) {
+		        	var id = images[im].identifier;
+			       	var top = $('#'+id).offset().top;
+			       	var left = $('#'+id).offset().left;
+			       	theResponse = id + ":" + top + "-" + left;
+						$('<input />').attr('type', 'hidden')
+				       		.attr('name', "qtiworks_response_RESPONSE")
+				          	.attr('value', theResponse)
+				          	.appendTo('#itemForm');
+			    }
 				return true;
 			});
 
@@ -207,6 +192,8 @@
 
 		    function dragstart(ev) {
 		        ev.dataTransfer.setData("Text",ev.target.id);
+		        layerX = ev.layerX;
+		        layerY = ev.layerY;
 		    }
 
 		    function drop(ev) {
@@ -214,46 +201,9 @@
 
 		        var id=ev.dataTransfer.getData("Text");
 		        var droppable = false;
-		        for (var x=0; x<hotspots.length; x++) {
-		        	if (hotspots[x].clicked == true) {
-		        		droppable = true;
-		        		var coordList = hotspots[x].coords.split(',');
-		        		var coordcount = 0;
-		        		var xSum = 0;
-		        		var ySum = 0;
-		        		for (var y=0; y<coordList.length; y++) {
-		        			if (y%2 == 0) {
-		        				coordcount++;
-								xSum += Number(coordList[y]);
-							} else {
-								ySum += Number(coordList[y]);
-							}
-						} 
-				        var dropElement=document.getElementById(id);
-				        var dropX = xSum/coordcount - $('#'+id).width()/2;// + $('#canvasContainer').position().left;
-				        var dropY = ySum/coordcount - $('#'+id).height()/2;// + $('#canvasContainer').position().top;
-				        
-				        for (var im=0; im<images.length; im++) {
-				        	if (images[im].identifier==id) {
-				        		images[im].selection = x;
-				        		if (!images[im].hasOwnProperty('origPos')) {
-				        			images[im].origPos = $('#'+id).position();
-				        		}
-				        		var canvas=document.getElementById("myCanvas");
-		    					var ctx=canvas.getContext("2d");
-				        		ctx.fillStyle = "rgba(150,29,28, 0.1)";
-								ctx.fillRect(images[im].origPos.left, images[im].origPos.top, $('#'+id).width(), $('#'+id).height());
-				        	}
-				        }
-				        $('#'+id).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
-				    }
-				}  
-				if (droppable == false) {
-					for (var im=0; im<images.length; im++) {
-			        	if (images[im].identifier==id) {
-			        		images[im].selection = '-1';
-			        		$('#'+id).css({position:'absolute', top:images[im].origPos.top+'px', left:images[im].origPos.left+'px'});
-			        	}
-			        }
-				}
+		        var offset = $(this).offset();
+    			var clickX = ev.pageX - offset.left - layerX;
+    			var clickY = ev.pageY - offset.top - layerY;
+    			var dropElement=document.getElementById(id);
+    			$('#'+id).css({position:'absolute', top:clickY+'px', left:clickX+'px'});
 		    }
