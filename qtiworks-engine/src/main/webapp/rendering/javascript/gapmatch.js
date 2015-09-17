@@ -26,7 +26,7 @@
   						firstRowY = $(element).position().top;
   					}
   					if ($(element).height() > imgMaxHeight) {
-  						imgMaxHeight = $(element).height();
+  						imgMaxHeight = Number($(element).height());
   					}
 				});
 				imgMaxHeight += Number(rowY) - Number(firstRowY);
