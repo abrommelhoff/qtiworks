@@ -15,6 +15,7 @@
 			}
 			
   			$(window).load(function(){
+  				$('#canvasContainer').css({width:$('#theImage').width()+'px'});
   				var imgMaxHeight = 0;
   				var firstRowY = 10000;
   				var rowY = 0;
