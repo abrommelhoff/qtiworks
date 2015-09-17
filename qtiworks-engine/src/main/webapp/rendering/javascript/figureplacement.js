@@ -18,8 +18,17 @@
 			}
 			
   			$(window).load(function(){
+  				$('#canvasContainer').css({width:$('#theImage').width()+'px'});
   				var imgMaxHeight = 0;
+  				var firstRowY = 10000;
+  				var rowY = 0;
   				$( ".opt" ).each(function( index, element ) {
+  					if ($(element).position().top > rowY) {
+  						rowY = $(element).position().top;
+  					}
+  					if ($(element).position().top < firstRowY) {
+  						firstRowY = $(element).position().top;
+  					}
   					if ($(element).height() > imgMaxHeight) {
   						imgMaxHeight = $(element).height();
   					}
