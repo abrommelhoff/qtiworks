@@ -29,7 +29,7 @@
   						imgMaxHeight = $(element).height();
   					}
 				});
-				imgMaxHeight += rowY - firstRowY;
+				imgMaxHeight += Number(rowY) - Number(firstRowY);
   				$('#myCanvas')[0].width = $('#theImage').width();
   				$('#myCanvas')[0].height = $('#theImage').height() + imgMaxHeight + 30;
   				$('#canvasContainer').css({width:$('#theImage').width()+'px', height:$('#theImage').height()+imgMaxHeight + 30 +'px'});
