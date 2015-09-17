@@ -16,11 +16,20 @@
 			
   			$(window).load(function(){
   				var imgMaxHeight = 0;
+  				var firstRowY = 10000;
+  				var rowY = 0;
   				$( ".opt" ).each(function( index, element ) {
+  					if ($(element).position().top > rowY) {
+  						rowY = $(element).position().top;
+  					}
+  					if ($(element).position().top < rowY) {
+  						firstRowY = $(element).position().top;
+  					}
   					if ($(element).height() > imgMaxHeight) {
   						imgMaxHeight = $(element).height();
   					}
 				});
+				imgMaxHeight += rowY - firstRowY;
   				$('#myCanvas')[0].width = $('#theImage').width();
   				$('#myCanvas')[0].height = $('#theImage').height() + imgMaxHeight + 30;
   				$('#canvasContainer').css({width:$('#theImage').width()+'px', height:$('#theImage').height()+imgMaxHeight + 30 +'px'});
