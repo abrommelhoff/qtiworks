@@ -22,7 +22,7 @@
   					if ($(element).position().top > rowY) {
   						rowY = $(element).position().top;
   					}
-  					if ($(element).position().top < rowY) {
+  					if ($(element).position().top < firstRowY) {
   						firstRowY = $(element).position().top;
   					}
   					if ($(element).height() > imgMaxHeight) {
