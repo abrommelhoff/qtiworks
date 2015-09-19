@@ -240,8 +240,8 @@
 							}
 						} 
 				        var dropElement=document.getElementById(id);
-				        var dropX = xSum/coordcount - $('#'+id).width()/2;// + $('#canvasContainer').position().left;
-				        var dropY = ySum/coordcount - $('#'+id).height()/2;// + $('#canvasContainer').position().top;
+				        var dropX = xSum/coordcount - $('#'+id).width()/2;
+				        var dropY = ySum/coordcount - $('#'+id).height()/2;
 				        
 				        for (var im=0; im<images.length; im++) {
 				        	if (images[im].identifier==id) {
@@ -253,6 +253,11 @@
 		    					var ctx=canvas.getContext("2d");
 				        		ctx.fillStyle = "rgba(150,29,28, 0.1)";
 								ctx.fillRect(images[im].origPos.left, images[im].origPos.top, $('#'+id).width(), $('#'+id).height());
+				        	} else {
+				        		if (images[im].selection = x) {
+				        			images[im].selection = -1;
+				        			$('#'+id).css({position:'absolute', top:images[im].origPos.top+'px', left:images[im].origPos.left+'px'});
+				        		}
 				        	}
 				        }
 				        $('#'+id).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
