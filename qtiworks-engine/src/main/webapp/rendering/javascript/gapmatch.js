@@ -256,7 +256,7 @@
 				        	} else {
 				        		if (images[im].selection == x) {
 				        			images[im].selection = -1;
-				        			$('#'+id).css({position:'absolute', top:images[im].origPos.top+'px', left:images[im].origPos.left+'px'});
+				        			$('#'+images[im].identifier).css({position:'absolute', top:images[im].origPos.top+'px', left:images[im].origPos.left+'px'});
 				        		}
 				        	}
 				        }
