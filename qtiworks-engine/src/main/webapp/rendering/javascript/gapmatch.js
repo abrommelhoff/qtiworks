@@ -254,7 +254,7 @@
 				        		ctx.fillStyle = "rgba(150,29,28, 0.1)";
 								ctx.fillRect(images[im].origPos.left, images[im].origPos.top, $('#'+id).width(), $('#'+id).height());
 				        	} else {
-				        		if (images[im].selection = x) {
+				        		if (images[im].selection == x) {
 				        			images[im].selection = -1;
 				        			$('#'+id).css({position:'absolute', top:images[im].origPos.top+'px', left:images[im].origPos.left+'px'});
 				        		}
