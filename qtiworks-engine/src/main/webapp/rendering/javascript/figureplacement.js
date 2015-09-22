@@ -104,6 +104,7 @@
 		    	var img=document.getElementById(images[i].identifier);
 		    	img.onmousedown=mousedown;
 		    	img.ondragstart=dragstart;
+		    	img.onmouseout=dragstop;
 		    }
 
 		    var startOffsetX,startOffsetY;
@@ -210,6 +211,11 @@
 		        ev.dataTransfer.setData("Text",ev.target.id);
 		        layerX = ev.layerX;
 		        layerY = ev.layerY;
+		        $('.opt').css({'pointer-events':'none'});
+		    }
+		    
+		    function dragstop(ev) {
+		        $('.opt').css({'pointer-events':'all'});
 		    }
 
 		    function drop(ev) {
@@ -223,4 +229,5 @@
     			var clickY = ev.pageY - offset.top - layerY;
     			var dropElement=document.getElementById(id);
     			$('#'+id).css({position:'absolute', top:clickY+'px', left:clickX+'px'});
+    			$('.opt').css({'pointer-events':'all'});
 		    }

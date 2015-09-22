@@ -113,6 +113,7 @@
 		    	var img=document.getElementById(images[i].identifier);
 		    	img.onmousedown=mousedown;
 		    	img.ondragstart=dragstart;
+		    	img.onmouseout=dragstop;
 		    }
 
 		    var startOffsetX,startOffsetY;
@@ -217,6 +218,11 @@
 
 		    function dragstart(ev) {
 		        ev.dataTransfer.setData("Text",ev.target.id);
+		        $('.opt').css({'pointer-events':'none'});
+		    }
+		    
+		    function dragstop(ev) {
+		        $('.opt').css({'pointer-events':'all'});
 		    }
 
 		    function drop(ev) {
@@ -271,4 +277,5 @@
 			        	}
 			        }
 				}
+				$('.opt').css({'pointer-events':'all'});
 		    }
