@@ -516,7 +516,7 @@ rendering.
             <span class="itemStatus answered">Answered1</span>
           </xsl:when>
           <xsl:when test="exists(qw:uncommittedResponseValue) or @responded='true'">
-            <span class="itemStatus answered">Answered2</span>
+            <span class="itemStatus answered">{@completionStatus}</span>
           </xsl:when>
           <xsl:when test="@entryTime!=''">
             <span class="itemStatus notAnswered">Not Answered</span>
