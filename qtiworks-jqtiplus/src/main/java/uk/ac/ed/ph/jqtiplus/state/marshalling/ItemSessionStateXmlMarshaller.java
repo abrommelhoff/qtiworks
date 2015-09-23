@@ -79,14 +79,13 @@ public final class ItemSessionStateXmlMarshaller {
         element.setAttribute("responded", StringUtilities.toTrueFalse(itemSessionState.isResponded()));
         element.setAttribute("markedForReview", StringUtilities.toTrueFalse(itemSessionState.isMarkedForReview()));
         XmlMarshallerCore.maybeAddDateAttribute(element, "suspendTime", itemSessionState.getSuspendTime());
-        element.setAttribute("adaptive", StringUtilities.toTrueFalse(itemSessionState.getAdaptive()));
         final SessionStatus sessionStatus = itemSessionState.getSessionStatus();
         if (sessionStatus!=null) {
             element.setAttribute("sessionStatus", sessionStatus.toQtiString());
         }
 
         /* Append implicit variables */
-        XmlMarshallerCore.maybeAddStringAttribute(element, "completionStatus", itemSessionState.getCompletionStatus());
+        XmlMarshallerCore.maybeAddStringAttribute(element, "completionStatus", itemSessionState.getAdaptive() ? itemSessionState.getCompletionStatus() : "notadaptive");
         element.setAttribute("numAttempts", Integer.toString(itemSessionState.getNumAttempts()));
 
         /* Show any unbound and/or invalid responses (as attribute) */
