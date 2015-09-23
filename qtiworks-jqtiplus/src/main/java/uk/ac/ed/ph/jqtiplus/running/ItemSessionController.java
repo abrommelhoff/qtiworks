@@ -180,7 +180,6 @@ public final class ItemSessionController extends ItemProcessingController implem
         initOutcomeVariables();
         itemSessionState.setSessionStatus(SessionStatus.INITIAL);
         itemSessionState.setInitialized(true);
-        itemSessionState.setAdaptive(item.getAdaptive());
 
         /* Shuffle interactions */
         shuffleInteractions();
@@ -261,6 +260,7 @@ public final class ItemSessionController extends ItemProcessingController implem
             final int numAttempts = itemSessionState.getNumAttempts();
             shouldClose = (maxAttempts>0 && numAttempts>=maxAttempts);
         }
+        itemSessionState.setAdaptive(item.getAdaptive());
         itemSessionState.setEndTime(shouldClose ? timestamp : null);
     }
 
