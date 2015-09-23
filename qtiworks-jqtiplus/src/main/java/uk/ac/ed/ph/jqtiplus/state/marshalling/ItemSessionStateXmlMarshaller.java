@@ -85,7 +85,7 @@ public final class ItemSessionStateXmlMarshaller {
         }
 
         /* Append implicit variables */
-        XmlMarshallerCore.maybeAddStringAttribute(element, "completionStatus", itemSessionState.getAdaptive() ? itemSessionState.getCompletionStatus() : "notadaptive");
+        XmlMarshallerCore.maybeAddStringAttribute(element, "completionStatus", itemSessionState.getAdaptive() ? itemSessionState.getCompletionStatus() : "completed");
         element.setAttribute("numAttempts", Integer.toString(itemSessionState.getNumAttempts()));
 
         /* Show any unbound and/or invalid responses (as attribute) */
