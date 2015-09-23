@@ -132,6 +132,7 @@ public final class ItemSessionState extends AbstractPartSessionState implements 
     private Date suspendTime;
     private String candidateComment;
     private boolean markedForReview;
+    private boolean adaptive;
 
     public ItemSessionState() {
         super();
@@ -150,6 +151,7 @@ public final class ItemSessionState extends AbstractPartSessionState implements 
         this.sessionStatus = null;
         this.initialized = false;
         this.responded = false;
+        this.adaptive = false;
         //this.markedForReview;
         setMarkedForReview(false);
         this.suspendTime = null;
@@ -232,6 +234,13 @@ public final class ItemSessionState extends AbstractPartSessionState implements 
         this.initialized = initialized;
     }
 
+    public void setAdaptive(final boolean adaptive) {
+    	this.adaptive = adaptive;
+    }
+    
+    public boolean getAdaptive() {
+    	return this.adaptive;
+    }
 
     public SessionStatus getSessionStatus() {
         return sessionStatus;

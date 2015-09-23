@@ -180,6 +180,7 @@ public final class ItemSessionController extends ItemProcessingController implem
         initOutcomeVariables();
         itemSessionState.setSessionStatus(SessionStatus.INITIAL);
         itemSessionState.setInitialized(true);
+        itemSessionState.setAdaptive(item.getAdaptive());
 
         /* Shuffle interactions */
         shuffleInteractions();
