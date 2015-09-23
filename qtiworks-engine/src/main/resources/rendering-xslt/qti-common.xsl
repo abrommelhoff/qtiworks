@@ -512,8 +512,11 @@ rendering.
             </div>
             <span class="itemStatus invalid">Skipped</span> 
           </xsl:when>
-          <xsl:when test="@responded='true' or exists(qw:uncommittedResponseValue)">
-            <span class="itemStatus answered">Answered</span>
+          <xsl:when test="exists(qw:uncommittedResponseValue)">
+            <span class="itemStatus answered">Answered1</span>
+          </xsl:when>
+          <xsl:when test="@responded='true'">
+            <span class="itemStatus answered">Answered2</span>
           </xsl:when>
           <xsl:when test="@entryTime!=''">
             <span class="itemStatus notAnswered">Not Answered</span>
