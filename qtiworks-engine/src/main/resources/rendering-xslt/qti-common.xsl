@@ -512,7 +512,7 @@ rendering.
             </div>
             <span class="itemStatus invalid">Skipped</span> 
           </xsl:when>
-          <xsl:when test="(exists(qw:uncommittedResponseValue) or @responded='true') and @completionStatus='unknown')">
+          <xsl:when test="(exists(qw:uncommittedResponseValue) or @responded='true') and @completionStatus='unknown'">
             <span class="itemStatus answered">Incomplete</span>
           </xsl:when>
           <xsl:when test="exists(qw:uncommittedResponseValue) or @responded='true'">
