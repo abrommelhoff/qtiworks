@@ -15,7 +15,8 @@
 			}
 			
   			$(window).load(function(){
-	  			var maxResponses = 0;
+  			
+  				var maxResponses = 0;
 	  			var canvas=document.getElementById("myCanvas");
 			    var ctx=canvas.getContext("2d");
 			    var canvasLeft=canvas.offsetLeft;
@@ -114,6 +115,8 @@
 				
 				return true;
 			});
+
+  			
 
 		    var startOffsetX,startOffsetY;
 
