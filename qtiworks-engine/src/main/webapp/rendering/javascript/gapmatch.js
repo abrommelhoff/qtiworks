@@ -219,11 +219,11 @@
 
 		    function dragstart(ev) {
 		        ev.dataTransfer.setData("Text",ev.target.id);
-		        $('.opt').css({'pointer-events':'none'});
+		        //$('.opt').css({'pointer-events':'none'});
 		    }
 		    
 		    function dragstop(ev) {
-		        $('.opt').css({'pointer-events':'all'});
+		        //$('.opt').css({'pointer-events':'all'});
 		    }
 
 		    function drop(ev) {
