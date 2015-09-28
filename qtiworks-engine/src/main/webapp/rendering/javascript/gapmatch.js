@@ -15,21 +15,6 @@
 			}
 			
   			$(window).load(function(){
-  			
-  				var maxResponses = 0;
-	  			var canvas=document.getElementById("myCanvas");
-			    var ctx=canvas.getContext("2d");
-			    var canvasLeft=canvas.offsetLeft;
-			    var canvasTop=canvas.offsetTop;
-			    canvas.ondrop=drop;
-			    canvas.ondragover=allowDrop;
-			    //
-			    for (var i=0; i<images.length; i++) {
-			    	var img=document.getElementById(images[i].identifier);
-			    	img.onmousedown=mousedown;
-			    	img.ondragstart=dragstart;
-			    	img.onmouseout=dragstop;
-			    }
   				$('#canvasContainer').css({width:$('#theImage').width()+'px'});
   				var imgMaxHeight = 0;
   				var firstRowY = 10000;
@@ -116,7 +101,21 @@
 				return true;
 			});
 
-  			
+  			var maxResponses = 0;
+  			var canvas=document.getElementById("myCanvas");
+		    var ctx=canvas.getContext("2d");
+		    var canvasLeft=canvas.offsetLeft;
+		    var canvasTop=canvas.offsetTop;
+		    canvas.ondrop=drop;
+		    canvas.ondragover=allowDrop;
+		    //
+		    for (var i=0; i<images.length; i++) {
+		    	var img=document.getElementById(images[i].identifier);
+		    	img.draggable=true;
+		    	img.onmousedown=mousedown;
+		    	img.ondragstart=dragstart;
+		    	img.onmouseout=dragstop;
+		    }
 
 		    var startOffsetX,startOffsetY;
 
