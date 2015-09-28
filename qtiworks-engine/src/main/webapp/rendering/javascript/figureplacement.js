@@ -211,11 +211,11 @@
 		        ev.dataTransfer.setData("Text",ev.target.id);
 		        layerX = ev.layerX;
 		        layerY = ev.layerY;
-		        $('.opt').css({'pointer-events':'none'});
+		        //$('.opt').css({'pointer-events':'none'});
 		    }
 		    
 		    function dragstop(ev) {
-		        $('.opt').css({'pointer-events':'all'});
+		        //$('.opt').css({'pointer-events':'all'});
 		    }
 
 		    function drop(ev) {
