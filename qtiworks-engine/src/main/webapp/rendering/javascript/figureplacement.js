@@ -209,6 +209,8 @@
 
 		    function dragstart(ev) {
 		        ev.dataTransfer.setData("Text",ev.target.id);
+		        var ua = window.navigator.userAgent;
+            	var msie = ua.indexOf("MSIE ");
 		        if (msie<0) {
 		        	layerX = ev.layerX;
 		        	layerY = ev.layerY;
@@ -230,8 +232,6 @@
 		        var id=ev.dataTransfer.getData("Text");
 		        var droppable = false;
 		        var offset = $(this).offset();
-		        var ua = window.navigator.userAgent;
-            	var msie = ua.indexOf("MSIE ");
             	var clickX = ev.pageX - offset.left - layerX;
     			var clickY = ev.pageY - offset.top - layerY;
     			var dropElement=document.getElementById(id);
