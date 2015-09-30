@@ -209,8 +209,13 @@
 
 		    function dragstart(ev) {
 		        ev.dataTransfer.setData("Text",ev.target.id);
-		        layerX = ev.layerX;
-		        layerY = ev.layerY;
+		        if (msie<0) {
+		        	layerX = ev.layerX;
+		        	layerY = ev.layerY;
+		        } else {
+		        	layerX = ev.layerX - ev.clientX;
+		        	layerY = ev.layerY - ev.clientY;
+		        }
 		        //$('.opt').css({'pointer-events':'none'});
 		    }
 		    
@@ -227,12 +232,8 @@
 		        var offset = $(this).offset();
 		        var ua = window.navigator.userAgent;
             	var msie = ua.indexOf("MSIE ");
-            	var clickX = ev.pageX - offset.left;
-    			var clickY = ev.pageY - offset.top;
-    			if (msie<0) {
-    				clickX -= layerX;
-    				clickY -= layerY;
-    			}
+            	var clickX = ev.pageX - offset.left - layerX;
+    			var clickY = ev.pageY - offset.top - layerY;
     			var dropElement=document.getElementById(id);
     			$('#'+id).css({position:'absolute', top:clickY+'px', left:clickX+'px'});
     			$('.opt').css({'pointer-events':'all'});
