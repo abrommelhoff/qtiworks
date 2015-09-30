@@ -215,14 +215,14 @@
 		        	layerX = ev.layerX;
 		        	layerY = ev.layerY;
 		        } else {
-		        	layerX = ev.layerX - ev.clientX;
-		        	layerY = ev.layerY - ev.clientY;
+		        	layerX = ev.clientX - ev.layerX;
+		        	layerY = ev.clientY - ev.layerY;
 		        }
-		        $('.opt').css({'pointer-events':'none'});
+		        //$('.opt').css({'pointer-events':'none'});
 		    }
 		    
 		    function dragstop(ev) {
-		        $('.opt').css({'pointer-events':'all'});
+		        //$('.opt').css({'pointer-events':'all'});
 		    }
 
 		    function drop(ev) {
