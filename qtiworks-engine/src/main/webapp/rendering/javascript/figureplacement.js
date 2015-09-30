@@ -225,8 +225,14 @@
 		        var id=ev.dataTransfer.getData("Text");
 		        var droppable = false;
 		        var offset = $(this).offset();
-    			var clickX = ev.pageX - offset.left - layerX;
-    			var clickY = ev.pageY - offset.top - layerY;
+		        var ua = window.navigator.userAgent;
+            	var msie = ua.indexOf("MSIE ");
+            	var clickX = ev.pageX - offset.left;
+    			var clickY = ev.pageY - offset.top;
+    			if (msie<0) {
+    				clickX -= layerX;
+    				clickY -= layerY;
+    			}
     			var dropElement=document.getElementById(id);
     			$('#'+id).css({position:'absolute', top:clickY+'px', left:clickX+'px'});
     			$('.opt').css({'pointer-events':'all'});
