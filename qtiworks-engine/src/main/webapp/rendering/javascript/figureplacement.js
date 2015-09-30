@@ -215,8 +215,8 @@
 		        	layerX = ev.layerX;
 		        	layerY = ev.layerY;
 		        } else {
-		        	layerX = ev.clientX - ev.layerX;
-		        	layerY = ev.clientY - ev.layerY;
+		        	layerX = ev.offsetX;
+		        	layerY = ev.offsetY;
 		        }
 		        //$('.opt').css({'pointer-events':'none'});
 		    }
