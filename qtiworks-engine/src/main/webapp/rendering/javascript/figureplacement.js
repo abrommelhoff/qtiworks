@@ -211,18 +211,22 @@
 		        ev.dataTransfer.setData("Text",ev.target.id);
 		        var ua = window.navigator.userAgent;
             	var msie = ua.indexOf("MSIE ");
-		        if (msie<0) {
+            	var isIE11 = !!(ua.match(/Trident/) && ua.match(/rv[ :]11/));
+		        if (isIE11) {
+		        	layerX = ev.layerX;
+		        	layerY = ev.layerY;
+		        } else if (msie<0) {
 		        	layerX = ev.layerX;
 		        	layerY = ev.layerY;
 		        } else {
 		        	layerX = ev.offsetX;
 		        	layerY = ev.offsetY;
 		        }
-		        //$('.opt').css({'pointer-events':'none'});
+		        $('.opt').css({'pointer-events':'none'});
 		    }
 		    
 		    function dragstop(ev) {
-		        //$('.opt').css({'pointer-events':'all'});
+		        $('.opt').css({'pointer-events':'all'});
 		    }
 
 		    function drop(ev) {
