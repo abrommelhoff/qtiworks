@@ -197,10 +197,7 @@ public final class HotspotInteraction extends GraphicInteraction implements Hots
         if (responseChoiceIdentifiers.size() < minChoices) {
             return false;
         }
-        //if (responseChoiceIdentifiers.size() == 1 && minChoices > 0) {
-
-        //}
-        if (maxChoices != 0 && responseChoiceIdentifiers.size() > maxChoices) {
+                if (maxChoices != 0 && responseChoiceIdentifiers.size() > maxChoices) {
             return false;
         }
 
@@ -209,10 +206,12 @@ public final class HotspotInteraction extends GraphicInteraction implements Hots
         for (final HotspotChoice choice : getHotspotChoices()) {
             choiceIdentifiers.add(choice.getIdentifier());
         }
-        for (final Identifier choiceIdentifier : responseChoiceIdentifiers) {
-            if (!choiceIdentifiers.contains(choiceIdentifier)) {
-                return false;
-            }
+        if (responseChoiceIdentifiers.size() == 1 && minChoices > 0) {
+	        for (final Identifier choiceIdentifier : responseChoiceIdentifiers) {
+	            if (choiceIdentifier.toString().length() == 0) {
+	                return false;
+	            }
+	        }
         }
 
         return true;
