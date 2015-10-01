@@ -205,10 +205,6 @@
 		    function mousedown(ev){
 		        startOffsetX=ev.offsetX;
 		        startOffsetY=ev.offsetY;
-		    }
-
-		    function dragstart(ev) {
-		        ev.dataTransfer.setData("Text",ev.target.id);
 		        var ua = window.navigator.userAgent;
             	var msie = ua.indexOf("MSIE ");
             	var isIE11 = !!(ua.match(/Trident/) && ua.match(/rv[ :]11/));
@@ -222,7 +218,12 @@
 		        	layerX = ev.offsetX;
 		        	layerY = ev.offsetY;
 		        }
-		        $('.opt').css({'pointer-events':'none'});
+		    }
+
+		    function dragstart(ev) {
+		        ev.dataTransfer.setData("Text",ev.target.id);
+		        
+		        $('.opt').css({'pointer-events':'none','display':'inline-block'});
 		    }
 		    
 		    function dragstop(ev) {
