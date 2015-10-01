@@ -213,8 +213,8 @@
             	var msie = ua.indexOf("MSIE ");
             	var isIE11 = !!(ua.match(/Trident/) && ua.match(/rv[ :]11/));
 		        if (isIE11) {
-		        	layerX = ev.layerX;
-		        	layerY = ev.layerY;
+		        	layerX = ev.offsetX;
+		        	layerY = ev.offsetY;
 		        } else if (msie<0) {
 		        	layerX = ev.layerX;
 		        	layerY = ev.layerY;
