@@ -502,6 +502,7 @@ var QtiWorksRendering = (function() {
 		var mode = "none"; // none, point, line, ray, angle, or shape
 		var ptsSelected = [];
 		var ptsCreated = [];
+		var newreated = false;
 		var linesCreated = [];
 		var raysCreated = [];
 		var lineSegmentsCreated = [];
@@ -1021,12 +1022,13 @@ var QtiWorksRendering = (function() {
 			}
 			var upEventX = e.screenX;
 			var upEventY = e.screenY;
-			if ( (Math.abs(upEventX - downEventX) <= 10) && (Math.abs(upEventY - downEventY) <= 10) ) {
+			if (newCreated || ((Math.abs(upEventX - downEventX) <= 10) && (Math.abs(upEventY - downEventY) <= 10)) ) {
 				// this is a click -- do nothing
 			} else {
 				// this is a drag -- pop the last element
 				ptsSelected.pop();
 			}
+			newCreated = false;
 			setValue();
 		});
 		$('#connectPoints').click(function () {
@@ -1249,6 +1251,7 @@ var QtiWorksRendering = (function() {
 				});
 				ptsCreated.push(newPoint.id);
 				ptsSelected.push(newPoint.id);
+				newCreated = true;
 				setValue();
 			}
 			if ((ptsSelected.length >= 2) && (mode != 'angle') && (mode != 'shape')) {
