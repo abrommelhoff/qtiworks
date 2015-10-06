@@ -207,8 +207,12 @@
 		        startOffsetY=ev.offsetY;
 		        var ua = window.navigator.userAgent;
             	var msie = ua.indexOf("MSIE ");
+	            var edge = ua.indexOf("Edge");
             	var isIE11 = !!(ua.match(/Trident/) && ua.match(/rv[ :]11/));
 		        if (isIE11) {
+		        	layerX = ev.offsetX;
+		        	layerY = ev.offsetY;
+		        } else if (edge>=0) {
 		        	layerX = ev.offsetX;
 		        	layerY = ev.offsetY;
 		        } else if (msie<0) {
