@@ -200,6 +200,7 @@
 						}
 					}
 				}
+				$('.opt').css({'pointer-events':'none','display':'inline-block'});
 		    }
 
 		    function mousedown(ev){
@@ -227,7 +228,7 @@
 		    function dragstart(ev) {
 		        ev.dataTransfer.setData("Text",ev.target.id);
 		        
-		        $('.opt').css({'pointer-events':'none','display':'inline-block'});
+		        //$('.opt').css({'pointer-events':'none','display':'inline-block'});
 		    }
 		    
 		    function dragstop(ev) {
