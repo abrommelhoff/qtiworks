@@ -117,6 +117,10 @@ ul.sessionControl li form {
   background-color: #ff9900;
 }
 
+.itemStatus.notFinished {
+  background-color: #ff6600;
+}
+
 .itemStatus.notPresented {
   background-color: green;
 }
