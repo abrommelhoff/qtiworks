@@ -237,7 +237,7 @@ public final class ItemSessionState extends AbstractPartSessionState implements 
     public void setAdaptive(final boolean adaptive) {
     	this.adaptive = adaptive;
     }
-    
+
     public boolean getAdaptive() {
     	return this.adaptive;
     }
@@ -342,6 +342,10 @@ public final class ItemSessionState extends AbstractPartSessionState implements 
 
     public String getCompletionStatus() {
         return this.completionStatus;
+    }
+
+    public boolean isIncomplete() {
+    	return this.completionStatus.equals(QtiConstants.COMPLETION_STATUS_INCOMPLETE);
     }
 
     public void setCompletionStatus(final String completionStatus) {

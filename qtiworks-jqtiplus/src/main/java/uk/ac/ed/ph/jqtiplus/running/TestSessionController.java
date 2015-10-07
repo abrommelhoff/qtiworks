@@ -636,7 +636,7 @@ public final class TestSessionController extends TestProcessingController {
                     logger.debug("Item " + itemRefNode.getKey() + " has been responded with bad/invalid responses and validateResponses=true, so ending test part will be forbidden");
                     return false;
                 }
-                if (itemSessionState.getCompletionStatus()=="incomplete") {
+                if (itemSessionState.isIncomplete()) {
                 	return false;
                 }
             }
