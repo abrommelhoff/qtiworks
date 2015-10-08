@@ -37,6 +37,7 @@
   				$('#myCanvas')[0].width = $('#theImage').width();
   				$('#myCanvas')[0].height = $('#theImage').height() + imgMaxHeight + 30;
   				$('#canvasContainer').css({width:$('#theImage').width()+'px', height:$('#theImage').height()+imgMaxHeight + 30 +'px'});
+  				$('#imgback').css({height:imgMaxHeight + 30 +'px'});
   				
 	  			for (var im=0; im<images.length; im++) {
 		  			if (!images[im].hasOwnProperty('origPos')) {
@@ -229,6 +230,7 @@
 		        ev.dataTransfer.setData("Text",ev.target.id);
 		        
 		        //$('.opt').css({'pointer-events':'none','display':'inline-block'});
+		        $('#imgback').css({'background-color':'#cccccc'});
 		    }
 		    
 		    function dragstop(ev) {
@@ -236,6 +238,7 @@
 		    }
 
 		    function drop(ev) {
+		    	$('#imgback').css({'background-color':'#ffffff'});
 		    	answered = true;
 		        ev.preventDefault();
 
