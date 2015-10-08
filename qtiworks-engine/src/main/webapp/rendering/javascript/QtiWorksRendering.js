@@ -652,6 +652,20 @@ var QtiWorksRendering = (function() {
 							coord4 = "";
 							coord5 = "";
 							coord6 = "";
+							coord7 = "";
+							coord8 = "";
+							coord9 = "";
+							coord10 = "";
+							coord11 = "";
+							coord12 = "";
+							coord13 = "";
+							coord14 = "";
+							coord15 = "";
+							coord16 = "";
+							coord17 = "";
+							coord18 = "";
+							coord19 = "";
+							coord20 = "";
 							ptArr = lnsValues[b].split("_");
 							if (ptArr.length == 1 && ptArr[0] == "")
 								continue;
@@ -669,6 +683,34 @@ var QtiWorksRendering = (function() {
 									coord5 = ptArr[c];
 								} else if (c == 5) {
 									coord6 = ptArr[c];
+								} else if (c == 6) {
+									coord7 = ptArr[c];
+								} else if (c == 7) {
+									coord8 = ptArr[c];
+								} else if (c == 8) {
+									coord9 = ptArr[c];
+								} else if (c == 9) {
+									coord10 = ptArr[c];
+								} else if (c == 10) {
+									coord11 = ptArr[c];
+								} else if (c == 11) {
+									coord12 = ptArr[c];
+								} else if (c == 12) {
+									coord13 = ptArr[c];
+								} else if (c == 13) {
+									coord14 = ptArr[c];
+								} else if (c == 14) {
+									coord15 = ptArr[c];
+								} else if (c == 15) {
+									coord16 = ptArr[c];
+								} else if (c == 16) {
+									coord17 = ptArr[c];
+								} else if (c == 17) {
+									coord18 = ptArr[c];
+								} else if (c == 18) {
+									coord19 = ptArr[c];
+								} else if (c == 19) {
+									coord20 = ptArr[c];
 								}
 							}
 							var x1 = parseFloat(coord1.split(",")[0]);
@@ -710,7 +752,146 @@ var QtiWorksRendering = (function() {
 									coord6 = "";
 								}
 							}
-	
+							var x7, y7;
+							if ( coord7 != "") {
+								x7 = parseFloat(coord7.split(",")[0]);
+								y7 = parseFloat(coord7.split(",")[1]); 
+								if ( (x7 == x1) && (y7 == y1) ) {
+									x7 = "";
+									y7 = "";
+									coord7 = "";
+								}
+							}
+							var x8, y8;
+							if ( coord8 != "") {
+								x8 = parseFloat(coord8.split(",")[0]);
+								y8 = parseFloat(coord8.split(",")[1]); 
+								if ( (x8 == x1) && (y8 == y1) ) {
+									x8 = "";
+									y8 = "";
+									coord8 = "";
+								}
+							}
+							var x9, y9;
+							if ( coord9 != "") {
+								x9 = parseFloat(coord9.split(",")[0]);
+								y9 = parseFloat(coord9.split(",")[1]); 
+								if ( (x9 == x1) && (y9 == y1) ) {
+									x9 = "";
+									y9 = "";
+									coord9 = "";
+								}
+							}
+							var x10, y10;
+							if ( coord10 != "") {
+								x10 = parseFloat(coord10.split(",")[0]);
+								y10 = parseFloat(coord10.split(",")[1]); 
+								if ( (x10 == x1) && (y10 == y1) ) {
+									x10 = "";
+									y10 = "";
+									coord1 = "";
+								}
+							}
+							var x11, y11;
+							if ( coord11 != "") {
+								x11 = parseFloat(coord11.split(",")[0]);
+								y11 = parseFloat(coord11.split(",")[1]); 
+								if ( (x11 == x1) && (y11 == y1) ) {
+									x11 = "";
+									y11 = "";
+									coord11 = "";
+								}
+							}
+							var x12, y12;
+							if ( coord12 != "") {
+								x12 = parseFloat(coord12.split(",")[0]);
+								y12 = parseFloat(coord12.split(",")[1]); 
+								if ( (x12 == x1) && (y12 == y1) ) {
+									x12 = "";
+									y12 = "";
+									coord12 = "";
+								}
+							}
+							var x13, y13;
+							if ( coord13 != "") {
+								x13 = parseFloat(coord13.split(",")[0]);
+								y13 = parseFloat(coord13.split(",")[1]); 
+								if ( (x13 == x1) && (y13 == y1) ) {
+									x13 = "";
+									y13 = "";
+									coord13 = "";
+								}
+							}
+							var x14, y14;
+							if ( coord14 != "") {
+								x14 = parseFloat(coord14.split(",")[0]);
+								y14 = parseFloat(coord14.split(",")[1]); 
+								if ( (x14 == x1) && (y14 == y1) ) {
+									x14 = "";
+									y14 = "";
+									coord14 = "";
+								}
+							}
+							var x15, y15;
+							if ( coord15 != "") {
+								x15 = parseFloat(coord15.split(",")[0]);
+								y15 = parseFloat(coord15.split(",")[1]); 
+								if ( (x15 == x1) && (y15 == y1) ) {
+									x15 = "";
+									y15 = "";
+									coord15 = "";
+								}
+							}
+							var x16, y16;
+							if ( coord16 != "") {
+								x16 = parseFloat(coord16.split(",")[0]);
+								y16 = parseFloat(coord16.split(",")[1]); 
+								if ( (x16 == x1) && (y16 == y1) ) {
+									x16 = "";
+									y16 = "";
+									coord16 = "";
+								}
+							}
+							var x17, y17;
+							if ( coord17 != "") {
+								x17 = parseFloat(coord17.split(",")[0]);
+								y17 = parseFloat(coord17.split(",")[1]); 
+								if ( (x17 == x1) && (y17 == y1) ) {
+									x17 = "";
+									y17 = "";
+									coord17 = "";
+								}
+							}
+							var x18, y18;
+							if ( coord18 != "") {
+								x18 = parseFloat(coord18.split(",")[0]);
+								y18 = parseFloat(coord18.split(",")[1]); 
+								if ( (x18 == x1) && (y18 == y1) ) {
+									x18 = "";
+									y18 = "";
+									coord18 = "";
+								}
+							}
+							var x19, y19;
+							if ( coord19 != "") {
+								x19 = parseFloat(coord19.split(",")[0]);
+								y19 = parseFloat(coord19.split(",")[1]); 
+								if ( (x19 == x1) && (y19 == y1) ) {
+									x19 = "";
+									y19 = "";
+									coord19 = "";
+								}
+							}
+							var x20, y20;
+							if ( coord20 != "") {
+								x20 = parseFloat(coord20.split(",")[0]);
+								y20 = parseFloat(coord20.split(",")[1]); 
+								if ( (x20 == x1) && (y20 == y1) ) {
+									x20 = "";
+									y20 = "";
+									coord20 = "";
+								}
+							}
 							if (!isNaN(x1) && !isNaN(y1) && !isNaN(x2)
 									&& !isNaN(y2) && mode != 'angle' && mode != 'shape') {
 								var point1 = board.create('point',[ x1, y1 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
@@ -860,6 +1041,20 @@ var QtiWorksRendering = (function() {
 								var point4;
 								var point5;
 								var point6;
+								var point7;
+								var point8;
+								var point9;
+								var point10;
+								var point11;
+								var point12;
+								var point13;
+								var point14;
+								var point15;
+								var point16;
+								var point17;
+								var point18;
+								var point19;
+								var point20;
 								
 								if ( (coord4 == "") && (coord5 == "") && (coord6 == "") ) {
 									poly = board.create('polygon', [ point1,
@@ -881,7 +1076,7 @@ var QtiWorksRendering = (function() {
 										dragDetected();
 									});
 									ptsCreated.push(point4.id);
-									if (coord5 == "" && coord6 == "") {
+									if (coord5 == "" && coord6 == "" && coord7 == "" && coord8 == "" && coord9 == "" && coord10 == "" && coord11 == "" && coord12 == "" && coord13 == "" && coord14 == "" && coord15 == "" && coord16 == "" && coord17 == "" && coord18 == "" && coord19 == "" && coord20 == "") {
 										poly = board.create('polygon', [ point1,
 										                                 point2, 
 										                                 point3,
@@ -903,7 +1098,7 @@ var QtiWorksRendering = (function() {
 										dragDetected();
 									});
 									ptsCreated.push(point5.id);
-									if (coord6 == "") {
+									if (coord6 == "" && coord7 == "" && coord8 == "" && coord9 == "" && coord10 == "" && coord11 == "" && coord12 == "" && coord13 == "" && coord14 == "" && coord15 == "" && coord16 == "" && coord17 == "" && coord18 == "" && coord19 == "" && coord20 == "") {
 										poly = board.create('polygon', [ point1,
 										                                 point2, 
 										                                 point3,
@@ -926,12 +1121,439 @@ var QtiWorksRendering = (function() {
 										dragDetected();
 									});
 									ptsCreated.push(point6.id);
-									poly = board.create('polygon', [ point1,
+									if (coord7 == "" && coord8 == "" && coord9 == "" && coord10 == "" && coord11 == "" && coord12 == "" && coord13 == "" && coord14 == "" && coord15 == "" && coord16 == "" && coord17 == "" && coord18 == "" && coord19 == "" && coord20 == "") {
+										poly = board.create('polygon', [ point1,
 									                                 point2,
 									                                 point3,
 									                                 point4,
 									                                 point5,
 									                                 point6],{fixed: true});
+									}
+								}
+								
+								if (coord7 != "") {
+									var point7 = board.create('point',[ x7, y7 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point7);
+									point7.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point7.id);
+									if (coord8 == "" && coord9 == "" && coord10 == "" && coord11 == "" && coord12 == "" && coord13 == "" && coord14 == "" && coord15 == "" && coord16 == "" && coord17 == "" && coord18 == "" && coord19 == "" && coord20 == "") {
+										poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6,
+									                                 point7],{fixed: true});
+									}                                
+								}
+								
+								if (coord8 != "") {
+									var point8 = board.create('point',[ x8, y8 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point8);
+									point8.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point8.id);
+									if (coord9 == "" && coord10 == "" && coord11 == "" && coord12 == "" && coord13 == "" && coord14 == "" && coord15 == "" && coord16 == "" && coord17 == "" && coord18 == "" && coord19 == "" && coord20 == "") {
+										poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6,
+									                                 point7,
+									                                 point8],{fixed: true});
+									}                                 
+								}
+								
+								if (coord9 != "") {
+									var point9 = board.create('point',[ x9, y9 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point9);
+									point9.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point9.id);
+									if (coord10 == "" && coord11 == "" && coord12 == "" && coord13 == "" && coord14 == "" && coord15 == "" && coord16 == "" && coord17 == "" && coord18 == "" && coord19 == "" && coord20 == "") {
+										poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6,
+									                                 point7,
+									                                 point8,
+									                                 point9],{fixed: true});
+									}                                
+								}
+								
+								if (coord10 != "") {
+									var point10 = board.create('point',[ x10, y10 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point10);
+									point10.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point10.id);
+									if (coord11 == "" && coord12 == "" && coord13 == "" && coord14 == "" && coord15 == "" && coord16 == "" && coord17 == "" && coord18 == "" && coord19 == "" && coord20 == "") {
+										poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6,
+									                                 point7,
+									                                 point8,
+									                                 point9,
+									                                 point10],{fixed: true});
+									}
+								}
+								
+								if (coord11 != "") {
+									var point11 = board.create('point',[ x11, y11 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point11);
+									point11.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point11.id);
+									if (coord12 == "" && coord13 == "" && coord14 == "" && coord15 == "" && coord16 == "" && coord17 == "" && coord18 == "" && coord19 == "" && coord20 == "") {
+										poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6,
+									                                 point7,
+									                                 point8,
+									                                 point9,
+									                                 point10,
+									                                 point11],{fixed: true});
+									}                                 
+								}
+								
+								if (coord12 != "") {
+									var point12 = board.create('point',[ x12, y12 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point12);
+									point12.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point12.id);
+									if (coord13 == "" && coord14 == "" && coord15 == "" && coord16 == "" && coord17 == "" && coord18 == "" && coord19 == "" && coord20 == "") {
+										poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6,
+									                                 point7,
+									                                 point8,
+									                                 point9,
+									                                 point10,
+									                                 point11,
+									                                 point12],{fixed: true});
+									}                                 
+								}
+								
+								if (coord13 != "") {
+									var point13 = board.create('point',[ x13, y13 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point13);
+									point13.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point13.id);
+									if (coord14 == "" && coord15 == "" && coord16 == "" && coord17 == "" && coord18 == "" && coord19 == "" && coord20 == "") {
+										poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6,
+									                                 point7,
+									                                 point8,
+									                                 point9,
+									                                 point10,
+									                                 point11,
+									                                 point12,
+									                                 point13],{fixed: true});
+									}                                
+								}
+								
+								if (coord14 != "") {
+									var point14 = board.create('point',[ x14, y14 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point14);
+									point14.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point14.id);
+									if (coord15 == "" && coord16 == "" && coord17 == "" && coord18 == "" && coord19 == "" && coord20 == "") {
+										poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6,
+									                                 point7,
+									                                 point8,
+									                                 point9,
+									                                 point10,
+									                                 point11,
+									                                 point12,
+									                                 point13,
+									                                 point14],{fixed: true});
+									}                                 
+								}
+								
+								if (coord15 != "") {
+									var point15 = board.create('point',[ x15, y15 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point15);
+									point15.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point15.id);
+									if (coord16 == "" && coord17 == "" && coord18 == "" && coord19 == "" && coord20 == "") {
+										poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6,
+									                                 point7,
+									                                 point8,
+									                                 point9,
+									                                 point10,
+									                                 point11,
+									                                 point12,
+									                                 point13,
+									                                 point14,
+									                                 point15],{fixed: true});
+									}                                
+								}
+								
+								if (coord16 != "") {
+									var point16 = board.create('point',[ x16, y16 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point16);
+									point16.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point16.id);
+									if (coord17 == "" && coord18 == "" && coord19 == "" && coord20 == "") {
+										poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6,
+									                                 point7,
+									                                 point8,
+									                                 point9,
+									                                 point10,
+									                                 point11,
+									                                 point12,
+									                                 point13,
+									                                 point14,
+									                                 point15,
+									                                 point16],{fixed: true});
+									}                                
+								}
+								
+								if (coord17 != "") {
+									var point17 = board.create('point',[ x17, y17 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point17);
+									point17.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point17.id);
+									if (coord18 == "" && coord19 == "" && coord20 == "") {
+										poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6,
+									                                 point7,
+									                                 point8,
+									                                 point9,
+									                                 point10,
+									                                 point11,
+									                                 point12,
+									                                 point13,
+									                                 point14,
+									                                 point15,
+									                                 point16,
+									                                 point17],{fixed: true});
+									}                                
+								}
+								
+								if (coord18 != "") {
+									var point18 = board.create('point',[ x18, y18 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point18);
+									point18.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point18.id);
+									if (coord19 == "" && coord20 == "") {
+										poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6,
+									                                 point7,
+									                                 point8,
+									                                 point9,
+									                                 point10,
+									                                 point11,
+									                                 point12,
+									                                 point13,
+									                                 point14,
+									                                 point15,
+									                                 point16,
+									                                 point17,
+									                                 point18],{fixed: true});
+									}                                
+								}
+								
+								if (coord19 != "") {
+									var point19 = board.create('point',[ x19, y19 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point19);
+									point19.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point19.id);
+									if (coord20 == "") {
+										poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6,
+									                                 point7,
+									                                 point8,
+									                                 point9,
+									                                 point10,
+									                                 point11,
+									                                 point12,
+									                                 point13,
+									                                 point14,
+									                                 point15,
+									                                 point16,
+									                                 point17,
+									                                 point18,
+									                                 point19],{fixed: true});
+									}                               
+								}
+								
+								if (coord20 != "") {
+									var point20 = board.create('point',[ x20, y20 ],{snapToGrid : isSnapTo,withLabel : false,showInfobox : false});
+									JXG.addEvent(point5.rendNode, 'mouseover', function() {
+										if (mode != "point") {
+											$("ellipse").css('cursor', 'crosshair');
+										} else {
+											$("ellipse").css('cursor', 'default');
+										}
+									}, point20);
+									point20.on('touchend', function(){
+										dragDetected();
+									});
+									ptsCreated.push(point20.id);
+									poly = board.create('polygon', [ point1,
+									                                 point2,
+									                                 point3,
+									                                 point4,
+									                                 point5,
+									                                 point6,
+									                                 point7,
+									                                 point8,
+									                                 point9,
+									                                 point10,
+									                                 point11,
+									                                 point12,
+									                                 point13,
+									                                 point14,
+									                                 point15,
+									                                 point16,
+									                                 point17,
+									                                 point18,
+									                                 point19,
+									                                 point20],{fixed: true});
 								}
 								shapesCreated.push(poly);
 								
