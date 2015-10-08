@@ -47,9 +47,11 @@
 		<div id="canvasContainer">
       		<img id="theImage" src="{qw:convert-link($object/@data)}"/>  
   			<canvas id="myCanvas"></canvas>
+  			<div id="imgback">
   			<xsl:for-each select="$gapImgs">
       			<img draggable="true" class="opt" id='{@identifier}' src='{qw:convert-link(qti:object/@data)}'/>&#160;
         	</xsl:for-each>
+        	</div>
   		</div>
   		
   		<!-- <input type="hidden" name="qtiworks_response_RESPONSE" id="qtiworks_response_RESPONSE"/>-->
