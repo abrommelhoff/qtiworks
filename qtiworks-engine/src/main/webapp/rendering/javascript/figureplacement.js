@@ -210,7 +210,7 @@
 		        var ua = window.navigator.userAgent;
             	var msie = ua.indexOf("MSIE ");
 	            var edge = ua.indexOf("Edge");
-            	var isIE11 = !!(ua.match(/Trident/) && ua.match(/rv[ :]11/));
+            	var isIE11 = !!(ua.match(/Trident/) && ua.match(/rv[ :]11/)) && !(ua.match(/Windows NT 10.0/));;
 		        if (isIE11) {
 		        	layerX = ev.offsetX;
 		        	layerY = ev.offsetY;
