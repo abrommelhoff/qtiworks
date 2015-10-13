@@ -58,7 +58,7 @@
 		    		if (n>-1) {
 		    			var subPrev = prev.substr(n);
 		    			for (var z=0; z<images.length; z++) {
-		    				var m = prev.indexOf(images[z].identifier);
+		    				var m = subPrev.indexOf(images[z].identifier);
 		    				if (m>0) {
 		    					subPrev = subPrev.substr(0,m);
 		    				}
@@ -210,7 +210,7 @@
 		        var ua = window.navigator.userAgent;
             	var msie = ua.indexOf("MSIE ");
 	            var edge = ua.indexOf("Edge");
-            	var isIE11 = !!(ua.match(/Trident/) && ua.match(/rv[ :]11/)) && !(ua.match(/Windows NT 10.0/));;
+            	var isIE11 = !!(ua.match(/Trident/) && ua.match(/rv[ :]11/));
 		        if (isIE11) {
 		        	layerX = ev.offsetX;
 		        	layerY = ev.offsetY;
