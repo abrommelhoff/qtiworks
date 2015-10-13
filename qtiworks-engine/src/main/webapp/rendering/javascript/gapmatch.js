@@ -14,7 +14,8 @@
 			    return inside;
 			}
 			
-  			$(window).load(function(){
+			window.onload = function(){
+  			//$(window).load(function(){
   				$('#canvasContainer').css({width:$('#theImage').width()+'px'});
   				var imgMaxHeight = 0;
   				var firstRowY = 10000;
@@ -78,7 +79,7 @@
 					}
 				}
 				
-		    });
+		    }//);
 		    
 		    $("#itemForm").submit(function() {
 				var theResponse = "";
