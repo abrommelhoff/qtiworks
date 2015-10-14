@@ -18,6 +18,10 @@
 			}
 			
   			$(window).load(function(){
+			  	setTimeout(continueLoad, 500) //wait ten seconds before continuing
+			});
+			
+			function continueLoad() {
   				$('#canvasContainer').css({width:$('#theImage').width()+'px'});
   				var imgMaxHeight = 0;
   				var firstRowY = 10000;
@@ -74,7 +78,7 @@
 		    		}
 		    	}
 		    	
-		    });
+		    };
 		    
 		    $("#itemForm").submit(function() {
 		    	if (answered) {

@@ -13,9 +13,12 @@
 			    
 			    return inside;
 			}
+			$(window).load(function(){
+			  	setTimeout(continueLoad, 500) //wait ten seconds before continuing
+			});
 			
-			window.onload = function(){
-  			//$(window).load(function(){
+			function continueLoad() {
+  				console.log('load');
   				$('#canvasContainer').css({width:$('#theImage').width()+'px'});
   				var imgMaxHeight = 0;
   				var firstRowY = 10000;
@@ -35,6 +38,7 @@
   				$('#myCanvas')[0].width = $('#theImage').width();
   				$('#myCanvas')[0].height = $('#theImage').height() + imgMaxHeight + 30;
   				$('#canvasContainer').css({width:$('#theImage').width()+'px', height:$('#theImage').height()+imgMaxHeight + 30 +'px'});
+  				$('#imgback').css({height:imgMaxHeight + 30 +'px'});
   				
 	  			for (var im=0; im<images.length; im++) {
 		  			if (!images[im].hasOwnProperty('origPos')) {
@@ -79,7 +83,7 @@
 					}
 				}
 				
-		    }//);
+		    };
 		    
 		    $("#itemForm").submit(function() {
 				var theResponse = "";

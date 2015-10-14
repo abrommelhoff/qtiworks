@@ -1,4 +1,8 @@
-			$( window ).load(function() {
+			$(window).load(function(){
+			  	setTimeout(continueLoad, 500) //wait ten seconds before continuing
+			});
+			
+			function continueLoad() {
 				var prev = $("#previousResponses").val();
 				if (prev.length > 0) {
 					var prevArr = prev.split(",");
@@ -65,7 +69,7 @@
 						}
 					}
 				}
-			});
+			};
 			function isPointInPoly(poly, pt){
 			    var x = Number(pt.x), y = Number(pt.y);
 			    
