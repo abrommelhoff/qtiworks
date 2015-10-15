@@ -1,3 +1,5 @@
+			var fromx = 0;
+			
 			function isPointInPoly(poly, pt){
 			    var x = Number(pt.x), y = Number(pt.y);
 			    
@@ -51,15 +53,33 @@
 	    			$('#'+id).css({position:'absolute', top:images[im].origPos.top+'px', left:images[im].origPos.left+'px'});
 		    	}
 		    	var prev = $("#previousResponses").val();
-		    	var prevArr = prev.split(",");
+		    	var prevArr = [];
+		    	for (var x=hotspots.length-1; x>=0; x--) {
+		    		for (var im=images.length-1; im>=0; im--) {
+						if (prev.indexOf(images[im].identifier + ' ' + hotspots[x].identifier) >=0) {
+							var startSpot = prev.indexOf(images[im].identifier + ' ' + hotspots[x].identifier);
+							var endSpot = prev.indexOf(images[im].identifier + ' ' + hotspots[x].identifier) + images[im].identifier.length + hotspots[x].identifier.length + 1;
+							prevArr.push(prev.slice(startSpot, endSpot));
+							prev = [prev.slice(0, startSpot), prev.slice(endSpot)].join('');
+						}	
+					}
+				}
+		    	//var prevArr = prev.split(",");
 				for (var p=0; p<prevArr.length; p++) {
 					var image = prevArr[p].split(' ')[0];
 					var hotspot = prevArr[p].split(' ')[1];
 					for (var x=0; x<hotspots.length; x++) {
 						for (var y=0; y<images.length; y++) {
-							var n = prev.indexOf(images[y].identifier); 
-							if (n>-1 && prev.substr(n).split(' ')[1].indexOf(hotspots[x].identifier) == 0) {
-								images[y].selection = x;
+							if (hotspot == hotspots[x].identifier && image == images[y].identifier) {
+								var selArr = images[y].selection.toString().split(",");
+							    if (images[y].selection == -1) {
+				        			images[y].selection = x;
+				        		} else {
+				        			images[y].selection += ',' + x;
+				        		}
+				        		if (!images[y].hasOwnProperty('origPos')) {
+				        			images[y].origPos = $('#'+id).position();
+				        		}
 								var coordList = hotspots[x].coords.split(',');
 				        		var coordcount = 0;
 				        		var xSum = 0;
@@ -77,7 +97,18 @@
 						        var dropY = ySum/coordcount - $('#'+images[y].identifier).height()/2;// + $('#canvasContainer').position().top;
 						        
 						        images[y].origPos = $('#'+images[y].identifier).position();
-						        $('#'+images[y].identifier).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
+						        var newId = images[y].identifier + Math.random().toString(36).substr(2, 5);
+						        var sourceImage = document.createElement('img');
+								var imgContainer = document.getElementById("canvasContainer");
+								sourceImage.src = document.getElementById(images[y].identifier).src;
+								sourceImage.id = newId;
+								sourceImage.draggable=true;
+						    	sourceImage.onmousedown=mousedown;
+						    	sourceImage.ondragstart=dragstart;
+						    	sourceImage.onmouseout=dragstop;
+								imgContainer.appendChild(sourceImage);
+								$('#' + newId).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
+						        //$('#'+images[y].identifier).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
 							}
 						}
 					}
@@ -89,15 +120,18 @@
 				var theResponse = "";
 				for (var x=0; x<hotspots.length; x++) {
 					for (var y=0; y<images.length; y++) {
-						if (images[y].selection == x) {
-							if (theResponse.length > 0) {
-								//theResponse += ",";
+						var imgSel = images[y].selection.toString().split(',');
+						for (var z=0; z<imgSel.length; z++) {
+							if (imgSel[z] == x) {
+								if (theResponse.length > 0) {
+									//theResponse += ",";
+								}
+								theResponse = images[y].identifier + " " + hotspots[x].identifier;
+								$('<input />').attr('type', 'hidden')
+					          		.attr('name', "qtiworks_response_RESPONSE")
+					          		.attr('value', theResponse)
+					          		.appendTo('#itemForm');
 							}
-							theResponse = images[y].identifier + " " + hotspots[x].identifier;
-							$('<input />').attr('type', 'hidden')
-				          		.attr('name', "qtiworks_response_RESPONSE")
-				          		.attr('value', theResponse)
-				          		.appendTo('#itemForm');
 						}
 					}
 				}
@@ -215,11 +249,17 @@
 						}
 					}
 				}
+				$('.opt').css({'pointer-events':'none','display':'inline-block'});
 		    }
 
 		    function mousedown(ev){
 		        startOffsetX=ev.offsetX;
 		        startOffsetY=ev.offsetY;
+		        for (var x=0; x<hotspots.length; x++) {
+		        	if (hotspots[x].clicked == true) {
+		        		fromx = x;
+		        	}
+		        }
 		    }
 
 		    function dragstart(ev) {
@@ -237,6 +277,7 @@
 		        ev.preventDefault();
 
 		        var id=ev.dataTransfer.getData("Text");
+				var newId = id + Math.random().toString(36).substr(2, 5);
 		        var droppable = false;
 		        for (var x=0; x<hotspots.length; x++) {
 		        	if (hotspots[x].clicked == true) {
@@ -258,8 +299,12 @@
 				        var dropY = ySum/coordcount - $('#'+id).height()/2;
 				        
 				        for (var im=0; im<images.length; im++) {
-				        	if (images[im].identifier==id) {
-				        		images[im].selection = x;
+				        	if (id.contains(images[im].identifier)) {
+				        		if (images[im].selection == -1) {
+				        			images[im].selection = x;
+				        		} else {
+				        			images[im].selection += ',' + x;
+				        		}
 				        		if (!images[im].hasOwnProperty('origPos')) {
 				        			images[im].origPos = $('#'+id).position();
 				        		}
@@ -267,23 +312,76 @@
 		    					var ctx=canvas.getContext("2d");
 				        		ctx.fillStyle = "rgba(150,29,28, 0.1)";
 								ctx.fillRect(images[im].origPos.left, images[im].origPos.top, $('#'+id).width(), $('#'+id).height());
+								//var img=document.getElementById(id);
+								//ctx.drawImage(img,dropX,dropY);
+								var sourceImage = document.createElement('img');
+								var imgContainer = document.getElementById("canvasContainer");
+								sourceImage.src = document.getElementById(id).src;
+								sourceImage.id = newId;
+								sourceImage.draggable=true;
+						    	sourceImage.onmousedown=mousedown;
+						    	sourceImage.ondragstart=dragstart;
+						    	sourceImage.onmouseout=dragstop;
+								imgContainer.appendChild(sourceImage);
+								$('#' + newId).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
+								if (id != images[im].identifier) {
+									var image_x = document.getElementById(id);
+									image_x.parentNode.removeChild(image_x);
+									var selArr = images[im].selection.toString().split(",");
+				        			images[im].selection = -1;
+				        			for (var s=0; s<selArr.length; s++) {
+				        				if (selArr[s] != fromx) {
+				        					if (images[im].selection == -1) {
+							        			images[im].selection = selArr[s];
+							        		} else {
+							        			images[im].selection += ',' + selArr[s];
+							        		}
+				        				}
+				        			}
+				        			console.log(images[im].selection);
+								}
 				        	} else {
 				        		if (images[im].selection == x) {
 				        			images[im].selection = -1;
-				        			$('#'+images[im].identifier).css({position:'absolute', top:images[im].origPos.top+'px', left:images[im].origPos.left+'px'});
+				        			//$('#'+images[im].identifier).css({position:'absolute', top:images[im].origPos.top+'px', left:images[im].origPos.left+'px'});
+				        		} else {
+				        			var selArr = images[im].selection.toString().split(",");
+				        			images[im].selection = -1;
+				        			for (var s=0; s<selArr.length; s++) {
+				        				if (selArr[s] != x) {
+				        					if (images[im].selection == -1) {
+							        			images[im].selection = selArr[s];
+							        		} else {
+							        			images[im].selection += ',' + selArr[s];
+							        		}
+				        				}
+				        			}
+				        			
 				        		}
 				        	}
 				        }
-				        $('#'+id).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
+				        
+				        //$('#'+id).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
 				    }
 				}  
 				if (droppable == false) {
+					var image_x = document.getElementById(id);
+					image_x.parentNode.removeChild(image_x);
 					for (var im=0; im<images.length; im++) {
-			        	if (images[im].identifier==id) {
-			        		images[im].selection = '-1';
-			        		$('#'+id).css({position:'absolute', top:images[im].origPos.top+'px', left:images[im].origPos.left+'px'});
-			        	}
-			        }
+				        if (id.contains(images[im].identifier)) {
+							var selArr = images[im].selection.toString().split(",");
+						    images[im].selection = -1;
+						    for (var s=0; s<selArr.length; s++) {
+						        if (selArr[s] != fromx) {
+						        	if (images[im].selection == -1) {
+									    images[im].selection = selArr[s];
+								   	} else {
+									    images[im].selection += ',' + selArr[s];
+									}
+					  			}
+				      		}
+				      	}
+					}
 				}
 				$('.opt').css({'pointer-events':'all'});
 		    }
