@@ -39,7 +39,7 @@
 				imgMaxHeight += Number(rowY) - Number(firstRowY);
   				$('#myCanvas')[0].width = $('#theImage').width();
   				$('#myCanvas')[0].height = $('#theImage').height() + imgMaxHeight + 30;
-  				$('#canvasContainer').css({width:$('#theImage').width()+'px', height:$('#theImage').height()+imgMaxHeight + 30 +'px'});
+  				$('#canvasContainer').css({width:$('#theImage').width()+'px', height:$('#theImage').height()+imgMaxHeight + 35 +'px'});
   				$('#imgback').css({height:imgMaxHeight + 30 +'px'});
   				
 	  			for (var im=0; im<images.length; im++) {
@@ -299,7 +299,7 @@
 				        var dropY = ySum/coordcount - $('#'+id).height()/2;
 				        
 				        for (var im=0; im<images.length; im++) {
-				        	if (id.contains(images[im].identifier)) {
+				        	if (id.indexOf(images[im].identifier) > -1) {
 				        		if (images[im].selection == -1) {
 				        			images[im].selection = x;
 				        		} else {
@@ -368,7 +368,7 @@
 					var image_x = document.getElementById(id);
 					image_x.parentNode.removeChild(image_x);
 					for (var im=0; im<images.length; im++) {
-				        if (id.contains(images[im].identifier)) {
+				        if (id.indexOf(images[im].identifier) > -1) {
 							var selArr = images[im].selection.toString().split(",");
 						    images[im].selection = -1;
 						    for (var s=0; s<selArr.length; s++) {
