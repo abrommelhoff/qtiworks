@@ -146,7 +146,6 @@
 		    var canvasLeft=canvas.offsetLeft;
 		    var canvasTop=canvas.offsetTop;
 		    canvas.ondrop=drop;
-		    canvas.ondragenter=dragEnter;
 		    canvas.ondragover=allowDrop;
 		    //
 		    for (var i=0; i<images.length; i++) {
@@ -159,14 +158,7 @@
 
 		    var startOffsetX,startOffsetY;
 
-			function dragEnter(e) {
-		        e.preventDefault();
-		        e.stopPropagation();
-		    }
-	
 		    function allowDrop(e) {
-		        e.preventDefault();
-		        e.stopPropagation();
 		        var offset = $(this).offset();
     			var clickX = e.pageX - offset.left;
     			var clickY = e.pageY - offset.top;
