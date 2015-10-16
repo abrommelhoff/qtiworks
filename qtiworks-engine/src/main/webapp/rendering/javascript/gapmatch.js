@@ -164,6 +164,7 @@
 		    }
 
 		    function allowDrop(e) {
+		    	console.log('allowDrop');
 		        e.preventDefault();
 		        var offset = $(this).offset();
     			var clickX = e.pageX - offset.left;
