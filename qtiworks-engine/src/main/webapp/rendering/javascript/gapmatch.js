@@ -166,8 +166,8 @@
 		    function allowDrop(e) {
 		        e.preventDefault();
 		        var offset = $(this).offset();
-    			var clickX = e.pageX - offset.left;
-    			var clickY = e.pageY - offset.top;
+    			var clickX = e.clientX - offset.left;
+    			var clickY = e.clientY - offset.top;
     			var c = document.getElementById("myCanvas");
 				var ctx = c.getContext("2d");
 				var canvas = document.getElementById('myCanvas');
