@@ -160,6 +160,7 @@
 
 		    function allowDrop(e) {
 		        e.preventDefault();
+		        e.stopPropagation();
 		        var offset = $(this).offset();
     			var clickX = e.pageX - offset.left;
     			var clickY = e.pageY - offset.top;
@@ -200,12 +201,12 @@
 							ctx.stroke();
 						}
 					} else if (hotspots[x].shape == 'rect') {
-						var left1 = hotspots[x].coords.split(',')[0];
-						var top1 = hotspots[x].coords.split(',')[1];
-						var left2 = hotspots[x].coords.split(',')[2];
-						var top2 = hotspots[x].coords.split(',')[3];
+						var left1 = parseFloat(hotspots[x].coords.split(',')[0]);
+						var top1 = parseFloat(hotspots[x].coords.split(',')[1]);
+						var left2 = parseFloat(hotspots[x].coords.split(',')[2]);
+						var top2 = parseFloat(hotspots[x].coords.split(',')[3]);
 						hotspots[x].clicked = false;
-						if (parseFloat(clickX) >= parseFloat(left1) && parseFloat(clickX) <= parseFloat(left2) && parseFloat(clickY) >= parseFloat(top1) && parseFloat(clickY) <= parseFloat(top2)) {
+						if (clickX >= left1 && clickX <= left2 && clickY >= top1 && clickY <= top2) {
 							hotspots[x].clicked = true;
 						}
 						if (hotspots[x].clicked) {
