@@ -164,7 +164,6 @@
 		    }
 
 		    function allowDrop(e) {
-		    	console.log('allowDrop');
 		        e.preventDefault();
 		        var offset = $(this).offset();
     			var clickX = e.pageX - offset.left;
@@ -211,6 +210,7 @@
 						var left2 = parseFloat(hotspots[x].coords.split(',')[2]);
 						var top2 = parseFloat(hotspots[x].coords.split(',')[3]);
 						hotspots[x].clicked = false;
+						console.log(x+' '+clickX+' '+clickY+' '+left1+' '+left2+' '+top1+' '+top2);
 						if (clickX >= left1 && clickX <= left2 && clickY >= top1 && clickY <= top2) {
 							hotspots[x].clicked = true;
 						}
@@ -255,7 +255,7 @@
 						}
 					}
 				}
-				//$('.opt').css({'pointer-events':'none','display':'inline-block'});
+				$('.opt').css({'pointer-events':'none','display':'inline-block'});
 				return false;
 		    }
 
