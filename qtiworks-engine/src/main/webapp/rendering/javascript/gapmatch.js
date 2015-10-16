@@ -250,6 +250,7 @@
 					}
 				}
 				$('.opt').css({'pointer-events':'none','display':'inline-block'});
+				return false;
 		    }
 
 		    function mousedown(ev){
