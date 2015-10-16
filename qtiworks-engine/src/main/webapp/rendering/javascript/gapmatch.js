@@ -159,6 +159,7 @@
 		    var startOffsetX,startOffsetY;
 
 		    function allowDrop(e) {
+		        e.preventDefault();
 		        var offset = $(this).offset();
     			var clickX = e.pageX - offset.left;
     			var clickY = e.pageY - offset.top;
