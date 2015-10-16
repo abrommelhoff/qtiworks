@@ -1,3 +1,4 @@
+			
 			var fromx = 0;
 			
 			function isPointInPoly(poly, pt){
@@ -20,7 +21,7 @@
 			});
 			
 			function continueLoad() {
-  				console.log('load');
+  				//console.log('load');
   				$('#canvasContainer').css({width:$('#theImage').width()+'px'});
   				var imgMaxHeight = 0;
   				var firstRowY = 10000;
@@ -166,8 +167,8 @@
 		    function allowDrop(e) {
 		        e.preventDefault();
 		        var offset = $(this).offset();
-    			var clickX = e.clientX - offset.left;
-    			var clickY = e.clientY - offset.top;
+    			var clickX = e.pageX - offset.left;
+    			var clickY = e.pageY - offset.top;
     			var c = document.getElementById("myCanvas");
 				var ctx = c.getContext("2d");
 				var canvas = document.getElementById('myCanvas');
@@ -330,6 +331,9 @@
 						    	sourceImage.ondragstart=dragstart;
 						    	sourceImage.onmouseout=dragstop;
 								imgContainer.appendChild(sourceImage);
+								if (images[im].selection.toString().split(',').length>= images[im].matchmax) {
+									$('#' + images[im].identifier).css({visibility:'hidden'});
+								}
 								$('#' + newId).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
 								if (id != images[im].identifier) {
 									var image_x = document.getElementById(id);
@@ -345,7 +349,7 @@
 							        		}
 				        				}
 				        			}
-				        			console.log(images[im].selection);
+				        			//console.log(images[im].selection);
 								}
 				        	} else {
 				        		if (images[im].selection == x) {
@@ -388,6 +392,13 @@
 					  			}
 				      		}
 				      	}
+					}
+				}
+				for (var im=0; im<images.length; im++) {
+					if (images[im].selection.toString().split(',').length>= images[im].matchmax) {
+						$('#' + images[im].identifier).css({visibility:'hidden'});
+					} else {
+						$('#' + images[im].identifier).css({visibility:'visible'});
 					}
 				}
 				$('.opt').css({'pointer-events':'all'});
