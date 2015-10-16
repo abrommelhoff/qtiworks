@@ -376,21 +376,29 @@
 				    }
 				}  
 				if (droppable == false) {
-					var image_x = document.getElementById(id);
-					image_x.parentNode.removeChild(image_x);
+					var cancel = false;
 					for (var im=0; im<images.length; im++) {
-				        if (id.indexOf(images[im].identifier) > -1) {
-							var selArr = images[im].selection.toString().split(",");
-						    images[im].selection = -1;
-						    for (var s=0; s<selArr.length; s++) {
-						        if (selArr[s] != fromx) {
-						        	if (images[im].selection == -1) {
-									    images[im].selection = selArr[s];
-								   	} else {
-									    images[im].selection += ',' + selArr[s];
-									}
-					  			}
-				      		}
+						if (images[im].identifier == id) {
+							cancel = true;
+						}
+					}			
+					if (!cancel) {
+						var image_x = document.getElementById(id);
+						image_x.parentNode.removeChild(image_x);
+						for (var im=0; im<images.length; im++) {
+					        if (id.indexOf(images[im].identifier) > -1) {
+								var selArr = images[im].selection.toString().split(",");
+							    images[im].selection = -1;
+							    for (var s=0; s<selArr.length; s++) {
+							        if (selArr[s] != fromx) {
+							        	if (images[im].selection == -1) {
+										    images[im].selection = selArr[s];
+									   	} else {
+										    images[im].selection += ',' + selArr[s];
+										}
+						  			}
+					      		}
+					      	}
 				      	}
 					}
 				}
