@@ -205,7 +205,7 @@
 						var left2 = hotspots[x].coords.split(',')[2];
 						var top2 = hotspots[x].coords.split(',')[3];
 						hotspots[x].clicked = false;
-						if (clickX >= left1 && clickX <= left2 && clickY >= top1 && clickY <= top2) {
+						if (parseFloat(clickX) >= parseFloat(left1) && parseFloat(clickX) <= parseFloat(left2) && parseFloat(clickY) >= parseFloat(top1) && parseFloat(clickY) <= parseFloat(top2)) {
 							hotspots[x].clicked = true;
 						}
 						if (hotspots[x].clicked) {
