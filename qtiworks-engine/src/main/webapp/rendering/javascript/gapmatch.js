@@ -21,7 +21,6 @@
 			});
 			
 			function continueLoad() {
-  				//console.log('load');
   				$('#canvasContainer').css({width:$('#theImage').width()+'px'});
   				var imgMaxHeight = 0;
   				var firstRowY = 10000;
@@ -149,6 +148,7 @@
 		    canvas.ondrop=drop;
 		    canvas.ondragover=allowDrop;
 		    canvas.ondragenter=dragEnter;
+		    canvas.ondragleave=dragLeave;
 		    //
 		    for (var i=0; i<images.length; i++) {
 		    	var img=document.getElementById(images[i].identifier);
@@ -162,7 +162,12 @@
 
 			function dragEnter(e) {
 		        e.preventDefault();
+		        $('.opt').css({'pointer-events':'none','display':'inline-block'});
 		    }
+
+		    function dragLeave(ev) {
+				$('.opt').css({'pointer-events':'all'});
+			}
 
 		    function allowDrop(e) {
 		        e.preventDefault();
@@ -211,7 +216,7 @@
 						var left2 = parseFloat(hotspots[x].coords.split(',')[2]);
 						var top2 = parseFloat(hotspots[x].coords.split(',')[3]);
 						hotspots[x].clicked = false;
-						console.log(x+' '+clickX+' '+clickY+' '+left1+' '+left2+' '+top1+' '+top2);
+						//console.log(x+' '+clickX+' '+clickY+' '+left1+' '+left2+' '+top1+' '+top2);
 						if (clickX >= left1 && clickX <= left2 && clickY >= top1 && clickY <= top2) {
 							hotspots[x].clicked = true;
 						}
@@ -280,7 +285,7 @@
 		        //$('.opt').css({'pointer-events':'all'});
 		    }
 
-		    function drop(ev) {
+			function drop(ev) {
 		    	$('#imgback').css({'background-color':'#ffffff'});
 		        ev.preventDefault();
 
