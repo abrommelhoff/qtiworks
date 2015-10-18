@@ -268,6 +268,27 @@
 		    function mousedown(ev){
 		        startOffsetX=ev.offsetX;
 		        startOffsetY=ev.offsetY;
+		        var offset = $(this).offset();
+    			var clickX = e.pageX - offset.left;
+    			var clickY = e.pageY - offset.top;
+    			var c = document.getElementById("myCanvas");
+				var ctx = c.getContext("2d");
+				var canvas = document.getElementById('myCanvas');
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				/*for (var im=0; im<images.length; im++) {
+				    if (images[im].selection>-1) {
+		    			var canvas=document.getElementById("myCanvas");
+		    			var ctx=canvas.getContext("2d");
+				        ctx.fillStyle = "rgba(150,29,28, 0.1)";
+						ctx.fillRect(images[im].origPos.left, images[im].origPos.top, $('#'+images[im].identifier).width(), $('#'+images[im].identifier).height());
+				    }
+				}*/
+				var currResponses = 0;
+				for (var x=0; x<hotspots.length; x++) {
+					if (hotspots[x].clicked) {
+						currResponses++;
+					}
+				}
 		        for (var x=0; x<hotspots.length; x++) {
 		        	if (hotspots[x].shape == 'circle') {
 						var left = hotspots[x].coords.split(',')[0];
