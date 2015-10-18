@@ -269,6 +269,73 @@
 		        startOffsetX=ev.offsetX;
 		        startOffsetY=ev.offsetY;
 		        for (var x=0; x<hotspots.length; x++) {
+		        	if (hotspots[x].shape == 'circle') {
+						var left = hotspots[x].coords.split(',')[0];
+						var top = hotspots[x].coords.split(',')[1];
+						var radius = hotspots[x].coords.split(',')[2];
+						var zeroX = clickX - left;
+						var zeroY = clickY - top;
+						hotspots[x].clicked = false;
+						if (zeroX*zeroX + zeroY*zeroY <= radius*radius) {
+							hotspots[x].clicked = true;
+						}
+						if (hotspots[x].clicked) {
+							ctx.beginPath();
+							ctx.arc(left,top,radius,0,2*Math.PI);
+							ctx.strokeStyle="blue";
+							ctx.lineWidth = 3;
+							ctx.stroke();
+						}
+					} else if (hotspots[x].shape == 'rect') {
+						var left1 = parseFloat(hotspots[x].coords.split(',')[0]);
+						var top1 = parseFloat(hotspots[x].coords.split(',')[1]);
+						var left2 = parseFloat(hotspots[x].coords.split(',')[2]);
+						var top2 = parseFloat(hotspots[x].coords.split(',')[3]);
+						hotspots[x].clicked = false;
+						//console.log(x+' '+clickX+' '+clickY+' '+left1+' '+left2+' '+top1+' '+top2);
+						if (clickX >= left1 && clickX <= left2 && clickY >= top1 && clickY <= top2) {
+							hotspots[x].clicked = true;
+						}
+						if (hotspots[x].clicked) {
+							ctx.beginPath();
+							ctx.rect(left1,top1,left2-left1,top2-top1);
+							ctx.strokeStyle="blue";
+							ctx.lineWidth = 3;
+							ctx.stroke();
+						}
+					} else if (hotspots[x].shape == 'poly') {
+						var coordList = hotspots[x].coords.split(',');
+						var thisX = 1000;
+						var thisY = 1000;
+						var poly = [];
+						for (var y=0; y<coordList.length; y++) {
+							if (y%2 == 0) {
+								thisX = coordList[y];
+							} else {
+								thisY = coordList[y];
+								poly.push({x: thisX, y: thisY});
+							}
+
+						}
+						hotspots[x].clicked = false;
+						if (isPointInPoly(poly, {x: clickX, y: clickY})) {
+							hotspots[x].clicked = true;
+						}
+						if (hotspots[x].clicked) {
+							ctx.beginPath();
+							for (var z=0; z<poly.length; z++) {
+								if (z==0) {
+									ctx.moveTo(poly[z].x, poly[z].y);	
+								} else {
+									ctx.lineTo(poly[z].x, poly[z].y);	
+								}
+							}
+							ctx.closePath();
+							ctx.strokeStyle="blue";
+							ctx.lineWidth = 3;
+							ctx.stroke();
+						}
+					}
 		        	if (hotspots[x].clicked == true) {
 		        		fromx = x;
 		        	}
