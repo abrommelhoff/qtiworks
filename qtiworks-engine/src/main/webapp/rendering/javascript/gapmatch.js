@@ -336,7 +336,7 @@
 						    	sourceImage.ondragstart=dragstart;
 						    	sourceImage.onmouseout=dragstop;
 								imgContainer.appendChild(sourceImage);
-								if (images[im].selection.toString().split(',').length>= images[im].matchmax) {
+								if (images[im].selection.toString().split(',').length>= images[im].matchmax && images[im].selection.toString() != "-1") {
 									$('#' + images[im].identifier).css({visibility:'hidden'});
 								}
 								$('#' + newId).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
