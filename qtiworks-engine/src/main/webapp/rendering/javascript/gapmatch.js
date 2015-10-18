@@ -269,12 +269,12 @@
 		        startOffsetX=e.offsetX;
 		        startOffsetY=e.offsetY;
 		        var offset = $(this).offset();
-    			var clickX = e.pageX - offset.left;
-    			var clickY = e.pageY - offset.top;
     			var c = document.getElementById("myCanvas");
 				var ctx = c.getContext("2d");
 				var canvas = document.getElementById('myCanvas');
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
+    			var clickX = e.pageX - canvas.offset().left;
+    			var clickY = e.pageY - canvas.offset().top;
 				/*for (var im=0; im<images.length; im++) {
 				    if (images[im].selection>-1) {
 		    			var canvas=document.getElementById("myCanvas");
