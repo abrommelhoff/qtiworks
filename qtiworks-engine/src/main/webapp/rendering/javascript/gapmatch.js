@@ -273,8 +273,8 @@
 				var ctx = c.getContext("2d");
 				var canvas = document.getElementById('myCanvas');
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
-    			var clickX = e.pageX - canvas.offset().left;
-    			var clickY = e.pageY - canvas.offset().top;
+    			var clickX = e.pageX - $("#myCanvas").offset().left;
+    			var clickY = e.pageY - $("#myCanvas").offset().top;
 				/*for (var im=0; im<images.length; im++) {
 				    if (images[im].selection>-1) {
 		    			var canvas=document.getElementById("myCanvas");
