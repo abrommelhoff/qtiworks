@@ -265,9 +265,9 @@
 				return false;
 		    }
 
-		    function mousedown(ev){
-		        startOffsetX=ev.offsetX;
-		        startOffsetY=ev.offsetY;
+		    function mousedown(e){
+		        startOffsetX=e.offsetX;
+		        startOffsetY=e.offsetY;
 		        var offset = $(this).offset();
     			var clickX = e.pageX - offset.left;
     			var clickY = e.pageY - offset.top;
