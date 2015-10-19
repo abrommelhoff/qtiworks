@@ -398,9 +398,14 @@
 				        var dropElement=document.getElementById(id);
 				        var dropX = xSum/coordcount - $('#'+id).width()/2;
 				        var dropY = ySum/coordcount - $('#'+id).height()/2;
-				        
 				        for (var im=0; im<images.length; im++) {
-				        	if (id.indexOf(images[im].identifier) > -1) {
+				        	var allowMatch = true;
+				        	for (var im2=0; im2<images.length; im2++) {
+					        	if (images[im2].identifier.length > images[im].identifier.length && id.indexOf(images[im2].identifier) > -1) {
+					        	 	allowMatch = false;
+					        	}
+					        }
+				        	if (id.indexOf(images[im].identifier) > -1 && allowMatch) {
 				        		if (images[im].selection == -1) {
 				        			images[im].selection = x;
 				        		} else {
