@@ -400,7 +400,7 @@
 				        var dropY = ySum/coordcount - $('#'+id).height()/2;
 				        
 				        for (var im=0; im<images.length; im++) {
-				        	if (id.indexOf(images[im].identifier) > -1) {
+				        	if (id.indexOf(images[im].identifier) > -1 && images[im].identifier.indexOf(id) > -1) {
 				        		if (images[im].selection == -1) {
 				        			images[im].selection = x;
 				        		} else {
