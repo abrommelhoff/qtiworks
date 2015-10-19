@@ -424,7 +424,7 @@
 						    	sourceImage.ondragstart=dragstart;
 						    	sourceImage.onmouseout=dragstop;
 								imgContainer.appendChild(sourceImage);
-								if (images[im].selection.toString().split(',').length>= images[im].matchmax && images[im].selection.toString() != "-1") {
+								if (images[im].matchmax>0 && images[im].selection.toString().split(',').length>= images[im].matchmax && images[im].selection.toString() != "-1") {
 									$('#' + images[im].identifier).css({visibility:'hidden'});
 								}
 								$('#' + newId).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
@@ -496,7 +496,7 @@
 					}
 				}
 				for (var im=0; im<images.length; im++) {
-					if (images[im].selection.toString().split(',').length>= images[im].matchmax && images[im].selection.toString() != "-1") {
+					if (images[im].matchmax>0 && images[im].selection.toString().split(',').length>= images[im].matchmax && images[im].selection.toString() != "-1") {
 						$('#' + images[im].identifier).css({visibility:'hidden'});
 					} else {
 						$('#' + images[im].identifier).css({visibility:'visible'});
