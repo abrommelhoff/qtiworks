@@ -107,7 +107,6 @@
 						    	sourceImage.ondragstart=dragstart;
 						    	sourceImage.touchstart=dragstart;
 						    	sourceImage.onmouseout=dragstop;
-						    	sourceImage.touchend=dragstop;
 								imgContainer.appendChild(sourceImage);
 								$('#' + newId).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
 						        //$('#'+images[y].identifier).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
@@ -152,8 +151,6 @@
 		    canvas.ondragenter=dragEnter;
 		    canvas.ondragleave=dragLeave;
 		    canvas.ontouchstart=dragEnter;
-		    canvas.ontouchend=dragLeave;
-		    canvas.ontouchmove=allowDrop;
 		    //
 		    for (var i=0; i<images.length; i++) {
 		    	var img=document.getElementById(images[i].identifier);
@@ -168,7 +165,6 @@
 			function dragEnter(e) {
 		        e.preventDefault();
 		        $('.opt').css({'pointer-events':'none','display':'inline-block'});
-		        return false;
 		    }
 
 		    function dragLeave(ev) {
@@ -370,6 +366,9 @@
 		    }
 
 		    function dragstart(ev) {
+		    	if (ev.hasOwnProperty('touches') {
+		    		alert('touches');
+		    	}
 		        ev.dataTransfer.setData("Text",ev.target.id);
 		        //$('.opt').css({'pointer-events':'none'});
 		        $('#imgback').css({'background-color':'#cccccc'});
