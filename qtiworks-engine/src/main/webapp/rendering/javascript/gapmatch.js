@@ -151,6 +151,9 @@
 		    canvas.ondragover=allowDrop;
 		    canvas.ondragenter=dragEnter;
 		    canvas.ondragleave=dragLeave;
+		    canvas.ontouchstart=dragEnter;
+		    canvas.ontouchend=dragLeave;
+		    canvas.ontouchmove=allowDrop;
 		    //
 		    for (var i=0; i<images.length; i++) {
 		    	var img=document.getElementById(images[i].identifier);
