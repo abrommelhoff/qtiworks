@@ -366,7 +366,7 @@
 		    }
 
 		    function dragstart(ev) {
-		    	if (ev.hasOwnProperty('touches') {
+		    	if (ev.hasOwnProperty('touches')) {
 		    		alert('touches');
 		    	}
 		        ev.dataTransfer.setData("Text",ev.target.id);
