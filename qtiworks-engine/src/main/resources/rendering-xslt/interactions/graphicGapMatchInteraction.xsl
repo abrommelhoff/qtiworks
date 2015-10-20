@@ -72,6 +72,7 @@
           	</xsl:for-each>
           
   		</script>
+  		<script src="{$webappContextPath}/rendering/javascript/jquery.ui.touch-punch.min.js"/>
 		<script src="{$webappContextPath}/rendering/javascript/gapmatch.js"/>
       </div>
     </div>
