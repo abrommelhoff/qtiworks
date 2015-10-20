@@ -22,7 +22,6 @@
 			
 			function continueLoad() {
   				$('#canvasContainer').css({width:$('#theImage').width()+'px'});
-  				$(".opt").draggable();
   				var imgMaxHeight = 0;
   				var firstRowY = 10000;
   				var rowY = 0;

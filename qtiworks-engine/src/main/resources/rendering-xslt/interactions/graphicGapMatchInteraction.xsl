@@ -24,8 +24,7 @@
       <xsl:variable name="appletContainerId" select="concat('qtiworks_id_appletContainer_', @responseIdentifier)" as="xs:string"/>
       <xsl:variable name="gapImgs" select="qw:filter-visible(qti:gapImg)" as="element(qti:gapImg)*"/>
       <div id="{$appletContainerId}" class="appletContainer">
-      	<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-      	<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+      	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"/>
       	<style>
 			#canvasContainer {
 				position: relative;
@@ -73,7 +72,6 @@
           	</xsl:for-each>
           
   		</script>
-  		<script src="{$webappContextPath}/rendering/javascript/jquery.ui.touch-punch.min.js"/>
 		<script src="{$webappContextPath}/rendering/javascript/gapmatch.js"/>
       </div>
     </div>
