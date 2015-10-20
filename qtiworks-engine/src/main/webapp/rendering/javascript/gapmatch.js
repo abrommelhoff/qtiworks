@@ -106,7 +106,6 @@
 								sourceImage.draggable=true;
 						    	sourceImage.onmousedown=mousedown;
 						    	sourceImage.ondragstart=dragstart;
-						    	sourceImage.touchstart=dragstart;
 						    	sourceImage.onmouseout=dragstop;
 								imgContainer.appendChild(sourceImage);
 								$('#' + newId).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
@@ -151,7 +150,6 @@
 		    canvas.ondragover=allowDrop;
 		    canvas.ondragenter=dragEnter;
 		    canvas.ondragleave=dragLeave;
-		    canvas.ontouchstart=dragEnter;
 		    //
 		    for (var i=0; i<images.length; i++) {
 		    	var img=document.getElementById(images[i].identifier);
@@ -367,10 +365,7 @@
 		    }
 
 		    function dragstart(ev) {
-		    	if (ev.hasOwnProperty('touches')) {
-		    		alert('touches');
-		    	}
-		        ev.dataTransfer.setData("Text",ev.target.id);
+		    	ev.dataTransfer.setData("Text",ev.target.id);
 		        //$('.opt').css({'pointer-events':'none'});
 		        $('#imgback').css({'background-color':'#cccccc'});
 		    }
