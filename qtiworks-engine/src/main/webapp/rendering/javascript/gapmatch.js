@@ -105,7 +105,9 @@
 								sourceImage.draggable=true;
 						    	sourceImage.onmousedown=mousedown;
 						    	sourceImage.ondragstart=dragstart;
+						    	sourceImage.touchstart=dragstart;
 						    	sourceImage.onmouseout=dragstop;
+						    	sourceImage.touchend=dragstop;
 								imgContainer.appendChild(sourceImage);
 								$('#' + newId).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
 						        //$('#'+images[y].identifier).css({position:'absolute', top:dropY+'px', left:dropX+'px'});
