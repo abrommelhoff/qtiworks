@@ -318,7 +318,9 @@ public class CandidateTestDeliveryService extends CandidateServiceBase {
             candidateResponse.setResponseCorrectness(testSessionController.isCurrentItemCorrect() ? ResponseCorrectness.CORRECT : ResponseCorrectness.INCORRECT);
             candidateResponse.setResponseFeedback(testSessionController.getTestIdentifier());
             candidateResponse.setTimeOnTask(Double.toString(itemSessionState.computeDuration()));
-            candidateResponseDao.persist(candidateResponse);
+            if (!candidateResponse.getResponseLegality().equals(ResponseLegality.INVALID)) {
+                candidateResponseDao.persist(candidateResponse);
+            }
         }
 
         /* Record current result state */
